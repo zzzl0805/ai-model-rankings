@@ -1,0 +1,63 @@
+/* pages/recommend/recommend.wxss */
+.page { background: #F8FAFC; min-height: 100vh; padding-bottom: 40rpx; }
+
+.header { background: linear-gradient(135deg, #1A1A2E, #16213E, #7C3AED); padding: 32rpx; color: #fff; }
+.header-title { font-size: 40rpx; font-weight: 700; display: block; }
+.header-sub { font-size: 24rpx; color: rgba(255,255,255,0.7); display: block; margin-top: 4rpx; }
+
+/* 场景选择 */
+.scene-section { padding: 24rpx; }
+.section-title { font-size: 32rpx; font-weight: 700; color: #1E293B; display: block; margin-bottom: 20rpx; }
+.scene-grid { display: flex; flex-direction: column; gap: 16rpx; }
+.scene-card { display: flex; align-items: center; background: #fff; border-radius: 16rpx; padding: 28rpx 24rpx; box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04); }
+.scene-icon-wrap { width: 80rpx; height: 80rpx; background: #F0F4FF; border-radius: 20rpx; display: flex; align-items: center; justify-content: center; margin-right: 20rpx; }
+.scene-icon { font-size: 44rpx; }
+.scene-text { flex: 1; }
+.scene-name { font-size: 30rpx; font-weight: 600; color: #1E293B; display: block; }
+.scene-desc { font-size: 24rpx; color: #94A3B8; display: block; margin-top: 4rpx; }
+
+/* 推荐结果 */
+.result-header { display: flex; align-items: center; justify-content: space-between; padding: 24rpx; }
+.result-header-left { display: flex; align-items: center; gap: 16rpx; }
+.result-icon { font-size: 56rpx; }
+.result-title { font-size: 34rpx; font-weight: 700; color: #1E293B; display: block; }
+.result-reason { font-size: 24rpx; color: #0F5EF0; display: block; margin-top: 4rpx; }
+.back-btn { padding: 12rpx 24rpx; background: #fff; border-radius: 32rpx; font-size: 24rpx; color: #64748B; border: 1rpx solid #E2E8F0; }
+
+.count-bar { display: flex; gap: 12rpx; padding: 0 24rpx 20rpx; }
+.count-btn { padding: 10rpx 28rpx; border-radius: 32rpx; font-size: 24rpx; color: #64748B; background: #fff; border: 1rpx solid #E2E8F0; }
+.count-active { background: #0F5EF0; color: #fff; border-color: #0F5EF0; }
+
+.center-box { display: flex; flex-direction: column; align-items: center; padding: 120rpx 0; }
+.center-text { font-size: 28rpx; color: #94A3B8; }
+.empty-icon { font-size: 60rpx; margin-bottom: 16rpx; }
+
+/* 模型卡片 */
+.model-list { padding: 0 24rpx; }
+.model-card { display: flex; align-items: flex-start; background: #fff; border-radius: 16rpx; padding: 24rpx; margin-bottom: 16rpx; box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04); }
+
+.rank-area { width: 64rpx; display: flex; flex-direction: column; align-items: center; margin-right: 16rpx; }
+.medal { width: 52rpx; height: 52rpx; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.1); }
+.medal-0 { background: linear-gradient(135deg, #FFD700, #FFA000); }
+.medal-1 { background: linear-gradient(135deg, #C0C0C0, #909090); }
+.medal-2 { background: linear-gradient(135deg, #CD7F32, #A0522D); }
+.medal text { font-size: 26rpx; }
+.rank-num { font-size: 32rpx; font-weight: 700; color: #94A3B8; }
+.best-tag { font-size: 18rpx; color: #F59E0B; margin-top: 4rpx; }
+
+.model-body { flex: 1; min-width: 0; }
+.model-top { display: flex; justify-content: space-between; align-items: baseline; }
+.model-name { font-size: 28rpx; font-weight: 600; color: #1E293B; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.model-elo { font-size: 32rpx; font-weight: 700; color: #0F5EF0; }
+.model-meta { display: flex; align-items: center; gap: 2rpx; margin-top: 6rpx; }
+.model-provider { font-size: 22rpx; color: #94A3B8; }
+.model-conf { font-size: 20rpx; }
+.model-votes { font-size: 20rpx; color: #94A3B8; }
+.model-price { margin-top: 8rpx; }
+.price-tag { font-size: 24rpx; color: #10B981; background: #ECFDF5; padding: 4rpx 12rpx; border-radius: 6rpx; }
+.model-free { font-size: 24rpx; color: #10B981; display: block; margin-top: 8rpx; }
+
+/* 操作按钮 */
+.action-bar { padding: 16rpx 0; }
+.action-btn { height: 84rpx; display: flex; align-items: center; justify-content: center; border-radius: 42rpx; font-size: 30rpx; font-weight: 600; }
+.compare-action { background: linear-gradient(135deg, #0F5EF0, #7C3AED); color: #fff; }

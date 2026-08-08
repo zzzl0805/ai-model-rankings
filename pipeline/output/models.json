@@ -1,0 +1,2122 @@
+[
+  {
+    "id": "o4",
+    "name": "o4",
+    "provider": "OpenAI",
+    "status": "active",
+    "tags": [
+      "reasoning",
+      "coding",
+      "math"
+    ],
+    "addedDate": "2026-07-22",
+    "lastUpdated": "2026-07-22",
+    "pricing": {
+      "inputPrice": 10.0,
+      "outputPrice": 40.0,
+      "currency": "USD",
+      "freeTier": false,
+      "priceSource": "openai.com @ 2026-07-22",
+      "priceVerified": true
+    },
+    "specs": {
+      "contextWindow": 200000,
+      "maxOutputTokens": 100000,
+      "modalities": [
+        "text",
+        "image"
+      ],
+      "openSource": false,
+      "trainingCutoff": "2025-06",
+      "specSource": "openai.com @ 2026-07-22"
+    },
+    "rankings": {
+      "overall": {
+        "score": 96.0,
+        "source": "LMArena Elo",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "coding": {
+        "score": 96.5,
+        "source": "SWE-bench Verified顶尖",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "reasoning": {
+        "score": 97.0,
+        "source": "最强推理模型之一",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "writing": {
+        "score": 85.0,
+        "source": "写作非强项",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "chinese": {
+        "score": 78.0,
+        "source": "C-Eval + CMMLU",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "multimodal": {
+        "score": 88.0,
+        "source": "支持视觉推理",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "costEffectiveness": {
+        "score": 30.0,
+        "source": "极贵但能力顶尖",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      }
+    },
+    "summary": "OpenAI最强推理模型，数学和编程能力顶级。价格非常贵，适合需要极致推理的复杂问题。",
+    "detailDescription": "",
+    "bestFor": [
+      "复杂数学推理",
+      "高难度编程竞赛",
+      "深度分析",
+      "科学计算"
+    ],
+    "pros": [
+      "推理能力顶级",
+      "编程能力最强",
+      "支持视觉推理"
+    ],
+    "cons": [
+      "极贵",
+      "速度慢（深度思考耗时长）",
+      "写作非强项"
+    ],
+    "competitors": [
+      "deepseek-r1",
+      "claude-opus-4-8"
+    ]
+  },
+  {
+    "id": "claude-opus-4-8",
+    "name": "Claude Opus 4.8",
+    "provider": "Anthropic",
+    "status": "active",
+    "tags": [
+      "chat",
+      "coding",
+      "writing",
+      "reasoning",
+      "tools",
+      "vision"
+    ],
+    "addedDate": "2026-07-22",
+    "lastUpdated": "2026-07-22",
+    "pricing": {
+      "inputPrice": 15.0,
+      "outputPrice": 75.0,
+      "cachedInputPrice": 18.75,
+      "cachedReadPrice": 1.5,
+      "currency": "USD",
+      "freeTier": false,
+      "priceSource": "anthropic.com @ 2026-07-22",
+      "priceVerified": true
+    },
+    "specs": {
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "modalities": [
+        "text",
+        "image"
+      ],
+      "openSource": false,
+      "trainingCutoff": "2025-07",
+      "specSource": "anthropic.com @ 2026-07-22"
+    },
+    "rankings": {
+      "overall": {
+        "score": 95.0,
+        "source": "LMArena Elo — 长期榜首",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "coding": {
+        "score": 94.0,
+        "source": "SWE-bench Verified顶尖",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "reasoning": {
+        "score": 94.5,
+        "source": "推理能力顶级",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "writing": {
+        "score": 96.0,
+        "source": "公认写作最佳",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "chinese": {
+        "score": 83.0,
+        "source": "中文能力持续提升",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "multimodal": {
+        "score": 91.0,
+        "source": "视觉理解优秀",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "costEffectiveness": {
+        "score": 28.0,
+        "source": "最贵的模型之一",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      }
+    },
+    "summary": "综合体验最好的模型。写作能力公认最强，Agent和工具调用生态最成熟。价格最贵。",
+    "detailDescription": "",
+    "bestFor": [
+      "高质量内容创作",
+      "复杂推理分析",
+      "代码生成与调试",
+      "Agent和工具调用"
+    ],
+    "pros": [
+      "写作能力最强",
+      "Agent生态最成熟",
+      "高质量输出",
+      "长上下文"
+    ],
+    "cons": [
+      "价格最贵",
+      "速度中等"
+    ],
+    "competitors": [
+      "gpt-5",
+      "gemini-3-0-pro",
+      "deepseek-v4"
+    ]
+  },
+  {
+    "id": "gpt-5",
+    "name": "GPT-5",
+    "provider": "OpenAI",
+    "status": "active",
+    "tags": [
+      "chat",
+      "coding",
+      "reasoning",
+      "multimodal",
+      "tools"
+    ],
+    "addedDate": "2026-07-22",
+    "lastUpdated": "2026-07-22",
+    "pricing": {
+      "inputPrice": 2.5,
+      "outputPrice": 10.0,
+      "currency": "USD",
+      "freeTier": false,
+      "freeTierDescription": "",
+      "priceSource": "openai.com/pricing @ 2026-07-22",
+      "priceVerified": true
+    },
+    "specs": {
+      "contextWindow": 128000,
+      "maxOutputTokens": 16384,
+      "modalities": [
+        "text",
+        "image"
+      ],
+      "openSource": false,
+      "licenseType": "Proprietary",
+      "trainingCutoff": "2025-06",
+      "specSource": "openai.com @ 2026-07-22"
+    },
+    "rankings": {
+      "overall": {
+        "score": 94.5,
+        "source": "LMArena Chatbot Arena Elo",
+        "sourceUrl": "https://lmarena.ai",
+        "updated": "2026-07-22",
+        "methodology": "Elo分数归一化到0-100"
+      },
+      "coding": {
+        "score": 93.0,
+        "source": "SWE-bench Verified + HumanEval+ + LMArena Coding",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": "三项加权平均归一化"
+      },
+      "reasoning": {
+        "score": 93.5,
+        "source": "MMLU-Pro + GPQA + LMArena Reasoning",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": "三项加权平均归一化"
+      },
+      "writing": {
+        "score": 91.0,
+        "source": "LMArena Writing + Creative Writing",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": "LMArena写作类别Elo归一化"
+      },
+      "chinese": {
+        "score": 82.0,
+        "source": "C-Eval + CMMLU + LMArena Chinese",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": "三项加权平均归一化"
+      },
+      "multimodal": {
+        "score": 90.0,
+        "source": "MMMU + LMArena Vision",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": "两项加权平均归一化"
+      },
+      "costEffectiveness": {
+        "score": 62.0,
+        "source": "综合评分 ÷ log(加权价格+1) × 10",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": "输入×3+输出×1加权，纯数学计算"
+      }
+    },
+    "summary": "综合能力最强的模型之一，编程和推理顶尖，价格偏高。适合需要最高质量的场景。",
+    "detailDescription": "",
+    "bestFor": [
+      "高质量代码生成",
+      "复杂推理分析",
+      "多模态理解",
+      "Agent工具调用"
+    ],
+    "pros": [
+      "综合能力最强",
+      "编程和推理顶尖",
+      "多模态支持"
+    ],
+    "cons": [
+      "价格偏高",
+      "上下文窗口中等"
+    ],
+    "competitors": [
+      "claude-opus-4-8",
+      "gemini-3-0-pro",
+      "deepseek-v4"
+    ]
+  },
+  {
+    "id": "gemini-3-0-pro",
+    "name": "Gemini 3.0 Pro",
+    "provider": "Google",
+    "status": "active",
+    "tags": [
+      "chat",
+      "multimodal",
+      "long-context",
+      "coding"
+    ],
+    "addedDate": "2026-07-22",
+    "lastUpdated": "2026-07-22",
+    "pricing": {
+      "inputPrice": 1.25,
+      "outputPrice": 10.0,
+      "currency": "USD",
+      "freeTier": false,
+      "priceSource": "ai.google.dev @ 2026-07-22",
+      "priceVerified": true
+    },
+    "specs": {
+      "contextWindow": 1000000,
+      "maxOutputTokens": 65536,
+      "modalities": [
+        "text",
+        "image",
+        "audio",
+        "video"
+      ],
+      "openSource": false,
+      "trainingCutoff": "2025-06",
+      "specSource": "ai.google.dev @ 2026-07-22"
+    },
+    "rankings": {
+      "overall": {
+        "score": 93.0,
+        "source": "LMArena Elo",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "coding": {
+        "score": 91.0,
+        "source": "SWE-bench Verified",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "reasoning": {
+        "score": 92.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "writing": {
+        "score": 88.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "chinese": {
+        "score": 80.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "multimodal": {
+        "score": 94.0,
+        "source": "多模态能力最强",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "costEffectiveness": {
+        "score": 78.0,
+        "source": "性价比优秀（长上下文）",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      }
+    },
+    "summary": "多模态能力和长上下文窗口是最大亮点。100万token上下文处理长文档无敌。",
+    "detailDescription": "",
+    "bestFor": [
+      "长文档处理",
+      "多模态分析",
+      "音视频理解",
+      "大规模数据处理"
+    ],
+    "pros": [
+      "100万上下文（最大之一）",
+      "多模态能力最强",
+      "原生音视频支持"
+    ],
+    "cons": [
+      "中文不如国产模型",
+      "价格中等偏上"
+    ],
+    "competitors": [
+      "gpt-5",
+      "claude-sonnet-5"
+    ]
+  },
+  {
+    "id": "claude-sonnet-5",
+    "name": "Claude Sonnet 5",
+    "provider": "Anthropic",
+    "status": "active",
+    "tags": [
+      "chat",
+      "coding",
+      "fast"
+    ],
+    "addedDate": "2026-07-22",
+    "lastUpdated": "2026-07-22",
+    "pricing": {
+      "inputPrice": 3.0,
+      "outputPrice": 15.0,
+      "currency": "USD",
+      "freeTier": false,
+      "priceSource": "anthropic.com @ 2026-07-22",
+      "priceVerified": true
+    },
+    "specs": {
+      "contextWindow": 200000,
+      "maxOutputTokens": 32000,
+      "modalities": [
+        "text",
+        "image"
+      ],
+      "openSource": false,
+      "trainingCutoff": "2025-07",
+      "specSource": "anthropic.com @ 2026-07-22"
+    },
+    "rankings": {
+      "overall": {
+        "score": 92.5,
+        "source": "LMArena Elo",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "coding": {
+        "score": 94.5,
+        "source": "SWE-bench Verified编程最顶",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "reasoning": {
+        "score": 91.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "writing": {
+        "score": 93.0,
+        "source": "写作接近Opus",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "chinese": {
+        "score": 81.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "multimodal": {
+        "score": 89.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "costEffectiveness": {
+        "score": 72.0,
+        "source": "中高端模型中的性价比标杆",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      }
+    },
+    "summary": "编程能力最强的中高端模型，性价比极高。90%的场景下可以替代Opus。",
+    "detailDescription": "",
+    "bestFor": [
+      "代码生成（编程最顶级）",
+      "日常Agent",
+      "内容创作",
+      "长文档处理"
+    ],
+    "pros": [
+      "编程能力极强（SWE-bench顶尖）",
+      "性价比高",
+      "速度快"
+    ],
+    "cons": [
+      "价格仍不便宜",
+      "极致质量不如Opus"
+    ],
+    "competitors": [
+      "gpt-5",
+      "deepseek-v4",
+      "gemini-3-0-pro"
+    ]
+  },
+  {
+    "id": "deepseek-r1",
+    "name": "DeepSeek-R1",
+    "provider": "DeepSeek",
+    "status": "active",
+    "tags": [
+      "reasoning",
+      "chinese",
+      "open-source",
+      "math"
+    ],
+    "addedDate": "2026-07-22",
+    "lastUpdated": "2026-07-22",
+    "pricing": {
+      "inputPrice": 0.55,
+      "outputPrice": 2.19,
+      "currency": "USD",
+      "freeTier": false,
+      "priceSource": "deepseek.com @ 2026-07-22",
+      "priceVerified": true
+    },
+    "specs": {
+      "contextWindow": 128000,
+      "maxOutputTokens": 8192,
+      "modalities": [
+        "text"
+      ],
+      "openSource": true,
+      "licenseType": "MIT",
+      "trainingCutoff": "2025-12",
+      "specSource": "deepseek.com @ 2026-07-22"
+    },
+    "rankings": {
+      "overall": {
+        "score": 92.0,
+        "source": "LMArena Elo — 推理能力极强",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "coding": {
+        "score": 90.5,
+        "source": "推理型编程",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "reasoning": {
+        "score": 93.0,
+        "source": "开源最强推理模型",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "writing": {
+        "score": 80.0,
+        "source": "推理模型通病",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "chinese": {
+        "score": 93.5,
+        "source": "中文推理顶级",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "multimodal": {
+        "score": 50.0,
+        "source": "仅文本",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "costEffectiveness": {
+        "score": 90.0,
+        "source": "推理模型中的性价比之王",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      }
+    },
+    "summary": "开源最强推理模型。训练过程完全公开（论文详细）。1/20的o4价格获得接近的推理能力。",
+    "detailDescription": "",
+    "bestFor": [
+      "中文推理",
+      "数学证明",
+      "编程debug",
+      "逻辑分析"
+    ],
+    "pros": [
+      "推理能力强",
+      "中文推理顶级",
+      "开源",
+      "比o4便宜20倍"
+    ],
+    "cons": [
+      "写作非强项",
+      "仅文本"
+    ],
+    "competitors": [
+      "o4-mini",
+      "o4"
+    ]
+  },
+  {
+    "id": "deepseek-v4",
+    "name": "DeepSeek-V4",
+    "provider": "DeepSeek",
+    "status": "active",
+    "tags": [
+      "chat",
+      "coding",
+      "chinese",
+      "cheap",
+      "open-source"
+    ],
+    "addedDate": "2026-07-22",
+    "lastUpdated": "2026-07-22",
+    "pricing": {
+      "inputPrice": 0.27,
+      "outputPrice": 1.1,
+      "currency": "USD",
+      "freeTier": false,
+      "priceSource": "deepseek.com @ 2026-07-22",
+      "priceVerified": true
+    },
+    "specs": {
+      "contextWindow": 128000,
+      "maxOutputTokens": 8192,
+      "modalities": [
+        "text"
+      ],
+      "openSource": true,
+      "licenseType": "MIT",
+      "trainingCutoff": "2025-12",
+      "specSource": "deepseek.com @ 2026-07-22"
+    },
+    "rankings": {
+      "overall": {
+        "score": 91.5,
+        "source": "LMArena Elo — 开源模型第一",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "coding": {
+        "score": 90.0,
+        "source": "SWE-bench Verified",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "reasoning": {
+        "score": 90.5,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "writing": {
+        "score": 89.0,
+        "source": "写作不输闭源模型",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "chinese": {
+        "score": 94.0,
+        "source": "中文能力全球领先",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "multimodal": {
+        "score": 50.0,
+        "source": "仅文本",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "costEffectiveness": {
+        "score": 96.0,
+        "source": "顶级性价比 — 开源+极低成本",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      }
+    },
+    "summary": "开源模型的王者。中文能力全球领先，价格极低。综合能力逼近顶级闭源模型。",
+    "detailDescription": "",
+    "bestFor": [
+      "中文任务（最强）",
+      "代码生成",
+      "成本敏感的高质量场景",
+      "私有化部署"
+    ],
+    "pros": [
+      "中文能力全球第一",
+      "价格极低",
+      "开源可部署",
+      "综合能力强"
+    ],
+    "cons": [
+      "仅文本",
+      "上下文窗口中等"
+    ],
+    "competitors": [
+      "gpt-5",
+      "claude-sonnet-5",
+      "qwen-3-max"
+    ]
+  },
+  {
+    "id": "o4-mini",
+    "name": "o4-mini",
+    "provider": "OpenAI",
+    "status": "active",
+    "tags": [
+      "reasoning",
+      "coding",
+      "fast",
+      "cheap"
+    ],
+    "addedDate": "2026-07-22",
+    "lastUpdated": "2026-07-22",
+    "pricing": {
+      "inputPrice": 1.1,
+      "outputPrice": 4.4,
+      "currency": "USD",
+      "freeTier": false,
+      "priceSource": "openai.com @ 2026-07-22",
+      "priceVerified": true
+    },
+    "specs": {
+      "contextWindow": 200000,
+      "maxOutputTokens": 100000,
+      "modalities": [
+        "text"
+      ],
+      "openSource": false,
+      "trainingCutoff": "2025-06",
+      "specSource": "openai.com @ 2026-07-22"
+    },
+    "rankings": {
+      "overall": {
+        "score": 90.0,
+        "source": "LMArena Elo",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "coding": {
+        "score": 92.0,
+        "source": "SWE-bench Verified",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "reasoning": {
+        "score": 91.5,
+        "source": "推理能力接近o4",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "writing": {
+        "score": 78.0,
+        "source": "写作非强项",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "chinese": {
+        "score": 72.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "multimodal": {
+        "score": 50.0,
+        "source": "仅文本",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "costEffectiveness": {
+        "score": 82.0,
+        "source": "推理模型中的性价比之王",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      }
+    },
+    "summary": "推理模型中的性价比之王。o4的推理能力，1/10的价格。日常编程和推理首选。",
+    "detailDescription": "",
+    "bestFor": [
+      "日常编程",
+      "逻辑推理",
+      "数学问题",
+      "需要推理但预算有限"
+    ],
+    "pros": [
+      "推理能力强",
+      "性价比极高",
+      "200K上下文"
+    ],
+    "cons": [
+      "仅文本",
+      "复杂推理不如o4"
+    ],
+    "competitors": [
+      "deepseek-r1"
+    ]
+  },
+  {
+    "id": "qwen-3-max",
+    "name": "Qwen 3-Max",
+    "provider": "Alibaba",
+    "status": "active",
+    "tags": [
+      "chat",
+      "chinese",
+      "coding",
+      "multimodal"
+    ],
+    "addedDate": "2026-07-22",
+    "lastUpdated": "2026-07-22",
+    "pricing": {
+      "inputPrice": 0.5,
+      "outputPrice": 2.0,
+      "currency": "USD",
+      "freeTier": false,
+      "priceSource": "tongyi.aliyun.com @ 2026-07-22",
+      "priceVerified": true
+    },
+    "specs": {
+      "contextWindow": 128000,
+      "maxOutputTokens": 8192,
+      "modalities": [
+        "text",
+        "image",
+        "audio"
+      ],
+      "openSource": false,
+      "trainingCutoff": "2025-12",
+      "specSource": "tongyi.aliyun.com @ 2026-07-22"
+    },
+    "rankings": {
+      "overall": {
+        "score": 89.5,
+        "source": "LMArena Elo — 国产闭源第一梯队",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "coding": {
+        "score": 87.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "reasoning": {
+        "score": 88.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "writing": {
+        "score": 86.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "chinese": {
+        "score": 95.0,
+        "source": "中文能力顶级",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "multimodal": {
+        "score": 87.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "costEffectiveness": {
+        "score": 84.0,
+        "source": "国产模型中性价比优秀",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      }
+    },
+    "summary": "阿里通义千问旗舰。中文能力顶级，多模态支持全面。国产闭源模型第一梯队。",
+    "detailDescription": "",
+    "bestFor": [
+      "中文任务",
+      "企业级应用",
+      "多模态中文理解",
+      "阿里云生态集成"
+    ],
+    "pros": [
+      "中文能力极强",
+      "多模态全面",
+      "阿里云生态"
+    ],
+    "cons": [
+      "开源版本能力弱于闭源",
+      "国际影响力不如DeepSeek"
+    ],
+    "competitors": [
+      "deepseek-v4",
+      "kimi-k3",
+      "glm-5"
+    ]
+  },
+  {
+    "id": "kimi-k3",
+    "name": "Kimi K3",
+    "provider": "Moonshot",
+    "status": "active",
+    "tags": [
+      "chat",
+      "chinese",
+      "long-context",
+      "coding"
+    ],
+    "addedDate": "2026-07-22",
+    "lastUpdated": "2026-07-22",
+    "pricing": {
+      "inputPrice": 0.6,
+      "outputPrice": 2.4,
+      "currency": "USD",
+      "freeTier": true,
+      "freeTierDescription": "每日免费额度",
+      "priceSource": "kimi.moonshot.cn @ 2026-07-22",
+      "priceVerified": true
+    },
+    "specs": {
+      "contextWindow": 128000,
+      "maxOutputTokens": 8192,
+      "modalities": [
+        "text",
+        "image"
+      ],
+      "openSource": false,
+      "trainingCutoff": "2025-12",
+      "specSource": "kimi.moonshot.cn @ 2026-07-22"
+    },
+    "rankings": {
+      "overall": {
+        "score": 88.5,
+        "source": "LMArena Elo",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "coding": {
+        "score": 86.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "reasoning": {
+        "score": 87.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "writing": {
+        "score": 90.0,
+        "source": "中文写作体验好",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "chinese": {
+        "score": 94.5,
+        "source": "中文能力最顶",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "multimodal": {
+        "score": 84.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "costEffectiveness": {
+        "score": 80.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      }
+    },
+    "summary": "月之暗面出品，中文写作和长文档处理体验一流。K3是最新一代，能力大幅提升。",
+    "detailDescription": "",
+    "bestFor": [
+      "中文写作",
+      "长文档阅读",
+      "网页内容理解",
+      "日常中文助手"
+    ],
+    "pros": [
+      "中文写作体验好",
+      "长文档处理",
+      "免费额度"
+    ],
+    "cons": [
+      "价格中等",
+      "国际排行数据有限"
+    ],
+    "competitors": [
+      "qwen-3-max",
+      "deepseek-v4",
+      "doubao-2-0-pro"
+    ]
+  },
+  {
+    "id": "grok-4",
+    "name": "Grok-4",
+    "provider": "xAI",
+    "status": "active",
+    "tags": [
+      "chat",
+      "reasoning",
+      "vision"
+    ],
+    "addedDate": "2026-07-22",
+    "lastUpdated": "2026-07-22",
+    "pricing": {
+      "inputPrice": 2.0,
+      "outputPrice": 8.0,
+      "currency": "USD",
+      "freeTier": false,
+      "priceSource": "x.ai @ 2026-07-22",
+      "priceVerified": true
+    },
+    "specs": {
+      "contextWindow": 128000,
+      "maxOutputTokens": 4096,
+      "modalities": [
+        "text",
+        "image"
+      ],
+      "openSource": false,
+      "trainingCutoff": "2025-12",
+      "specSource": "x.ai @ 2026-07-22"
+    },
+    "rankings": {
+      "overall": {
+        "score": 88.0,
+        "source": "LMArena Elo",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "coding": {
+        "score": 84.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "reasoning": {
+        "score": 87.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "writing": {
+        "score": 85.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "chinese": {
+        "score": 72.0,
+        "source": "中文一般",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "multimodal": {
+        "score": 86.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "costEffectiveness": {
+        "score": 58.0,
+        "source": "价格偏高",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      }
+    },
+    "summary": "Elon Musk的xAI出品，推理能力强。X/Twitter实时数据是独特优势。",
+    "detailDescription": "",
+    "bestFor": [
+      "实时信息查询",
+      "社交媒体分析",
+      "推理任务"
+    ],
+    "pros": [
+      "Twitter实时数据",
+      "推理能力强"
+    ],
+    "cons": [
+      "中文一般",
+      "价格偏高"
+    ],
+    "competitors": [
+      "gpt-5",
+      "claude-sonnet-5"
+    ]
+  },
+  {
+    "id": "mistral-large-3",
+    "name": "Mistral Large 3",
+    "provider": "Mistral",
+    "status": "active",
+    "tags": [
+      "chat",
+      "coding",
+      "multimodal",
+      "open-source"
+    ],
+    "addedDate": "2026-07-22",
+    "lastUpdated": "2026-07-22",
+    "pricing": {
+      "inputPrice": 2.0,
+      "outputPrice": 6.0,
+      "currency": "USD",
+      "freeTier": false,
+      "priceSource": "mistral.ai @ 2026-07-22",
+      "priceVerified": true
+    },
+    "specs": {
+      "contextWindow": 128000,
+      "maxOutputTokens": 4096,
+      "modalities": [
+        "text",
+        "image"
+      ],
+      "openSource": true,
+      "licenseType": "Apache 2.0",
+      "trainingCutoff": "2025-06",
+      "specSource": "mistral.ai @ 2026-07-22"
+    },
+    "rankings": {
+      "overall": {
+        "score": 87.5,
+        "source": "LMArena Elo — 欧洲最强",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "coding": {
+        "score": 86.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "reasoning": {
+        "score": 86.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "writing": {
+        "score": 86.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "chinese": {
+        "score": 68.0,
+        "source": "中文较弱",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "multimodal": {
+        "score": 85.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "costEffectiveness": {
+        "score": 70.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      }
+    },
+    "summary": "欧洲最强AI模型。开源可部署，多语言能力优秀。法语/德语/西班牙语极强。",
+    "detailDescription": "",
+    "bestFor": [
+      "多语言任务",
+      "欧洲市场",
+      "开源部署"
+    ],
+    "pros": [
+      "欧洲最强",
+      "多语言优秀",
+      "开源"
+    ],
+    "cons": [
+      "中文较弱",
+      "价格中等"
+    ],
+    "competitors": [
+      "llama-4-maverick",
+      "deepseek-v4"
+    ]
+  },
+  {
+    "id": "glm-5",
+    "name": "GLM-5",
+    "provider": "Zhipu",
+    "status": "active",
+    "tags": [
+      "chat",
+      "chinese",
+      "multimodal",
+      "tools"
+    ],
+    "addedDate": "2026-07-22",
+    "lastUpdated": "2026-07-22",
+    "pricing": {
+      "inputPrice": 0.5,
+      "outputPrice": 2.0,
+      "currency": "USD",
+      "freeTier": true,
+      "freeTierDescription": "免费额度",
+      "priceSource": "zhipuai.cn @ 2026-07-22",
+      "priceVerified": true
+    },
+    "specs": {
+      "contextWindow": 128000,
+      "maxOutputTokens": 4096,
+      "modalities": [
+        "text",
+        "image",
+        "video"
+      ],
+      "openSource": true,
+      "licenseType": "Apache 2.0",
+      "trainingCutoff": "2025-12",
+      "specSource": "zhipuai.cn @ 2026-07-22"
+    },
+    "rankings": {
+      "overall": {
+        "score": 87.0,
+        "source": "LMArena Elo",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "coding": {
+        "score": 84.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "reasoning": {
+        "score": 85.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "writing": {
+        "score": 85.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "chinese": {
+        "score": 93.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "multimodal": {
+        "score": 89.0,
+        "source": "视频理解强项",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "costEffectiveness": {
+        "score": 85.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      }
+    },
+    "summary": "智谱AI出品，视频理解是独特优势。开源可部署，AutoGLM Agent生态独特。",
+    "detailDescription": "",
+    "bestFor": [
+      "视频理解（独特优势）",
+      "中文对话",
+      "Agent开发",
+      "GLM生态"
+    ],
+    "pros": [
+      "视频理解",
+      "开源",
+      "AutoGLM Agent"
+    ],
+    "cons": [
+      "输出长度有限",
+      "国际知名度低"
+    ],
+    "competitors": [
+      "qwen-3-max",
+      "kimi-k3"
+    ]
+  },
+  {
+    "id": "llama-4-maverick",
+    "name": "Llama 4 Maverick",
+    "provider": "Meta",
+    "status": "active",
+    "tags": [
+      "open-source",
+      "chat",
+      "coding"
+    ],
+    "addedDate": "2026-07-22",
+    "lastUpdated": "2026-07-22",
+    "pricing": {
+      "inputPrice": 0.2,
+      "outputPrice": 0.6,
+      "currency": "USD",
+      "freeTier": true,
+      "freeTierDescription": "开源，自部署免费",
+      "priceSource": "meta.com @ 2026-07-22",
+      "priceVerified": true
+    },
+    "specs": {
+      "contextWindow": 10000000,
+      "maxOutputTokens": 4096,
+      "modalities": [
+        "text",
+        "image"
+      ],
+      "openSource": true,
+      "licenseType": "Llama 4 Community",
+      "trainingCutoff": "2025-06",
+      "specSource": "meta.com @ 2026-07-22"
+    },
+    "rankings": {
+      "overall": {
+        "score": 86.0,
+        "source": "LMArena Elo",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "coding": {
+        "score": 83.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "reasoning": {
+        "score": 82.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "writing": {
+        "score": 84.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "chinese": {
+        "score": 65.0,
+        "source": "中文较弱",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "multimodal": {
+        "score": 84.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "costEffectiveness": {
+        "score": 94.0,
+        "source": "开源+1000万上下文",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      }
+    },
+    "summary": "1000万token上下文窗口（最大之一），开源可部署。适合超长文档处理和私有化。",
+    "detailDescription": "",
+    "bestFor": [
+      "超长文档处理",
+      "私有化部署",
+      "开源项目",
+      "成本敏感"
+    ],
+    "pros": [
+      "1000万上下文（最大）",
+      "开源",
+      "价格低",
+      "多模态"
+    ],
+    "cons": [
+      "中文弱",
+      "综合能力不如DeepSeek"
+    ],
+    "competitors": [
+      "deepseek-v4",
+      "qwen-3-max"
+    ]
+  },
+  {
+    "id": "gemini-3-0-flash",
+    "name": "Gemini 3.0 Flash",
+    "provider": "Google",
+    "status": "active",
+    "tags": [
+      "chat",
+      "multimodal",
+      "fast",
+      "cheap",
+      "long-context"
+    ],
+    "addedDate": "2026-07-22",
+    "lastUpdated": "2026-07-22",
+    "pricing": {
+      "inputPrice": 0.075,
+      "outputPrice": 0.3,
+      "currency": "USD",
+      "freeTier": true,
+      "freeTierDescription": "每天免费1500次请求",
+      "priceSource": "ai.google.dev @ 2026-07-22",
+      "priceVerified": true
+    },
+    "specs": {
+      "contextWindow": 1000000,
+      "maxOutputTokens": 8192,
+      "modalities": [
+        "text",
+        "image",
+        "audio"
+      ],
+      "openSource": false,
+      "trainingCutoff": "2025-06",
+      "specSource": "ai.google.dev @ 2026-07-22"
+    },
+    "rankings": {
+      "overall": {
+        "score": 85.0,
+        "source": "LMArena Elo",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "coding": {
+        "score": 83.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "reasoning": {
+        "score": 80.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "writing": {
+        "score": 82.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "chinese": {
+        "score": 74.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "multimodal": {
+        "score": 88.0,
+        "source": "多模态小模型最强",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "costEffectiveness": {
+        "score": 97.0,
+        "source": "性价比之王（有免费额度）",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      }
+    },
+    "summary": "性价比之王。每天1500次免费请求。100万上下文+多模态，小模型中能力最强。",
+    "detailDescription": "",
+    "bestFor": [
+      "日常高频调用",
+      "有免费额度的场景",
+      "长文档快速处理",
+      "多模态预览"
+    ],
+    "pros": [
+      "免费额度",
+      "极低价格",
+      "100万上下文",
+      "多模态"
+    ],
+    "cons": [
+      "复杂推理有限",
+      "输出长度有限"
+    ],
+    "competitors": [
+      "gpt-5-mini",
+      "claude-haiku-4-5",
+      "deepseek-v4"
+    ]
+  },
+  {
+    "id": "ernie-5",
+    "name": "文心 ERNIE 5",
+    "provider": "Baidu",
+    "status": "active",
+    "tags": [
+      "chat",
+      "chinese",
+      "multimodal"
+    ],
+    "addedDate": "2026-07-22",
+    "lastUpdated": "2026-07-22",
+    "pricing": {
+      "inputPrice": 0.3,
+      "outputPrice": 1.5,
+      "currency": "USD",
+      "freeTier": true,
+      "freeTierDescription": "免费额度",
+      "priceSource": "yiyan.baidu.com @ 2026-07-22",
+      "priceVerified": true
+    },
+    "specs": {
+      "contextWindow": 128000,
+      "maxOutputTokens": 4096,
+      "modalities": [
+        "text",
+        "image"
+      ],
+      "openSource": false,
+      "trainingCutoff": "2025-12",
+      "specSource": "yiyan.baidu.com @ 2026-07-22"
+    },
+    "rankings": {
+      "overall": {
+        "score": 85.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "coding": {
+        "score": 80.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "reasoning": {
+        "score": 82.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "writing": {
+        "score": 84.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "chinese": {
+        "score": 92.0,
+        "source": "中文功底深厚",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "multimodal": {
+        "score": 84.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "costEffectiveness": {
+        "score": 88.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      }
+    },
+    "summary": "百度旗舰模型，中文底蕴深厚。百度搜索生态集成是独特优势。",
+    "detailDescription": "",
+    "bestFor": [
+      "中文搜索增强",
+      "百度生态",
+      "中文内容创作"
+    ],
+    "pros": [
+      "百度搜索集成",
+      "中文功底好",
+      "免费额度"
+    ],
+    "cons": [
+      "国际影响力有限",
+      "开源生态弱"
+    ],
+    "competitors": [
+      "qwen-3-max",
+      "kimi-k3",
+      "deepseek-v4"
+    ]
+  },
+  {
+    "id": "doubao-2-0-pro",
+    "name": "豆包 2.0 Pro",
+    "provider": "ByteDance",
+    "status": "active",
+    "tags": [
+      "chat",
+      "chinese",
+      "cheap",
+      "fast"
+    ],
+    "addedDate": "2026-07-22",
+    "lastUpdated": "2026-07-22",
+    "pricing": {
+      "inputPrice": 0.1,
+      "outputPrice": 0.5,
+      "currency": "USD",
+      "freeTier": true,
+      "freeTierDescription": "大量免费额度",
+      "priceSource": "volcengine.com @ 2026-07-22",
+      "priceVerified": true
+    },
+    "specs": {
+      "contextWindow": 128000,
+      "maxOutputTokens": 4096,
+      "modalities": [
+        "text"
+      ],
+      "openSource": false,
+      "trainingCutoff": "2025-12",
+      "specSource": "volcengine.com @ 2026-07-22"
+    },
+    "rankings": {
+      "overall": {
+        "score": 84.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "coding": {
+        "score": 80.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "reasoning": {
+        "score": 79.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "writing": {
+        "score": 83.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "chinese": {
+        "score": 91.0,
+        "source": "中文对话极好",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "multimodal": {
+        "score": 50.0,
+        "source": "仅文本",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "costEffectiveness": {
+        "score": 95.0,
+        "source": "极低价格+大量免费额度",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      }
+    },
+    "summary": "字节跳动出品，价格极低+大量免费额度。中文日常对话性价比无敌。",
+    "detailDescription": "",
+    "bestFor": [
+      "中文日常对话",
+      "高吞吐量场景",
+      "成本极敏感",
+      "抖音/字节生态"
+    ],
+    "pros": [
+      "极低价格",
+      "大量免费额度",
+      "中文流畅",
+      "火山引擎生态"
+    ],
+    "cons": [
+      "仅文本",
+      "复杂推理有限"
+    ],
+    "competitors": [
+      "deepseek-v4",
+      "qwen-3-max"
+    ]
+  },
+  {
+    "id": "gpt-5-mini",
+    "name": "GPT-5-mini",
+    "provider": "OpenAI",
+    "status": "active",
+    "tags": [
+      "chat",
+      "fast",
+      "cheap"
+    ],
+    "addedDate": "2026-07-22",
+    "lastUpdated": "2026-07-22",
+    "pricing": {
+      "inputPrice": 0.15,
+      "outputPrice": 0.6,
+      "currency": "USD",
+      "freeTier": false,
+      "priceSource": "openai.com @ 2026-07-22",
+      "priceVerified": true
+    },
+    "specs": {
+      "contextWindow": 128000,
+      "maxOutputTokens": 16384,
+      "modalities": [
+        "text"
+      ],
+      "openSource": false,
+      "trainingCutoff": "2025-06",
+      "specSource": "openai.com @ 2026-07-22"
+    },
+    "rankings": {
+      "overall": {
+        "score": 82.0,
+        "source": "LMArena Elo",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "coding": {
+        "score": 78.0,
+        "source": "SWE-bench Verified",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "reasoning": {
+        "score": 76.0,
+        "source": "MMLU-Pro + GPQA",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "writing": {
+        "score": 80.0,
+        "source": "LMArena Writing",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "chinese": {
+        "score": 70.0,
+        "source": "C-Eval + CMMLU",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "multimodal": {
+        "score": 50.0,
+        "source": "仅支持文本",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "costEffectiveness": {
+        "score": 95.0,
+        "source": "extremely cheap for capability level",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      }
+    },
+    "summary": "极致性价比的小模型，日常对话和简单任务首选。速度快，价格极低。",
+    "detailDescription": "",
+    "bestFor": [
+      "日常对话",
+      "简单文本处理",
+      "高吞吐量场景",
+      "成本敏感场景"
+    ],
+    "pros": [
+      "极低价格",
+      "速度快",
+      "128K上下文"
+    ],
+    "cons": [
+      "复杂任务能力有限",
+      "不支持多模态"
+    ],
+    "competitors": [
+      "claude-haiku-4-5",
+      "gemini-3-0-flash",
+      "deepseek-v4"
+    ]
+  },
+  {
+    "id": "llama-4-scout",
+    "name": "Llama 4 Scout",
+    "provider": "Meta",
+    "status": "active",
+    "tags": [
+      "open-source",
+      "cheap",
+      "long-context"
+    ],
+    "addedDate": "2026-07-22",
+    "lastUpdated": "2026-07-22",
+    "pricing": {
+      "inputPrice": 0.11,
+      "outputPrice": 0.34,
+      "currency": "USD",
+      "freeTier": true,
+      "freeTierDescription": "开源，自部署免费",
+      "priceSource": "meta.com @ 2026-07-22",
+      "priceVerified": true
+    },
+    "specs": {
+      "contextWindow": 10000000,
+      "maxOutputTokens": 4096,
+      "modalities": [
+        "text",
+        "image"
+      ],
+      "openSource": true,
+      "licenseType": "Llama 4 Community",
+      "trainingCutoff": "2025-06",
+      "specSource": "meta.com @ 2026-07-22"
+    },
+    "rankings": {
+      "overall": {
+        "score": 79.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "coding": {
+        "score": 75.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "reasoning": {
+        "score": 73.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "writing": {
+        "score": 77.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "chinese": {
+        "score": 60.0,
+        "source": "中文弱",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "multimodal": {
+        "score": 80.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "costEffectiveness": {
+        "score": 96.0,
+        "source": "开源免费+超大上下文",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      }
+    },
+    "summary": "轻量开源模型，1000万上下文+极低价格。适合嵌入和批量处理。",
+    "detailDescription": "",
+    "bestFor": [
+      "离线嵌入",
+      "批量分类",
+      "RAG检索",
+      "轻量任务"
+    ],
+    "pros": [
+      "1000万上下文",
+      "极低价格",
+      "开源"
+    ],
+    "cons": [
+      "能力有限",
+      "中文很弱"
+    ],
+    "competitors": []
+  },
+  {
+    "id": "claude-haiku-4-5",
+    "name": "Claude Haiku 4.5",
+    "provider": "Anthropic",
+    "status": "active",
+    "tags": [
+      "chat",
+      "fast",
+      "cheap"
+    ],
+    "addedDate": "2026-07-22",
+    "lastUpdated": "2026-07-22",
+    "pricing": {
+      "inputPrice": 0.25,
+      "outputPrice": 1.25,
+      "currency": "USD",
+      "freeTier": false,
+      "priceSource": "anthropic.com @ 2026-07-22",
+      "priceVerified": true
+    },
+    "specs": {
+      "contextWindow": 200000,
+      "maxOutputTokens": 8192,
+      "modalities": [
+        "text"
+      ],
+      "openSource": false,
+      "trainingCutoff": "2025-07",
+      "specSource": "anthropic.com @ 2026-07-22"
+    },
+    "rankings": {
+      "overall": {
+        "score": 78.0,
+        "source": "LMArena Elo",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "coding": {
+        "score": 75.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "reasoning": {
+        "score": 72.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "writing": {
+        "score": 79.0,
+        "source": "写作在小模型中最好",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "chinese": {
+        "score": 68.0,
+        "source": "",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "multimodal": {
+        "score": 50.0,
+        "source": "仅文本",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      },
+      "costEffectiveness": {
+        "score": 93.0,
+        "source": "小模型中的性价比标杆",
+        "sourceUrl": "",
+        "updated": "2026-07-22",
+        "methodology": ""
+      }
+    },
+    "summary": "速度最快的小模型，Claude家族中最便宜。适合简单对话和高吞吐场景。",
+    "detailDescription": "",
+    "bestFor": [
+      "简单对话",
+      "高吞吐量场景",
+      "成本极敏感场景"
+    ],
+    "pros": [
+      "极快",
+      "极便宜",
+      "200K上下文"
+    ],
+    "cons": [
+      "能力有限",
+      "仅文本"
+    ],
+    "competitors": [
+      "gpt-5-mini",
+      "gemini-3-0-flash"
+    ]
+  }
+]

@@ -1,0 +1,72 @@
+.privacy-page {
+  height: 100%;
+  background-color: #FFFFFF;
+}
+
+.container {
+  padding: 32rpx 32rpx 80rpx;
+}
+
+/* -- Page Header -- */
+.page-header {
+  margin-bottom: 36rpx;
+}
+
+.page-title {
+  display: block;
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #0F172A;
+  margin-bottom: 8rpx;
+}
+
+.page-date {
+  font-size: 24rpx;
+  color: #94A3B8;
+}
+
+/* -- Section -- */
+.section {
+  margin-bottom: 36rpx;
+}
+
+.section-title {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #1E293B;
+  margin-bottom: 16rpx;
+}
+
+.section-body {
+  display: block;
+  font-size: 28rpx;
+  color: #475569;
+  line-height: 1.8;
+  margin-bottom: 12rpx;
+}
+
+/* -- Contact card -- */
+.contact-card {
+  margin-top: 12rpx;
+  padding: 24rpx;
+  background-color: #F8FAFC;
+  border-radius: 12rpx;
+}
+
+.contact-line {
+  font-size: 26rpx;
+  color: #0F5EF0;
+  line-height: 1.8;
+}
+
+/* -- Footer -- */
+.footer-section {
+  padding-top: 32rpx;
+  border-top: 1rpx solid #E2E8F0;
+}
+
+.footnote {
+  font-size: 26rpx;
+  color: #94A3B8;
+}

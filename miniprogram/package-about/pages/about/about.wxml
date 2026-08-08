@@ -1,0 +1,84 @@
+<scroll-view scroll-y class="about-page">
+  <view class="container">
+
+    <!-- App icon & name -->
+    <view class="hero">
+      <view class="hero-icon">🤖</view>
+      <text class="hero-name">AI模型排行</text>
+      <text class="hero-version">v1.0.0</text>
+    </view>
+
+    <!-- Description -->
+    <view class="section">
+      <text class="section-body">
+        帮助中文开发者找到最合适的AI大模型。提供全面的模型评分、价格计算和横向对比工具。
+      </text>
+    </view>
+
+    <!-- Features -->
+    <view class="section">
+      <text class="section-title">核心功能</text>
+      <view class="feature-list">
+        <view class="feature-item">
+          <text class="feature-icon">🏆</text>
+          <view class="feature-text">
+            <text class="feature-name">多维度排行榜</text>
+            <text class="feature-desc">综合能力、编程、推理、写作、中文、多模态六大维度</text>
+          </view>
+        </view>
+        <view class="feature-item">
+          <text class="feature-icon">⚖️</text>
+          <view class="feature-text">
+            <text class="feature-name">模型对比</text>
+            <text class="feature-desc">横向对比最多4个模型的评分、价格和技术规格</text>
+          </view>
+        </view>
+        <view class="feature-item">
+          <text class="feature-icon">🧮</text>
+          <view class="feature-text">
+            <text class="feature-name">费用计算器</text>
+            <text class="feature-desc">根据预估用量计算各模型月费/年费</text>
+          </view>
+        </view>
+        <view class="feature-item">
+          <text class="feature-icon">🎯</text>
+          <view class="feature-text">
+            <text class="feature-name">场景推荐</text>
+            <text class="feature-desc">按使用场景推荐最合适的模型</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- Links -->
+    <view class="section">
+      <text class="section-title">相关链接</text>
+      <view class="link-list">
+        <view class="link-item" bindtap="onNavigateToMethodology">
+          <text class="link-text">评分方法论</text>
+          <text class="link-arrow">›</text>
+        </view>
+        <view class="link-item" bindtap="onNavigateToPrivacy">
+          <text class="link-text">隐私政策</text>
+          <text class="link-arrow">›</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- Contact -->
+    <view class="section">
+      <text class="section-title">联系我们</text>
+      <view class="contact-card">
+        <text class="contact-line">如有问题或建议，欢迎通过以下方式联系：</text>
+        <text class="contact-line contact-email">📧 feedback@aimodelrankings.cn</text>
+      </view>
+    </view>
+
+    <!-- Copyright -->
+    <view class="copyright">
+      <text class="copyright-text">Copyright © 2026 AI模型排行. All rights reserved.</text>
+      <text class="copyright-text">数据来源于公开评测集，仅供学习参考</text>
+    </view>
+
+  </view>
+</scroll-view>

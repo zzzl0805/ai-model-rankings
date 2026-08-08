@@ -1,0 +1,55 @@
+/* pages/detail/detail.wxss */
+.page { background: #F8FAFC; min-height: 100vh; padding-bottom: 160rpx; }
+.center-box { display: flex; flex-direction: column; align-items: center; padding: 200rpx 0; color: #94A3B8; }
+.back-btn { margin-top: 24rpx; padding: 12rpx 40rpx; background: #0F5EF0; color: #fff; border-radius: 8rpx; font-size: 28rpx; }
+
+.header { background: linear-gradient(135deg, #1A1A2E, #16213E, #7C3AED); padding: 32rpx; color: #fff; }
+.header-top { margin-bottom: 16rpx; }
+.back-link { font-size: 28rpx; opacity: 0.8; }
+.model-name { font-size: 48rpx; font-weight: 700; display: block; }
+.model-provider { font-size: 28rpx; opacity: 0.7; display: block; margin-top: 8rpx; }
+.badges { display: flex; gap: 12rpx; margin-top: 16rpx; flex-wrap: wrap; }
+.badge { font-size: 22rpx; padding: 4rpx 16rpx; border-radius: 20rpx; background: rgba(255,255,255,0.15); }
+.badge-rank { background: #F59E0B; color: #fff; }
+.badge-date { background: rgba(255,255,255,0.2); color: #fff; }
+
+.card { background: #fff; margin: 20rpx 24rpx; border-radius: 16rpx; padding: 28rpx; box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04); }
+.card-title { font-size: 30rpx; font-weight: 700; color: #1E293B; margin-bottom: 20rpx; display: block; }
+
+.review-card { border-left: 8rpx solid #0F5EF0; }
+.review-text { font-size: 28rpx; color: #334155; line-height: 1.6; display: block; }
+.meta-row { display: flex; gap: 24rpx; margin-top: 16rpx; }
+.meta-item { font-size: 24rpx; color: #94A3B8; }
+
+.price-row { display: flex; align-items: center; padding: 12rpx 0; border-bottom: 1rpx solid #F1F5F9; }
+.price-row:last-of-type { border-bottom: none; }
+.price-label { width: 80rpx; font-size: 26rpx; color: #64748B; }
+.price-val { flex: 1; font-size: 30rpx; font-weight: 600; color: #1E293B; }
+.price-cny { font-size: 24rpx; color: #94A3B8; }
+.price-source { font-size: 20rpx; color: #94A3B8; display: block; margin-top: 12rpx; }
+.no-data { font-size: 26rpx; color: #94A3B8; display: block; text-align: center; padding: 20rpx; }
+
+.cat-section { margin-bottom: 24rpx; }
+.cat-section:last-child { margin-bottom: 0; }
+.cat-name { font-size: 28rpx; font-weight: 600; color: #0F5EF0; display: block; margin-bottom: 12rpx; }
+.dim-row { display: flex; align-items: center; padding: 12rpx 0; }
+.dim-name { width: 120rpx; font-size: 24rpx; color: #64748B; }
+.dim-bar-wrap { flex: 1; margin: 0 16rpx; }
+.dim-bar-bg { height: 14rpx; background: #E2E8F0; border-radius: 7rpx; overflow: hidden; }
+.dim-bar-fill { height: 100%; background: linear-gradient(90deg, #0F5EF0, #7C3AED); border-radius: 7rpx; }
+.dim-elo { width: 90rpx; text-align: right; font-size: 28rpx; font-weight: 700; color: #1E293B; }
+
+.popup-mask { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 999; display: flex; align-items: center; justify-content: center; }
+.popup-content { background: #fff; border-radius: 20rpx; padding: 40rpx; width: 80%; }
+.popup-title { font-size: 32rpx; font-weight: 700; color: #1E293B; margin-bottom: 24rpx; display: block; }
+.popup-row { margin-bottom: 16rpx; }
+.popup-label { font-size: 24rpx; color: #94A3B8; display: inline-block; width: 100rpx; }
+.popup-value { font-size: 28rpx; color: #1E293B; }
+.popup-close { text-align: center; padding: 16rpx; background: #F1F5F9; border-radius: 12rpx; color: #64748B; margin-top: 24rpx; }
+
+/* 底部加入对比栏 */
+/* 注意：不用 flex gap，老 iOS WKWebView 会忽略 gap 导致按钮贴一起 */
+.compare-bar { position: fixed; left: 0; right: 0; bottom: 0; background: #fff; padding: 20rpx 24rpx; padding-bottom: calc(20rpx + env(safe-area-inset-bottom)); display: flex; box-shadow: 0 -2rpx 12rpx rgba(0,0,0,0.08); z-index: 100; }
+.compare-btn { flex: 1; background: #0F5EF0; color: #fff; text-align: center; padding: 22rpx 0; border-radius: 16rpx; font-size: 30rpx; font-weight: 600; }
+.compare-btn-in { background: #10B981; }
+.compare-go { width: 160rpx; margin-left: 16rpx; text-align: center; padding: 22rpx 0; border: 2rpx solid #0F5EF0; color: #0F5EF0; border-radius: 16rpx; font-size: 28rpx; font-weight: 600; }

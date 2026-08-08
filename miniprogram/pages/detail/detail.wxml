@@ -1,0 +1,94 @@
+<!-- pages/detail/detail.wxml -->
+<view class="page">
+  <view wx:if="{{loading}}" class="center-box"><text>加载中...</text></view>
+
+  <view wx:elif="{{!modelName}}" class="center-box">
+    <text>未找到该模型</text>
+    <view class="back-btn" bindtap="goBack">返回</view>
+  </view>
+
+  <block wx:else>
+    <!-- 头部 -->
+    <view class="header">
+      <view class="header-top"><view class="back-link" bindtap="goBack"><text>← 返回</text></view></view>
+      <text class="model-name">{{displayName}}</text>
+      <text class="model-provider">{{provider}}</text>
+      <view class="badges">
+        <text wx:if="{{rankInOverall}}" class="badge badge-rank">🏆 综合第{{rankInOverall}}</text>
+        <text class="badge" style="background:{{confidence.color}}22;color:{{confidence.color}};">{{confidence.label}}</text>
+      </view>
+    </view>
+
+    <!-- 一句话点评 -->
+    <view class="card review-card">
+      <text class="card-title">💡 一句话点评</text>
+      <text class="review-text">{{review}}</text>
+      <view class="meta-row">
+        <text wx:if="{{votes}}" class="meta-item">🗳 {{votes}}票</text>
+        <text wx:if="{{context}}" class="meta-item">📏 {{context}}</text>
+      </view>
+    </view>
+
+    <!-- 定价 -->
+    <view class="card">
+      <text class="card-title">💰 定价</text>
+      <block wx:if="{{price}}">
+        <view class="price-row">
+          <text class="price-label">输入</text>
+          <text class="price-val">${{price.input}}/M</text>
+          <text class="price-cny">≈¥{{price.inputCNY}}</text>
+        </view>
+        <view class="price-row">
+          <text class="price-label">输出</text>
+          <text class="price-val">${{price.output}}/M</text>
+          <text class="price-cny">≈¥{{price.outputCNY}}</text>
+        </view>
+        <text class="price-source">来源: {{price.source}}</text>
+      </block>
+      <text wx:else class="no-data">暂无定价数据</text>
+    </view>
+
+    <!-- 各大类排行 -->
+    <view class="card">
+      <text class="card-title">📊 能力评分（点击查看来源）</text>
+      <block wx:for="{{categoryList}}" wx:key="id">
+        <view class="cat-section">
+          <text class="cat-name">{{item.name}}</text>
+          <view wx:for="{{item.dims}}" wx:for-item="dim" wx:key="id"
+            class="dim-row" data-cat="{{item.id}}" data-dim="{{dim.id}}" bindtap="showSourceInfo">
+            <text class="dim-name">{{dim.name}}</text>
+            <view class="dim-bar-wrap">
+              <view class="dim-bar-bg"><view class="dim-bar-fill" style="width:{{dim.elo > 1200 ? ((dim.elo-1200)/400*100) : 0}}%;"></view></view>
+            </view>
+            <text class="dim-elo">{{dim.elo}}</text>
+          </view>
+        </view>
+      </block>
+    </view>
+  </block>
+
+  <!-- 底部加入对比栏 -->
+  <view wx:if="{{modelName}}" class="compare-bar">
+    <view class="compare-btn {{inCompare ? 'compare-btn-in' : ''}}" bindtap="toggleCompare">
+      <text>{{inCompare ? '✓ 已在对比' : '➕ 加入对比'}}</text>
+    </view>
+    <view wx:if="{{inCompare}}" class="compare-go" bindtap="goCompare">
+      <text>去对比</text>
+    </view>
+  </view>
+
+  <!-- 来源弹窗 -->
+  <view wx:if="{{showSourcePopup}}" class="popup-mask" bindtap="closeSourcePopup">
+    <view class="popup-content" catchtap="noop">
+      <text class="popup-title">数据来源</text>
+      <view wx:if="{{sourceInfo}}" class="popup-body">
+        <view class="popup-row"><text class="popup-label">大类</text><text class="popup-value">{{sourceInfo.cat}}</text></view>
+        <view class="popup-row"><text class="popup-label">维度</text><text class="popup-value">{{sourceInfo.dim}}</text></view>
+        <view class="popup-row"><text class="popup-label">Elo</text><text class="popup-value">{{sourceInfo.elo}} ±{{sourceInfo.margin}}</text></view>
+        <view class="popup-row"><text class="popup-label">票数</text><text class="popup-value">{{sourceInfo.votes}}</text></view>
+        <view class="popup-row"><text class="popup-label">来源</text><text class="popup-value">arena.ai (LMArena)</text></view>
+      </view>
+      <view class="popup-close" bindtap="closeSourcePopup"><text>关闭</text></view>
+    </view>
+  </view>
+</view>

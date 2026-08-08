@@ -1,0 +1,99 @@
+<!-- pages/index/index.wxml -->
+<view class="page">
+  <!-- 顶部 -->
+  <view class="header" style="padding-top:{{statusBarHeight}}px;">
+    <view class="header-row">
+      <text class="header-title">AI模型排行</text>
+      <text class="header-rules" bindtap="onRulesTap">📖 排行规则</text>
+    </view>
+    <text class="header-sub">📅 数据更新: {{lastUpdated}} · 来源: LMArena + 各厂商官网
+      <text class="badge {{dataSource==='云端'?'badge-cloud':'badge-local'}}">{{dataSource==='云端'?'☁️云端':'📦本地'}}</text>
+    </text>
+  </view>
+
+  <!-- 大类切换 -->
+  <scroll-view scroll-x class="category-bar">
+    <view wx:for="{{categories}}" wx:key="id"
+      class="category-item {{activeCategory===item.id?'category-active':''}}"
+      data-id="{{item.id}}" bindtap="onCategoryChange">
+      <text>{{item.icon}}{{item.name}}</text>
+    </view>
+  </scroll-view>
+
+  <!-- 维度切换 -->
+  <scroll-view scroll-x class="dimension-bar" wx:if="{{dimensions.length > 1}}">
+    <view wx:for="{{dimensions}}" wx:key="id"
+      class="dimension-item {{activeDimension===item.id?'dimension-active':''}}"
+      data-id="{{item.id}}" bindtap="onDimensionChange">
+      <text>{{item.icon}}{{item.name}}</text>
+    </view>
+  </scroll-view>
+
+  <!-- 搜索和排序 -->
+  <view class="toolbar">
+    <view class="search-box">
+      <text class="search-icon">🔍</text>
+      <input class="search-input" placeholder="搜索模型或公司..." value="{{searchText}}" bindinput="onSearchInput" />
+      <text wx:if="{{searchText}}" class="search-clear" bindtap="onSearchClear">✕</text>
+    </view>
+    <view class="sort-btn" bindtap="toggleSort">
+      <text>{{sortOrder==='desc'?'↓降序':'↑升序'}}</text>
+    </view>
+  </view>
+
+  <!-- 加载中 -->
+  <view wx:if="{{loading}}" class="center-box">
+    <text class="center-text">加载中...</text>
+  </view>
+
+  <!-- 空数据 -->
+  <view wx:elif="{{displayModels.length===0}}" class="center-box">
+    <text class="empty-icon">📊</text>
+    <text class="center-text">{{searchText?'未找到匹配的模型':'暂无该维度的排行数据'}}</text>
+  </view>
+
+  <!-- 模型列表 -->
+  <view wx:else class="list-wrap">
+    <view wx:for="{{displayModels}}" wx:key="rank" class="list-item"
+      data-name="{{item.name}}" bindtap="onModelTap">
+      <view class="rank-num rank-{{item.rank <= 3 ? item.rank - 1 : 3}}">
+        <text>{{item.rank <= 3 ? medals[item.rank - 1] : item.rank}}</text>
+      </view>
+      <view class="item-info">
+        <text class="item-name">{{item.displayName}}</text>
+        <view class="item-sub">
+          <text class="item-provider">{{item.provider}}</text>
+          <text class="item-conf" style="color:{{item.confidence.color}};">•{{item.confidence.label}}</text>
+        </view>
+      </view>
+      <view class="item-score-wrap">
+        <block wx:if="{{isAgent}}">
+          <text class="item-score">{{item.elo}}%</text>
+        </block>
+        <block wx:else>
+          <text class="item-score">{{item.elo}}</text>
+          <text class="item-margin" wx:if="{{item.margin}}">±{{item.margin}}</text>
+        </block>
+      </view>
+      <view class="item-meta">
+        <text class="item-votes" wx:if="{{item.votes}}">{{item.votes}}{{isAgent ? '会话' : '票'}}</text>
+        <text class="item-price" wx:if="{{item.price.input > 0}}">${{item.price.input}}/${{item.price.output}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 新手引导 -->
+  <view wx:if="{{showGuide}}" class="guide-mask" bindtap="closeGuide">
+    <view class="guide-content" catchtap="noop">
+      <text class="guide-title">👋 欢迎使用 AI模型排行</text>
+      <view class="guide-list">
+        <view class="guide-item"><text class="guide-icon">📊</text><text>看排行找最强模型（数据来自 LMArena）</text></view>
+        <view class="guide-item"><text class="guide-icon">⚖️</text><text>用对比比较多个模型</text></view>
+        <view class="guide-item"><text class="guide-icon">💰</text><text>算成本预估月费</text></view>
+        <view class="guide-item"><text class="guide-icon">🎯</text><text>按场景智能推荐</text></view>
+      </view>
+      <view class="guide-tip">💡 评分基于人类主观偏好投票，仅供参考</view>
+      <view class="guide-btn" bindtap="closeGuide"><text>开始使用</text></view>
+    </view>
+  </view>
+</view>

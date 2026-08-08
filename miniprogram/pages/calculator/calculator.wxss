@@ -1,0 +1,56 @@
+/* pages/calculator/calculator.wxss */
+.page { background: #F8FAFC; min-height: 100vh; padding-bottom: 40rpx; }
+.center-header { text-align: center; padding: 40rpx 32rpx 24rpx; }
+.page-icon { font-size: 60rpx; display: block; }
+.page-title { font-size: 36rpx; font-weight: 700; color: #1E293B; display: block; margin-top: 8rpx; }
+.page-sub { font-size: 24rpx; color: #94A3B8; display: block; }
+.center-box { display: flex; flex-direction: column; align-items: center; padding: 80rpx 0; }
+.center-text { font-size: 28rpx; color: #94A3B8; }
+
+/* 场景选择 */
+.scene-bar { display: flex; flex-wrap: wrap; padding: 0 24rpx; gap: 12rpx; margin-bottom: 20rpx; }
+.scene-btn { padding: 12rpx 24rpx; border-radius: 32rpx; font-size: 24rpx; color: #64748B; background: #fff; border: 1rpx solid #E2E8F0; }
+.scene-active { background: #0F5EF0; color: #fff; border-color: #0F5EF0; }
+
+/* 自定义输入 */
+.custom-card { background: #fff; margin: 0 24rpx 20rpx; border-radius: 12rpx; padding: 20rpx 24rpx; box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04); }
+.custom-label { font-size: 24rpx; color: #64748B; display: block; margin-bottom: 12rpx; }
+.custom-row { display: flex; gap: 16rpx; }
+.custom-input-wrap { flex: 1; }
+.custom-input-label { font-size: 22rpx; color: #94A3B8; display: block; margin-bottom: 4rpx; }
+.custom-input { height: 64rpx; background: #F8FAFC; border-radius: 8rpx; padding: 0 16rpx; font-size: 28rpx; border: 1rpx solid #E2E8F0; }
+
+/* 排序控制 */
+.sort-bar { display: flex; align-items: center; padding: 0 24rpx; margin-bottom: 16rpx; gap: 12rpx; }
+.sort-label { font-size: 24rpx; color: #64748B; }
+.sort-btn { padding: 8rpx 20rpx; border-radius: 8rpx; font-size: 24rpx; color: #64748B; background: #fff; border: 1rpx solid #E2E8F0; }
+.sort-active { background: #0F5EF0; color: #fff; border-color: #0F5EF0; }
+.sort-order { padding: 8rpx 16rpx; font-size: 24rpx; color: #64748B; background: #F1F5F9; border-radius: 8rpx; }
+
+/* 计算器搜索 */
+.calc-search-bar { display: flex; align-items: center; margin: 0 24rpx 16rpx; background: #fff; border-radius: 36rpx; padding: 8rpx 20rpx; border: 1rpx solid #E2E8F0; }
+.calc-search-icon { font-size: 24rpx; margin-right: 8rpx; }
+.calc-search-input { flex: 1; font-size: 26rpx; height: 48rpx; }
+.calc-search-clear { font-size: 24rpx; color: #94A3B8; padding: 8rpx; }
+
+/* 厂商筛选 */
+.calc-provider-bar { white-space: nowrap; padding: 0 24rpx; margin-bottom: 16rpx; }
+.calc-provider-chip { display: inline-block; padding: 8rpx 20rpx; margin-right: 10rpx; border-radius: 32rpx; font-size: 24rpx; color: #64748B; background: #fff; border: 1rpx solid #E2E8F0; }
+.calc-provider-active { background: #0F5EF0; color: #fff; border-color: #0F5EF0; }
+
+/* 结果列表 */
+.result-wrap { padding: 0 24rpx; }
+.result-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16rpx; }
+.result-title { font-size: 28rpx; font-weight: 700; color: #1E293B; }
+.result-count { font-size: 22rpx; color: #94A3B8; }
+
+.result-item { position: relative; background: #fff; border-radius: 12rpx; padding: 16rpx 20rpx; margin-bottom: 12rpx; box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04); overflow: hidden; }
+.result-bar { position: absolute; top: 0; left: 0; height: 100%; opacity: 0.1; border-radius: 12rpx; }
+.result-content { position: relative; z-index: 1; display: flex; align-items: center; }
+.result-info { flex: 1; min-width: 0; }
+.result-name { font-size: 26rpx; font-weight: 600; color: #1E293B; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.result-provider { font-size: 20rpx; color: #94A3B8; display: block; }
+.result-numbers { text-align: right; margin-left: 12rpx; }
+.result-cost { font-size: 28rpx; font-weight: 700; color: #EF4444; display: block; }
+.result-cny { font-size: 20rpx; color: #94A3B8; display: block; }
+.result-elo { font-size: 20rpx; color: #0F5EF0; display: block; }

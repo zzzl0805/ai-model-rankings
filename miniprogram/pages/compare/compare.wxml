@@ -1,0 +1,92 @@
+<!-- pages/compare/compare.wxml -->
+<view class="page">
+  <view wx:if="{{loading}}" class="center-box">
+    <text class="center-text">加载中...</text>
+  </view>
+
+  <view wx:else>
+    <!-- 模型槽位 -->
+    <view class="card">
+      <text class="card-title">选择对比模型</text>
+      <view class="slot-row">
+        <block wx:for="{{compareSlots}}" wx:key="id">
+          <view wx:if="{{item.type==='model'}}" class="slot slot-filled">
+            <view class="slot-info">
+              <text class="slot-name">{{item.name}}</text>
+              <text class="slot-provider">{{item.provider}}</text>
+            </view>
+            <view class="slot-remove" data-name="{{item.name}}" bindtap="removeModel">
+              <text>✕</text>
+            </view>
+          </view>
+          <view wx:else class="slot slot-add" bindtap="openPicker">
+            <text class="slot-add-icon">+</text>
+            <text class="slot-add-text">添加模型</text>
+          </view>
+        </block>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view wx:if="{{models.length===0}}" class="center-box">
+      <text class="empty-icon">📊</text>
+      <text class="center-text">点击上方 "+" 添加模型开始对比</text>
+    </view>
+
+    <!-- 对比表格（分组折叠） -->
+    <view wx:if="{{compareGroups.length > 0}}">
+      <block wx:for="{{compareGroups}}" wx:key="id">
+        <view class="card group-card">
+          <view class="group-header" data-id="{{item.id}}" bindtap="toggleGroup">
+            <text class="group-name">{{item.name}}</text>
+            <text class="group-arrow">{{item.expanded?'▼':'▶'}}</text>
+          </view>
+          <scroll-view wx:if="{{item.expanded}}" scroll-x class="table-scroll">
+            <view class="tr tr-header">
+              <view class="td td-label">指标</view>
+              <view wx:for="{{models}}" wx:for-item="m" wx:key="name" class="td td-header">
+                <text>{{m.name}}</text>
+              </view>
+            </view>
+            <view wx:for="{{item.rows}}" wx:for-item="row" wx:key="key" class="tr">
+              <view class="td td-label">{{row.label}}</view>
+              <view wx:for="{{row.cells}}" wx:for-item="cell" wx:key="modelId" class="td {{cell.isBest?'td-best':''}}">
+                <text class="td-val {{cell.isBest?'val-best':''}}">{{cell.display}}</text>
+              </view>
+            </view>
+          </scroll-view>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- Picker 弹窗 -->
+  <view wx:if="{{showPicker}}" class="mask" bindtap="closePicker">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-header">
+        <text class="sheet-title">选择模型</text>
+        <view class="sheet-close" bindtap="closePicker"><text>✕</text></view>
+      </view>
+      <view class="sheet-search">
+        <input class="search-input" placeholder="搜索模型或公司..." value="{{pickerSearch}}" bindinput="onPickerSearch" />
+      </view>
+      <scroll-view scroll-y class="sheet-list">
+        <view class="sheet-list-inner">
+          <view wx:if="{{filteredPickerModels.length===0}}" class="center-box" style="padding:60rpx 0;">
+            <text class="center-text">未找到匹配的模型</text>
+          </view>
+          <view wx:for="{{filteredPickerModels}}" wx:key="name"
+            class="picker-row {{item.inCompare?'picker-disabled':''}}"
+            data-name="{{item.name}}" bindtap="onSelectModel">
+            <view class="picker-info">
+              <text class="picker-name">{{item.displayName}}</text>
+              <text class="picker-provider">{{item.provider}}</text>
+            </view>
+            <text wx:if="{{item.inCompare}}" class="picker-added">已添加</text>
+            <text wx:else class="picker-score">{{item.elo}}</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+</view>

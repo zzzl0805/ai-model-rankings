@@ -1,0 +1,59 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/detail/detail",
+    "pages/compare/compare",
+    "pages/calculator/calculator",
+    "pages/recommend/recommend",
+    "pages/methodology/methodology"
+  ],
+  "subpackages": [
+    {
+      "root": "package-about",
+      "pages": [
+        "pages/about/about",
+        "pages/privacy/privacy"
+      ]
+    },
+    {
+      "root": "package-export",
+      "pages": [
+        "pages/export/export"
+      ]
+    }
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#1A1A2E",
+    "navigationBarTitleText": "AI模型排行",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#F8FAFC"
+  },
+  "tabBar": {
+    "color": "#94A3B8",
+    "selectedColor": "#0F5EF0",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "📊 排行"
+      },
+      {
+        "pagePath": "pages/compare/compare",
+        "text": "⚖️ 对比"
+      },
+      {
+        "pagePath": "pages/calculator/calculator",
+        "text": "💰 计算器"
+      },
+      {
+        "pagePath": "pages/recommend/recommend",
+        "text": "🎯 推荐"
+      }
+    ]
+  },
+  "usingComponents": {},
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

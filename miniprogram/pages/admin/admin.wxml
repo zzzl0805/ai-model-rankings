@@ -1,0 +1,30 @@
+<!-- pages/admin/admin.wxml -->
+<view class="page">
+  <view class="header">
+    <text class="title">⚙️ 数据管理</text>
+  </view>
+
+  <view class="card">
+    <text class="card-title">☁️ 云端状态</text>
+    <view class="info-row">
+      <text>状态</text>
+      <text class="info-val">{{cloudStatus}}</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <text class="card-title">📤 上传数据</text>
+    <text class="desc">将本地排行数据上传到云存储，上传后小程序自动使用最新数据（无需重新发布）。</text>
+    <view class="upload-btn {{uploading?'disabled':''}}" bindtap="{{uploading?'':'uploadData'}}">
+      <text>{{uploading?'上传中...':'一键上传到云端'}}</text>
+    </view>
+    <text wx:if="{{result}}" class="result">{{result}}</text>
+  </view>
+
+  <view class="tips">
+    <text class="tips-title">💡 使用说明</text>
+    <text class="tips-text">1. 先在开发者工具部署云函数（getRankings + uploadRankings）</text>
+    <text class="tips-text">2. 点击「一键上传」将数据文件传到云存储</text>
+    <text class="tips-text">3. 之后更新数据：爬虫跑完 → 重新上传 → 自动生效</text>
+  </view>
+</view>

@@ -1,0 +1,111 @@
+<!-- pages/methodology/methodology.wxml -->
+<scroll-view scroll-y class="page">
+  <view class="container">
+
+    <view class="section">
+      <text class="section-title">📌 数据来源</text>
+      <view class="card">
+        <text class="card-text">所有排行数据来自 LMArena (arena.ai)，这是全球最权威的 AI 模型人类偏好评测平台。</text>
+        <view class="source-row">
+          <text class="source-label">排行数据</text>
+          <text class="source-val">LMArena (arena.ai)</text>
+        </view>
+        <view class="source-row">
+          <text class="source-label">定价数据</text>
+          <text class="source-val">各厂商官网 + OpenRouter</text>
+        </view>
+        <view class="source-row">
+          <text class="source-label">汇率</text>
+          <text class="source-val">实时获取</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="section">
+      <text class="section-title">🗳 评分怎么来的</text>
+      <view class="card">
+        <text class="card-text">LMArena 采用「盲测投票」机制：</text>
+        <view class="step">
+          <text class="step-num">1</text>
+          <text class="step-text">用户输入一个问题</text>
+        </view>
+        <view class="step">
+          <text class="step-num">2</text>
+          <text class="step-text">系统给出 2 个匿名模型的回答</text>
+        </view>
+        <view class="step">
+          <text class="step-num">3</text>
+          <text class="step-text">用户投票选哪个更好</text>
+        </view>
+        <view class="step">
+          <text class="step-num">4</text>
+          <text class="step-text">揭晓模型身份，更新 Elo 积分</text>
+        </view>
+        <text class="card-tip">💡 Elo 分数类似国际象棋积分，赢了加分、输了扣分。分数越高说明越受用户欢迎。</text>
+      </view>
+    </view>
+
+    <view class="section">
+      <text class="section-title">📊 大类说明</text>
+      <view class="card">
+        <view class="dim-row"><text class="dim-icon">💬</text><text class="dim-name">文本</text><text class="dim-desc">纯文本对话能力</text></view>
+        <view class="dim-row"><text class="dim-icon">💻</text><text class="dim-name">WebDev</text><text class="dim-desc">网页开发编程</text></view>
+        <view class="dim-row"><text class="dim-icon">👁</text><text class="dim-name">视觉</text><text class="dim-desc">图片理解能力</text></view>
+        <view class="dim-row"><text class="dim-icon">🤖</text><text class="dim-name">Agent</text><text class="dim-desc">工具调用能力（用净提升率%）</text></view>
+        <view class="dim-row"><text class="dim-icon">📄</text><text class="dim-name">文档</text><text class="dim-desc">文档理解能力</text></view>
+        <view class="dim-row"><text class="dim-icon">🔍</text><text class="dim-name">搜索</text><text class="dim-desc">搜索增强能力</text></view>
+      </view>
+    </view>
+
+    <view class="section">
+      <text class="section-title">📐 维度说明（文本大类）</text>
+      <view class="card">
+        <view class="dim-row"><text class="dim-name">综合</text><text class="dim-desc">综合文本能力</text></view>
+        <view class="dim-row"><text class="dim-name">编程</text><text class="dim-desc">代码生成</text></view>
+        <view class="dim-row"><text class="dim-name">数学</text><text class="dim-desc">数学推理</text></view>
+        <view class="dim-row"><text class="dim-name">写作</text><text class="dim-desc">创意写作</text></view>
+        <view class="dim-row"><text class="dim-name">难题</text><text class="dim-desc">复杂提示词</text></view>
+        <view class="dim-row"><text class="dim-name">指令</text><text class="dim-desc">指令遵循</text></view>
+        <view class="dim-row"><text class="dim-name">专家</text><text class="dim-desc">专家级任务</text></view>
+        <view class="dim-row"><text class="dim-name">长对话</text><text class="dim-desc">多轮对话</text></view>
+      </view>
+    </view>
+
+    <view class="section">
+      <text class="section-title">✅ 数据可靠性</text>
+      <view class="card">
+        <view class="conf-row"><text class="conf-dot" style="background:#10B981;"></text><text class="conf-label">样本充足</text><text class="conf-desc">≥5000票，分数可靠</text></view>
+        <view class="conf-row"><text class="conf-dot" style="background:#F59E0B;"></text><text class="conf-label">样本一般</text><text class="conf-desc">≥1000票，分数较可靠</text></view>
+        <view class="conf-row"><text class="conf-dot" style="background:#EF4444;"></text><text class="conf-label">样本偏少</text><text class="conf-desc">少于1000票，分数波动较大</text></view>
+      </view>
+    </view>
+
+    <view class="section">
+      <text class="section-title">💰 定价说明</text>
+      <view class="card">
+        <text class="card-text">定价优先使用各厂商官方价格：</text>
+        <text class="price-item">🇨🇳 国产模型：用官网人民币价格（智谱/月之暗面/阿里等）</text>
+        <text class="price-item">🌍 海外模型：用官方美元价格（Anthropic/OpenAI/Google）</text>
+        <text class="price-item">📋 部分模型用 OpenRouter 代理价格（会标注来源）</text>
+        <text class="card-tip">⚠️ 代理商价格可能与官方不同，以官网为准</text>
+      </view>
+    </view>
+
+    <view class="section">
+      <text class="section-title">⚠️ 注意事项</text>
+      <view class="card">
+        <text class="card-text">• Elo 分数反映「人类主观偏好」，不代表绝对能力</text>
+        <text class="card-text">• 投票者多为技术人员，不代表普通用户</text>
+        <text class="card-text">• 新模型可能有「刷榜」行为（针对 Arena 优化）</text>
+        <text class="card-text">• 评分不包含速度、稳定性、API易用性等因素</text>
+        <text class="card-text">• 建议结合价格、速度、场景综合选择</text>
+      </view>
+    </view>
+
+    <view class="footer">
+      <text class="footer-text">数据更新频率：每周一次</text>
+      <button class="feedback-btn" open-type="feedback">💬 意见反馈</button>
+    </view>
+
+  </view>
+</scroll-view>
