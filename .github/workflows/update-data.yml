@@ -59,7 +59,12 @@ jobs:
           google-chrome --version
 
       - name: 抓取并构建数据（update.sh）
-        run: cd pipeline && bash update.sh
+        # 抓取失败不阻断：回退用仓库已提交的 rankings.js，保证 Pages 总有数据可发布
+        run: cd pipeline && bash update.sh || echo "SCRAPE_FAILED=true" >> "$GITHUB_ENV"
+
+      - name: 提示抓取失败（可选）
+        if: env.SCRAPE_FAILED == 'true'
+        run: echo "::warning::本次抓取失败，将发布仓库中上次构建的数据"
 
       - name: 校验数据非空
         run: |
