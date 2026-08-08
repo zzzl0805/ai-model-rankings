@@ -134,6 +134,28 @@ node -e "var fs=require('fs');var d=require('./data/rankings.js');fs.writeFileSy
 
 **注意**：上传必须在**电脑端开发者工具**操作，手机端会超时。
 
+### 自动化更新（GitHub Actions + 定时云函数，2026-08 新增）
+
+数据抓取/构建/上传全部在云端自动完成，无需本地操作。
+
+```
+GitHub Actions（每天 18:00 UTC）
+  ├─ 抓取 LMArena + Agent + 国产定价（pipeline/update.sh，CI 装 Chrome）
+  └─ 构建 rankings.js → 生成 dist/rankings.json（与 admin 上传格式一致）→ 部署 GitHub Pages
+                                                          ↓
+微信云函数 syncRankings（每天 03:00 北京时间 定时触发器）
+  ├─ https 拉取 https://<用户>.github.io/<仓库>/rankings.json
+  ├─ cloud.uploadFile 上传云存储 rankings/rankings.json
+  └─ 更新数据库指针 _id='current'
+                                                          ↓
+用户端：下次打开小程序自动拉到最新数据（无需重新发布）
+```
+
+- **失败兜底**：某天抓取失败（如 arena.ai 反爬 403）时，workflow 报错但云函数继续拉取「上一次发布的数据」，用户仍正常使用。
+- **手动触发**：GitHub Actions 页可随时手动运行 workflow；本地仍可走 `update.sh` + admin 页手动上传。
+- **云函数部署**：新建 `miniprogram/cloudfunctions/syncRankings/`（含 `config.json` 定时触发器），在开发者工具右键「上传并部署」。部署前把 `index.js` 顶部的 `DATA_URL` 改成自己的 Pages 地址。
+- **首次建仓**：见仓库 `.github/workflows/update-data.yml` 注释。
+
 ### 用户端
 
 用户下次打开小程序 → 自动从云端拉取最新数据 → 无需更新小程序。

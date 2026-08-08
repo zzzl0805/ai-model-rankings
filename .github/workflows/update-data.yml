@@ -1,0 +1,84 @@
+name: 每日数据更新
+
+# 每天自动抓取 LMArena + Agent + 国产定价 → 构建 rankings.js → 发布到 GitHub Pages
+# 微信云函数 syncRankings（每日定时触发器）会从 Pages 拉取并上传到云存储，
+# 用户端小程序启动时自动拉到最新数据，无需重新发布小程序。
+#
+# 说明：
+#   - 若某天抓取失败（如 arena.ai 反爬 403），workflow 报错但「上一次发布的数据仍生效」
+#   - 可随时在 Actions 页手动触发（workflow_dispatch）
+#   - 时区：cron 为 UTC。每天 18:00 UTC = 次日 02:00 北京时间，
+#     云函数触发器配置为每天 03:00（北京时间）拉取，留有 1 小时缓冲。
+
+on:
+  schedule:
+    - cron: '0 18 * * *'          # 每天 18:00 UTC（北京时间次日 02:00）
+  workflow_dispatch:               # 手动触发
+  push:
+    branches: [main]              # 首次部署 Pages 需要一次 push
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    env:
+      # 让 pipeline 里的 puppeteer-core 找到 CI 装的 Chrome
+      CHROME_PATH: /usr/bin/google-chrome
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: pipeline/package-lock.json
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 安装 Python 依赖
+        run: cd pipeline && pip install -r requirements.txt
+
+      - name: 安装 Node 依赖
+        run: cd pipeline && npm ci
+
+      - name: 安装 Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends google-chrome-stable
+          google-chrome --version
+
+      - name: 抓取并构建数据（update.sh）
+        run: cd pipeline && bash update.sh
+
+      - name: 校验数据非空
+        run: |
+          node -e "const d=require('./miniprogram/data/rankings.js'); const cats=Object.keys(d.data||{}); if(!cats.length){console.error('数据为空');process.exit(1)} console.log('OK', 'lastUpdated='+d.lastUpdated, cats.length+' 大类');"
+
+      - name: 生成云端发布文件（与 admin 上传格式一致）
+        run: |
+          mkdir -p dist
+          node -e "const fs=require('fs');const d=require('./miniprogram/data/rankings.js');fs.writeFileSync('dist/rankings.json',JSON.stringify(d));"
+          ls -la dist/rankings.json
+
+      - name: 配置 GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: 上传 Pages 产物
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - name: 部署 GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,9 @@
+{
+  "name": "syncRankings",
+  "version": "1.0.0",
+  "description": "每日定时从 GitHub Pages 拉取最新排行数据，上传云存储并更新指针",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}
