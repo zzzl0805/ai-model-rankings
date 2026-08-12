@@ -50,8 +50,10 @@ Page({
       fs.writeFileSync(tempPath, JSON.stringify(localData), 'utf-8');
 
       // 2. 上传到云存储（文件上限 50MB，无 512KB/1MB 限制）
+      //    用带日期的唯一路径，绕开 CDN 对同名文件的缓存（否则覆盖上传后用户仍拿到旧数据）
+      var cloudPath = 'rankings/rankings-' + (localData.lastUpdated || 'latest') + '.json';
       wx.cloud.uploadFile({
-        cloudPath: 'rankings/rankings.json',
+        cloudPath: cloudPath,
         filePath: tempPath,
         success: function (up) {
           if (up.fileID) {

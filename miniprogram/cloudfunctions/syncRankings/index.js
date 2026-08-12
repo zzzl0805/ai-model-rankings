@@ -72,15 +72,17 @@ exports.main = async (event, context) => {
       return { code: -1, msg: '数据缺少 data 字段或为空' };
     }
 
-    // 3. 上传云存储（服务端有管理员权限，同路径覆盖）
+    // 3. 上传云存储（服务端有管理员权限）
+    //    用带日期的唯一路径，绕开 CDN 对同名文件的缓存
+    const lastUpdated = parsed.lastUpdated || '';
+    const cloudPath = 'rankings/rankings-' + (lastUpdated || Date.now()) + '.json';
     const up = await cloud.uploadFile({
-      cloudPath: 'rankings/rankings.json',
+      cloudPath: cloudPath,
       fileContent: Buffer.from(text, 'utf-8'),
     });
     if (!up.fileID) return { code: -1, msg: '上传云存储失败' };
 
     // 4. 更新数据库指针（小程序端 getRankings 据此拉取）
-    const lastUpdated = parsed.lastUpdated || '';
     await updatePointer(up.fileID, lastUpdated);
 
     return { code: 0, msg: '同步成功', lastUpdated: lastUpdated, fileID: up.fileID };
