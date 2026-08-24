@@ -30,26 +30,33 @@ async function scrape() {
     await page.goto('https://arena.ai/leaderboard/agent', { waitUntil: 'networkidle2', timeout: 60000 });
     await new Promise(r => setTimeout(r, 5000));
 
-    const rows = await page.evaluate(() => {
+    const data = await page.evaluate(() => {
+      const headers = Array.from(document.querySelectorAll('table thead th')).map(th => th.textContent.trim());
       const results = [];
       document.querySelectorAll('table tbody tr').forEach(tr => {
         const cells = tr.querySelectorAll('td');
         if (cells.length < 3) return;
         results.push(Array.from(cells).map(c => c.textContent.trim()));
       });
-      return results;
+      return { headers, results };
     });
 
+    const headers = data.headers;
+    const rows = data.results;
+    // 按表头定位 Sessions 列：arena.ai 新增了 Cost/Task、Output Tokens、Price 三列，
+    // Sessions 不再是最后一列，用 cells.length-1 会取到 Price 列解析成 0
+    const sessionsIdx = headers.findIndex(h => /sessions/i.test(h));
+    if (sessionsIdx < 0) console.warn('⚠️ 未找到 Sessions 列，表头:', headers.join(' | '));
+
     const models = rows.map((cells, idx) => {
-      // Agent 列: Rank(全局编号), Model, Net Improvement, ..., Sessions(最后一列)
+      // Agent 列: Rank(全局编号), Model, Net Improvement, ..., Sessions
       // cells[0] 是 Arena 全局编号，不是 1/2/3 序号，用 index 重新编号
       const rawName = cells[1] || '';
       const netImp = cells[2] || '';
       const pctMatch = netImp.match(/([\d.]+)%/);
       if (!pctMatch) return null;
 
-      // Sessions 是最后一列
-      const sessionsStr = cells[cells.length - 1] || '0';
+      const sessionsStr = (sessionsIdx >= 0 ? cells[sessionsIdx] : '') || '0';
       const sessions = parseInt(sessionsStr.replace(/,/g, '')) || 0;
 
       return {

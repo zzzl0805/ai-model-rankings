@@ -73,9 +73,9 @@ exports.main = async (event, context) => {
     }
 
     // 3. 上传云存储（服务端有管理员权限）
-    //    用带日期的唯一路径，绕开 CDN 对同名文件的缓存
+    //    用「日期 + 时间戳」的唯一路径，彻底绕开 CDN 对同名文件的缓存
     const lastUpdated = parsed.lastUpdated || '';
-    const cloudPath = 'rankings/rankings-' + (lastUpdated || Date.now()) + '.json';
+    const cloudPath = 'rankings/rankings-' + (lastUpdated || 'latest') + '-' + Date.now() + '.json';
     const up = await cloud.uploadFile({
       cloudPath: cloudPath,
       fileContent: Buffer.from(text, 'utf-8'),

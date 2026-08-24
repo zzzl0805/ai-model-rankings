@@ -98,6 +98,17 @@ async function scrape() {
       // 检测是否为 Agent 页面（Agent 用 Net Improvement % 而非 Elo）
       const isAgentPage = cat.id === 'agent';
 
+      // Agent 页面的 Sessions 列位置会随 arena.ai 增删列而变（已新增 Cost/Task、
+      // Output Tokens、Price 三列），按表头动态定位，避免 cells.length-1 取错列
+      let agentSessionsIdx = -1;
+      if (isAgentPage) {
+        agentSessionsIdx = await page.evaluate(() => {
+          const headers = Array.from(document.querySelectorAll('table thead th')).map(th => th.textContent.trim());
+          return headers.findIndex(h => /sessions/i.test(h));
+        });
+        if (agentSessionsIdx < 0) console.warn('⚠️ 未找到 Sessions 列');
+      }
+
       // 先抓取默认表格
       const defaultRows = await page.evaluate(() => {
         const results = [];
@@ -125,7 +136,7 @@ async function scrape() {
           if (!pctMatch) return;
           const elo = parseFloat(pctMatch[1]);
           const cleanName = cleanModelName(rawName);
-          const sessionsStr = cells[cells.length - 1] || '0';
+          const sessionsStr = (agentSessionsIdx >= 0 ? cells[agentSessionsIdx] : '') || '0';
           const votes = parseInt(sessionsStr.replace(/,/g, '')) || 0;
 
           defaultModels.push({
@@ -206,7 +217,7 @@ async function scrape() {
             if (!pctMatch) return;
             const elo = parseFloat(pctMatch[1]);
             const cleanName = cleanModelName(rawName);
-            const sessionsStr = cells[cells.length - 1] || '0';
+            const sessionsStr = (agentSessionsIdx >= 0 ? cells[agentSessionsIdx] : '') || '0';
             const votes = parseInt(sessionsStr.replace(/,/g, '')) || 0;
             models.push({
               rank: models.length + 1, name: cleanName, rawName, elo, margin: 0, votes,
