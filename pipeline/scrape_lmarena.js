@@ -110,10 +110,16 @@ async function scrape() {
       }
 
       // 先抓取默认表格
+      // arena.ai 切换维度会保留旧 table 为隐藏，须只抓可见 table，否则抓到累积的旧维度数据
       const defaultRows = await page.evaluate(() => {
+        const tables = Array.from(document.querySelectorAll('table'));
+        const visibleTable = tables.find(t => {
+          const r = t.getBoundingClientRect();
+          return r.height > 0 && r.width > 0;
+        });
+        if (!visibleTable) return [];
         const results = [];
-        const trs = document.querySelectorAll('table tbody tr, table tr');
-        trs.forEach(tr => {
+        visibleTable.querySelectorAll('tbody tr, tr').forEach(tr => {
           const cells = tr.querySelectorAll('td');
           if (cells.length < 4) return;
           results.push(Array.from(cells).map(c => c.textContent.trim()));
@@ -194,9 +200,14 @@ async function scrape() {
         await new Promise(r => setTimeout(r, 2000));
 
         const rows = await page.evaluate(() => {
+          const tables = Array.from(document.querySelectorAll('table'));
+          const visibleTable = tables.find(t => {
+            const r = t.getBoundingClientRect();
+            return r.height > 0 && r.width > 0;
+          });
+          if (!visibleTable) return [];
           const results = [];
-          const trs = document.querySelectorAll('table tbody tr, table tr');
-          trs.forEach(tr => {
+          visibleTable.querySelectorAll('tbody tr, tr').forEach(tr => {
             const cells = tr.querySelectorAll('td');
             if (cells.length < 4) return;
             results.push(Array.from(cells).map(c => c.textContent.trim()));
