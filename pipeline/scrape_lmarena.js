@@ -43,36 +43,8 @@ const DIMENSIONS = [
   { text: '💬Multi-Turn', key: 'multiturn' },
 ];
 
-function cleanModelName(rawName) {
-  let name = rawName;
-  const providers = ['Anthropic', 'Google', 'OpenAI', 'Meta', 'DeepSeek', 'xAI', 'SpaceXAI',
-    'Mistral', 'Alibaba', 'Qwen', 'Moonshot', 'MoonshotAI', 'Zhipu', 'Z.ai',
-    'ByteDance', 'Bytedance', 'Baidu', 'Nvidia', 'Ai2', 'Microsoft',
-    'Xiaomi', 'MiniMax', 'Tencent', 'StepFun', 'Stepfun',
-    'Thinking Machines', 'Thinky', 'Reve', 'Dola', 'Perplexity', 'Cohere', '01.AI'];
-
-  // 移除末尾的 "Provider · License" 部分
-  name = name.replace(/·.*/, '').replace(/Proprietary|Open Source|Free|MIT|Apache|Modified/g, '').trim();
-
-  // 移除开头的 provider 名
-  for (const p of providers) {
-    if (name.startsWith(p)) {
-      name = name.substring(p.length);
-      break;
-    }
-  }
-
-  // 移除结尾的 provider 名
-  for (const p of providers) {
-    if (name.endsWith(p)) {
-      name = name.substring(0, name.length - p.length);
-      break;
-    }
-  }
-
-  name = name.replace(/\([^)]*\)/g, '').trim();
-  return name;
-}
+// 模型名清洗（与 scrape_agent.js 共用同一实现，避免逻辑漂移）
+const { cleanModelName } = require('./clean_name');
 
 async function scrape() {
   console.log('启动 Chrome...');

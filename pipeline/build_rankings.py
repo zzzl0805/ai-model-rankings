@@ -25,6 +25,12 @@ if os.path.exists(cn_prices_file):
         CN_PRICES = json.load(f)
     print(f"  已加载 {len(CN_PRICES)} 个自动抓取的国产定价")
 
+
+def _norm_key(s):
+    """模型名归一化（用于定价匹配）：去空格/横线/点/下划线并转小写。
+    例："GLM 5.3 (Max)" 与 "glm-5.3" 归一后都能互相包含。"""
+    return re.sub(r"[\s\-_.]+", "", (s or "").lower())
+
 # OpenRouter ID 映射
 OPENROUTER_MAP = {
     # Claude
@@ -129,32 +135,34 @@ def find_or_model(or_models, name, or_list=None):
     2. 再对 OpenRouter model ID 做模糊匹配
     """
     lower = name.lower()
-    # 去除版本后缀和无关字符，提取核心名
-    core = lower.replace("-thinking", "").replace("-high", "").replace("-medium", "")
-    core = core.replace("-preview", "").replace("-beta", "").replace("-instant", "")
-    core = re.sub(r"-\d{6,}", "", core)  # 去日期 20250929
-    core = re.sub(r"-\d+k$", "", core)  # 去 -32k
-    core = core.strip("-")
+    name_norm = _norm_key(lower)
 
-    # 1. 精确映射（按 key 长度降序）
-    sorted_keys = sorted(OPENROUTER_MAP.items(), key=lambda x: len(x[0]), reverse=True)
+    # 1. 精确映射（按归一化 key 长度降序）
+    sorted_keys = sorted(OPENROUTER_MAP.items(), key=lambda x: len(_norm_key(x[0])), reverse=True)
     for key, or_id in sorted_keys:
-        if key in lower and or_id:
+        if or_id and _norm_key(key) in name_norm:
             m = or_models.get(or_id)
             if m:
                 return m
 
     # 2. 模糊匹配 OpenRouter ID
+    # 提取核心名：去掉括号变体与 high/max/thinking 等后缀的干扰
+    # （arena.ai 展示名 "GLM-5.3 (Max)" 含空格和括号，不做归一化会大量失配）
+    core = re.sub(r"\([^)]*\)", " ", lower)
+    core = re.sub(r"\b(thinking|high|xhigh|medium|low|preview|beta|instant|max)\b", " ", core)
+    core = re.sub(r"-\d{6,}", "", core)  # 去日期 20250929
+    core = re.sub(r"-\d+k$", "", core)  # 去 -32k
+    core = core.strip("- ")
+
     if or_list:
         best_match = None
         best_score = 0
+        core_clean = _norm_key(core)
         for m in or_list:
             mid = m.get("id", "").lower()
             # 提取 OpenRouter ID 的模型名部分（去掉 provider/）
             model_part = mid.split("/", 1)[-1] if "/" in mid else mid
-            model_part = model_part.replace(".", "").replace("-", "")
-
-            core_clean = core.replace(".", "").replace("-", "")
+            model_part = _norm_key(model_part)
 
             # 计算匹配分数
             if core_clean == model_part:
@@ -247,9 +255,12 @@ def build():
                 currency = "USD"
 
                 # 1. 优先查自动抓取的国产定价
+                # 归一化后匹配：arena.ai 展示名（"GLM 5.3 (Max)"）与定价 key
+                # （"glm-5.3"）格式不同，直接子串匹配会大量失配
                 cn_matched = False
-                for cn_key in sorted(CN_PRICES.keys(), key=len, reverse=True):
-                    if cn_key.lower() in model_name.lower():
+                model_norm = _norm_key(model_name)
+                for cn_key in sorted(CN_PRICES.keys(), key=lambda k: len(_norm_key(k)), reverse=True):
+                    if _norm_key(cn_key) in model_norm:
                         cn = CN_PRICES[cn_key]
                         price_input = cn["input"]
                         price_output = cn["output"]

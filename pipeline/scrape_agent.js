@@ -5,21 +5,8 @@ const path = require('path');
 // 支持 CHROME_PATH 环境变量（CI/云端用），本地默认 Mac Chrome
 const CHROME_PATH = process.env.CHROME_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 
-const PROVIDERS = ['Anthropic', 'Google', 'OpenAI', 'Meta', 'DeepSeek', 'xAI', 'SpaceXAI',
-  'Mistral', 'Alibaba', 'Qwen', 'Moonshot', 'MoonshotAI', 'Zhipu', 'Z.ai', 'ByteDance',
-  'Bytedance', 'Baidu', 'Nvidia', 'Ai2', 'Microsoft', 'Xiaomi', 'MiniMax', 'Tencent',
-  'StepFun', 'Stepfun', 'Thinking Machines', 'Thinky', 'KlingAI'];
-
-function cleanName(rawName) {
-  let name = rawName.replace(/·.*/, '').replace(/Proprietary|Open Source|Free|MIT|Apache|Modified/g, '').trim();
-  for (const p of PROVIDERS) {
-    if (name.startsWith(p)) { name = name.substring(p.length); break; }
-  }
-  for (const p of PROVIDERS) {
-    if (name.endsWith(p)) { name = name.substring(0, name.length - p.length); break; }
-  }
-  return name.replace(/\([^)]*\)/g, '').trim();
-}
+// 模型名清洗（与 scrape_lmarena.js 共用同一实现，避免逻辑漂移）
+const { cleanModelName: cleanName } = require('./clean_name');
 
 async function scrape() {
   const browser = await puppeteer.launch({ executablePath: CHROME_PATH, headless: 'new', args: ['--no-sandbox', '--disable-setuid-sandbox'] });
