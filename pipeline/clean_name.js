@@ -28,12 +28,14 @@ function cleanModelName(rawName) {
     .replace(/Proprietary|Open Source|Free|MIT|Apache|Modified/g, '')
     .trim();
 
-  // 开头厂商名：若去掉后以数字开头（如 "Qwen3.8-Max"），
-  // 说明厂商名本身就是模型名的一部分，不能剥
+  // 开头厂商名：只有剩余部分以字母开头时才剥。
+  // 否则说明厂商名本身就是模型名的一部分：
+  //   "Qwen3.8-Max"        → 剩余 "3.8-Max"（数字开头）不剥
+  //   "DeepSeek-V4.1-Flash" → 剩余 "-V4.1-Flash"（分隔符开头）不剥
   for (const p of PROVIDERS) {
     if (name.startsWith(p)) {
       const rest = name.substring(p.length);
-      if (!/^\d/.test(rest)) name = rest;
+      if (/^[A-Za-z]/.test(rest)) name = rest;
       break;
     }
   }
