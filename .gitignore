@@ -20,3 +20,6 @@ pipeline/cn_prices.json
 
 # GitHub Pages 发布目录（由 workflow 生成）
 dist/
+
+# HuggingFace parquet 缓存
+pipeline/.cache_hf/
