@@ -5,7 +5,9 @@ name: 每日数据更新
 # 用户端小程序启动时自动拉到最新数据，无需重新发布小程序。
 #
 # 说明：
-#   - 若某天抓取失败（如 arena.ai 反爬 403），workflow 报错但「上一次发布的数据仍生效」
+#   - 数据源：优先爬 arena.ai；被 Cloudflare 拦截时自动回退 LMArena 官方
+#     HuggingFace 数据集（见 pipeline/fetch_lmarena_hf.py）
+#   - 若两条路都失败，workflow 会跳过发布，线上保持上一次的数据不动
 #   - 可随时在 Actions 页手动触发（workflow_dispatch）
 #   - 时区：cron 为 UTC。每天 18:00 UTC = 次日 02:00 北京时间，
 #     云函数触发器配置为每天 03:00（北京时间）拉取，留有 1 小时缓冲。
@@ -66,9 +68,15 @@ jobs:
         if: env.SCRAPE_FAILED == 'true'
         run: echo "::warning::本次抓取失败，将发布仓库中上次构建的数据"
 
-      - name: 校验数据非空
+      - name: 校验数据完整性
         run: |
-          node -e "const d=require('./miniprogram/data/rankings.js'); const cats=Object.keys(d.data||{}); if(!cats.length){console.error('数据为空');process.exit(1)} console.log('OK', 'lastUpdated='+d.lastUpdated, cats.length+' 大类');"
+          node -e "
+          const d=require('./miniprogram/data/rankings.js');
+          const cats=Object.keys(d.data||{});
+          const total=Object.values(d.data||{}).reduce((s,c)=>s+Object.values(c).reduce((a,v)=>a+v.length,0),0);
+          console.log('lastUpdated='+d.lastUpdated, '| 大类='+cats.length, '| 条目='+total);
+          if(!cats.length || total < 500){ console.error('❌ 数据不完整，拒绝发布'); process.exit(1); }
+          "
 
       - name: 生成云端发布文件（与 admin 上传格式一致）
         run: |

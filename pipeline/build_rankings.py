@@ -334,6 +334,14 @@ def build():
         "data": processed,
     }
 
+    # 安全阀：数据过少时拒绝写入，避免把空/残缺数据覆盖到线上
+    # （2026-11-15 曾因 Cloudflare 拦截抓到 0 条，误把 rankings.js 写成 3KB 空文件）
+    total_entries = sum(len(v) for cat in processed.values() for v in cat.values())
+    if total_entries < 500:
+        print(f"\n❌ 只处理出 {total_entries} 条数据（<500），拒绝覆盖 rankings.js")
+        print("   请检查爬虫 / HF 数据源是否可用")
+        raise SystemExit(1)
+
     output_path = os.path.join(os.path.dirname(__file__), "..", "miniprogram", "data", "rankings.js")
     output_path = os.path.normpath(output_path)
 
