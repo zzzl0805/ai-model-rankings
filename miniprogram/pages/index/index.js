@@ -41,7 +41,7 @@ function vendorName(raw) {
 function fmtNum(v) {
   var n = Number(v) || 0;
   if (n >= 10) return String(Math.round(n));
-  return String(Math.round(n * 100) / 100);
+  return n.toFixed(2);  // $0.3 → $0.30，避免同列小数位不一致
 }
 
 // 说明：场景快捷入口已移除（与分类/维度功能重叠，且增加视觉层级）。
@@ -219,6 +219,11 @@ Page({
 
       var models = catData[dimensionId] || [];
 
+      // 综合榜名次映射（用于筛选态下显示「综合第 N」）
+      // 注意：不能用当前维度的 rank —— 编程榜第 13 名在综合榜可能是第 31 名
+      var overallRank = {};
+      (catData.overall || []).forEach(function (x) { overallRank[x.name] = x.rank; });
+
       that.setData({
         models: models,
         allDisplayModels: models.map(function(m) {
@@ -234,6 +239,7 @@ Page({
             variant: vm ? vm[2] : '',
             provider: meta.getProviderCN(m.name),
             providerRaw: m.provider || '',
+            overallRank: overallRank[m.name] || 0,
             isCN: isDomestic(m.provider),
             delta: typeof m.delta === 'number' ? m.delta : 0,
             isNew: !!m.isNew,
@@ -308,7 +314,9 @@ Page({
     var prefix = catName + (dimName && dimName !== '综合' ? '·' + dimName : '');
 
     if (region === 'cn') {
-      return '国产模型' + prefix + '前 3：' + list.slice(0, 3).map(function (m) { return m.baseName; }).join('、');
+      // 与表格同源：取 rank ≤ 3 的模型（不使用 slice，避免与名次规则脱节）
+      var top3 = list.filter(function (m) { return m.rank <= 3; });
+      return '国产模型' + prefix + '前 3：' + top3.map(function (m) { return m.baseName; }).join('、');
     }
 
     var top1 = list[0];
@@ -370,14 +378,22 @@ Page({
     sorted = sorted.map(function (m, i) {
       var copy = {};
       for (var k in m) copy[k] = m[k];
-      copy.globalRank = renumber ? m.rank : 0;
-      copy.badgeRank = renumber ? ('总榜 ' + m.rank) : '';
+      copy.globalRank = renumber ? (m.overallRank || 0) : 0;
+      copy.badgeRank = copy.globalRank ? ('综合第 ' + copy.globalRank) : '';
       copy.origRank = renumber ? i + 1 : m.rank;
       copy.eloText = String(Math.round(m.elo));
       copy.votesText = m.votes >= 1000 ? (m.votes / 1000).toFixed(1) + 'k' : String(m.votes || '');
-      copy.priceText = (m.price && m.price.input > 0)
-        ? ('$' + fmtNum(m.price.input) + ' / $' + fmtNum(m.price.output))
-        : '';
+      if (m.price && m.price.input > 0) {
+        if (m.price.currency === 'CNY') {
+          copy.priceText = '¥' + fmtNum(m.price.inputCNY) + ' 入 / ¥' + fmtNum(m.price.outputCNY) + ' 出';
+        } else {
+          copy.priceText = '$' + fmtNum(m.price.input) + ' 入 / $' + fmtNum(m.price.output) + ' 出';
+        }
+        copy.priceProxied = /openrouter/i.test(m.price.source || '');
+      } else {
+        copy.priceText = '';
+        copy.priceProxied = false;
+      }
       copy.tie = false;
       copy.rank = copy.origRank;
       return copy;
@@ -388,6 +404,17 @@ Page({
     // 名次保持严格递增（不做并列重编号）。
     // 统计不确定性由每行的 ±95%CI 表达，脚注说明"区间重叠时名次差异不显著"。
     // 这样规则全局一致，不会出现"前 3 并列、第 5 名不并列"的自相矛盾。
+
+    // 相邻名次 95%CI 重叠 → 标「≈」（不改名次，只提示差异不显著）
+    for (var k = 0; k < sorted.length; k++) {
+      var prevM = sorted[k - 1], nextM = sorted[k + 1];
+      var cur = sorted[k];
+      var ovPrev = prevM && prevM.margin > 0 && cur.margin > 0 &&
+        Math.abs(cur.elo - prevM.elo) <= (cur.margin + prevM.margin);
+      var ovNext = nextM && nextM.margin > 0 && cur.margin > 0 &&
+        Math.abs(nextM.elo - cur.elo) <= (cur.margin + nextM.margin);
+      cur.tieMark = (ovPrev || ovNext) ? '≈' : '';
+    }
 
     this.setData({
       displayModels: sorted,

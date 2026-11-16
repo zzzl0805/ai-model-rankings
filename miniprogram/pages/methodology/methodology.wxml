@@ -103,6 +103,10 @@
     </view>
 
     <view class="footer">
+      <view class="section-title" style="margin-top:32rpx;">档位说明</view>
+      <text class="footer-text">High / Max 表示厂商提供的推理强度档位（reasoning effort），不是能力等级；模型名里的 Max（如 Qwen3.8-Max）属于模型名本身，与档位无关。</text>
+      <text class="footer-text">名次按 Elo 点估计排序；± 为 95% 置信区间，区间重叠时名次差异不显著。</text>
+      <text class="footer-text">各子榜（综合/编程/数学…）独立计分，分数不可跨榜比较。</text>
       <text class="footer-text">数据更新频率：每日自动更新</text>
       <button class="feedback-btn" open-type="feedback">💬 意见反馈</button>
     </view>

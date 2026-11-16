@@ -31,7 +31,7 @@
   <!-- 搜索 + 视角 -->
   <view class="toolbar">
     <view class="search-box">
-      <text class="search-icon">⌕</text>
+      <icon class="search-icon" type="search" size="14" color="#677489" />
       <input class="search-input" placeholder="模型或公司" value="{{searchText}}" bindinput="onSearchInput" />
       <text wx:if="{{searchText}}" class="search-clear" bindtap="onSearchClear">✕</text>
     </view>
@@ -45,8 +45,8 @@
   <!-- 列头 -->
   <view class="col-head">
     <text class="ch-rank">名次</text>
-    <text class="ch-main">模型 · 价格（输入/输出 · USD/百万）</text>
-    <text class="ch-score">Elo ±CI · 样本</text>
+    <text class="ch-main">模型 · 价格（每百万 tokens）</text>
+    <view class="ch-score"><text>Elo ±95%CI</text><text class="ch-info" bindtap="onRulesTap">ⓘ</text></view>
   </view>
 
   <!-- 加载中 -->
@@ -65,7 +65,7 @@
       data-name="{{item.name}}" bindtap="onModelTap">
       <!-- 名次 -->
       <view class="col-rank {{item.rank <= 3 ? 'rank-top rank-' + item.rank : ''}}">
-        <text>{{item.rank}}</text>
+        <text>{{item.rank}}</text><text wx:if="{{item.tieMark}}" class="tie-mark">{{item.tieMark}}</text>
       </view>
       <!-- 模型 + 价格 -->
       <view class="col-main">
@@ -77,12 +77,12 @@
           <text wx:elif="{{item.isNew}}" class="delta delta-new">新</text>
         </view>
         <view class="meta-line">
-          <text wx:if="{{item.globalRank}}" class="meta-global">{{item.badgeRank}}</text>
-          <text class="meta-provider">{{item.provider}}</text>
-          <block wx:if="{{item.price.input > 0}}">
-            <text class="meta-sep">·</text>
-            <text class="meta-price">{{item.priceText}}</text>
-          </block>
+          <view class="meta-left">
+            <text wx:if="{{item.globalRank}}" class="meta-global">{{item.badgeRank}}</text>
+            <text class="meta-provider">{{item.provider}}</text>
+          </view>
+          <text wx:if="{{item.price.input > 0}}" class="meta-price">{{item.priceText}}</text>
+          <text wx:if="{{item.priceProxied}}" class="meta-proxy">代</text>
         </view>
       </view>
       <!-- 分数 -->
@@ -102,6 +102,6 @@
 
   <!-- 脚注：口径说明（跨榜不可比是这类产品最易被误读的点） -->
   <view wx:if="{{displayModels.length}}" class="footnote">
-    <text>± 为 95% 置信区间，区间重叠时名次差异不显著 · 各子榜独立计分，不可跨榜比较 · 数据来源 LMArena（人类偏好投票）</text>
+    <text>± 为 95% 置信区间（bootstrap，半宽），区间重叠时名次差异不显著 · 票数为去重有效投票 · 各子榜独立计分，不可跨榜比较 · 价格来自厂商官网或 OpenRouter 代理（标「代」），不含缓存与批量折扣· 数据来源 LMArena</text>
   </view>
 </view>

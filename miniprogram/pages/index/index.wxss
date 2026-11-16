@@ -6,14 +6,15 @@ page {
   --primary: #2563EB;
   --text: #0F172A;
   --text-2: #64748B;
-  --text-3: #94A3B8;
+  --text-3: #677489;   /* 对比度 4.5:1，可用于需要阅读的小字 */
+  --text-faint: #94A3B8; /* 仅装饰 */
   --line: #F1F5F9;
   --border: #E2E8F0;
   --bg: #F8FAFC;
   background: var(--bg);
 }
 
-.page { min-height: 100vh; padding-bottom: 160rpx; }
+.page { min-height: 100vh; padding-bottom: calc(200rpx + env(safe-area-inset-bottom)); }
 
 /* ============ 头部 ============ */
 .header {
@@ -161,13 +162,14 @@ page {
 .col-head {
   display: flex;
   align-items: center;
+  margin: 0 24rpx;
   padding: 6rpx 20rpx 10rpx;
-  font-size: 20rpx;
-  color: var(--text-3);
+  font-size: 22rpx;
+  color: var(--text-2);
 }
 .ch-rank { width: 64rpx; flex-shrink: 0; text-align: center; }
 .ch-main { flex: 1; }
-.ch-score { width: 150rpx; flex-shrink: 0; text-align: right; }
+.ch-score { width: 150rpx; flex-shrink: 0; text-align: right; white-space: nowrap; }
 
 /* ============ 列表 ============ */
 .list {
@@ -219,8 +221,8 @@ page {
   margin-left: 8rpx;
   padding: 1rpx 8rpx;
   font-size: 18rpx;
-  color: var(--text-3);
-  background: #F1F5F9;
+  color: #5F6E82;
+  background: #EEF2F7;
   border-radius: 4rpx;
 }
 .delta {
@@ -243,10 +245,11 @@ page {
   white-space: nowrap;
   overflow: hidden;
 }
-.meta-global { color: var(--primary); margin-right: 10rpx; }
+.meta-global { color: var(--text-2); margin-right: 10rpx; }
 .meta-provider { color: var(--text-2); }
 .meta-sep { margin: 0 8rpx; color: #CBD5E1; }
-.meta-price { color: #334155; }
+.meta-left { display: flex; align-items: center; width: 210rpx; flex-shrink: 0; overflow: hidden; }
+.meta-price { color: #334155; font-variant-numeric: tabular-nums; }
 
 /* 分数列 */
 .col-score {
@@ -287,3 +290,22 @@ page {
   color: var(--text-3);
   line-height: 1.6;
 }
+
+/* 列头说明入口 */
+.ch-info { margin-left: 4rpx; color: var(--text-2); }
+/* 搜索图标（原生 icon 组件） */
+.search-icon { width: 28rpx; height: 28rpx; margin-right: 10rpx; flex-shrink: 0; }
+
+/* 代理价标记 */
+.meta-proxy {
+  margin-left: 6rpx;
+  padding: 0 6rpx;
+  font-size: 18rpx;
+  color: var(--text-2);
+  background: #EEF2F7;
+  border-radius: 4rpx;
+  flex-shrink: 0;
+}
+
+/* 相邻名次置信区间重叠标记 */
+.tie-mark { font-size: 18rpx; color: var(--text-3); font-weight: 400; margin-left: 1rpx; }
