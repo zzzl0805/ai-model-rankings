@@ -19,7 +19,7 @@ pipeline/rankings_cloud.json
 pipeline/cn_prices.json
 
 # GitHub Pages 发布目录（由 workflow 生成）
-dist/
+# dist/ 现在需要提交（供 jsDelivr 提供国内可访问的数据源）
 
 # HuggingFace parquet 缓存
 pipeline/.cache_hf/
