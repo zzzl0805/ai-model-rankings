@@ -20,7 +20,7 @@ on:
     branches: [main]              # 首次部署 Pages 需要一次 push
 
 permissions:
-  contents: read
+  contents: write   # 需要推送到 data 分支（供 jsDelivr 分发）
   pages: write
   id-token: write
 
@@ -83,6 +83,29 @@ jobs:
           mkdir -p dist
           node -e "const fs=require('fs');const d=require('./miniprogram/data/rankings.js');fs.writeFileSync('dist/rankings.json',JSON.stringify(d));"
           ls -la dist/rankings.json
+
+      # 微信云函数在境内，访问 GitHub Pages 会超时；改走 jsDelivr 镜像仓库文件。
+      # 用独立的 data 分支（每次强推单个提交），避免主分支历史被 900KB/天 撑爆。
+      - name: 发布数据到 data 分支（供 jsDelivr 分发）
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd "$RUNNER_TEMP"
+          git clone --quiet --depth 1 "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git" datarepo
+          cd datarepo
+          git checkout --orphan data
+          git rm -rf . > /dev/null 2>&1 || true
+          cp "$GITHUB_WORKSPACE/dist/rankings.json" rankings.json
+          git add rankings.json
+          git -c user.name="github-actions[bot]" -c user.email="github-actions[bot]@users.noreply.github.com" \
+              commit -m "data: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git push -f origin data
+          echo "已推送 data 分支"
+
+      - name: 刷新 jsDelivr 缓存
+        run: |
+          curl -s --max-time 30 "https://purge.jsdelivr.net/gh/${GITHUB_REPOSITORY}@data/rankings.json" || true
+          echo "已请求刷新 CDN 缓存"
 
       - name: 配置 GitHub Pages
         uses: actions/configure-pages@v5

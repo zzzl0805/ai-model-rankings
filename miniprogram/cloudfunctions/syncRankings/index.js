@@ -10,8 +10,42 @@ const https = require('https');
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 const db = cloud.database();
 
-// GitHub Pages 数据地址（由 .github/workflows/update-data.yml 每日发布）
-const DATA_URL = 'https://zzzl0805.github.io/ai-model-rankings/rankings.json';
+// 数据地址：用 jsDelivr 镜像 GitHub 仓库里的 dist/rankings.json
+// （腾讯云函数在境内，访问 GitHub Pages 会超时/被墙；jsDelivr 国内可达）
+// 多个镜像 + 重试：实测同一地址有时 3 秒、有时会挂起，必须做容错
+const DATA_URLS = [
+  'https://cdn.jsdelivr.net/gh/zzzl0805/ai-model-rankings@data/rankings.json',
+  'https://fastly.jsdelivr.net/gh/zzzl0805/ai-model-rankings@data/rankings.json',
+  'https://gcore.jsdelivr.net/gh/zzzl0805/ai-model-rankings@data/rankings.json',
+];
+const DATA_URL = DATA_URLS[0];
+
+// 轮流尝试各镜像，直到拿到【完整且可解析】的数据或超出时间预算
+// 实测镜像会间歇性返回截断文件（HTTP 200 但只有一半），所以必须校验 JSON
+async function downloadWithRetry(budgetMs) {
+  const start = Date.now();
+  let lastErr = null;
+  let i = 0;
+  while (Date.now() - start < budgetMs) {
+    const url = DATA_URLS[i % DATA_URLS.length];
+    try {
+      const text = await withTimeout(fetchUrl(url), 12000, '下载');
+      if (!text || text.length < 200000) throw new Error('内容过短: ' + (text ? text.length : 0) + ' 字节');
+      let parsed;
+      try {
+        parsed = JSON.parse(text);
+      } catch (e) {
+        throw new Error('JSON 不完整: ' + text.length + ' 字节');
+      }
+      if (!parsed.data || Object.keys(parsed.data).length === 0) throw new Error('数据为空');
+      return { text: text, parsed: parsed, url: url, attempts: i + 1 };
+    } catch (e) {
+      lastErr = e;
+    }
+    i++;
+  }
+  throw (lastErr || new Error('下载超时'));
+}
 
 // 兼容 Node16：无全局 fetch，用 https 拉取（支持一次 3xx 重定向）
 function fetchUrl(url) {
@@ -54,22 +88,51 @@ async function updatePointer(fileID, lastUpdated) {
   }
 }
 
-exports.main = async (event, context) => {
-  try {
-    // 1. 从 Pages 拉取最新数据
-    const text = await fetchUrl(DATA_URL);
-    if (!text) return { code: -1, msg: '拉取为空' };
+// 给 Promise 加硬超时，避免网络挂起时把整个函数拖到超时
+function withTimeout(promise, ms, label) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => setTimeout(() => reject(new Error((label || '操作') + '超时 ' + ms + 'ms')), ms)),
+  ]);
+}
 
-    // 2. 校验 JSON 结构（必须含 data 字段）
-    let parsed;
+exports.main = async (event, context) => {
+  // 诊断模式：分步计时，定位卡在哪一步
+  if (event && event.diag) {
+    const t = {};
+    let t0 = Date.now();
+    let text;
     try {
-      parsed = JSON.parse(text);
+      const r = await downloadWithRetry(40000);
+      text = r.text;
+      t.download = Date.now() - t0;
+      t.url = r.url;
+      t.attempts = r.attempts;
     } catch (e) {
-      return { code: -1, msg: '数据解析失败: ' + e.message };
+      return { diag: true, step: 'download', ok: false, ms: Date.now() - t0, err: (e && e.message) || String(e), url: DATA_URL };
     }
-    if (!parsed || !parsed.data || Object.keys(parsed.data).length === 0) {
-      return { code: -1, msg: '数据缺少 data 字段或为空' };
+    if (event.diag === 'upload' || event.diag === 'all') {
+      t0 = Date.now();
+      try {
+        const up = await withTimeout(cloud.uploadFile({
+          cloudPath: 'rankings/diag-' + Date.now() + '.json',
+          fileContent: Buffer.from(text, 'utf-8'),
+        }), 30000, '上传云存储');
+        t.upload = Date.now() - t0;
+        t.fileID = up && up.fileID ? up.fileID.split('/').pop() : null;
+      } catch (e) {
+        return { diag: true, step: 'upload', ok: false, timings: t, ms: Date.now() - t0, err: (e && e.message) || String(e) };
+      }
     }
+    return { diag: true, ok: true, timings: t, bytes: text.length, url: DATA_URL };
+  }
+
+  try {
+    // 1. 拉取最新数据（多镜像 + 重试；已内含 JSON 完整性校验）
+    const downloaded = await downloadWithRetry(40000);
+    const text = downloaded.text;
+    const parsed = downloaded.parsed;
+    if (!text || !parsed) return { code: -1, msg: '拉取为空' };
 
     // 3. 上传云存储（服务端有管理员权限）
     //    用「日期 + 时间戳」的唯一路径，彻底绕开 CDN 对同名文件的缓存
