@@ -118,9 +118,26 @@ jobs:
           echo "已推送 data 分支"
 
       - name: 刷新 jsDelivr 缓存
+        # 推送后 GitHub 需要几秒才把新提交同步给 jsDelivr，
+        # 立刻 purge 会把「旧内容」重新缓存 12 小时。所以先等待，再 purge 两次。
         run: |
-          curl -s --max-time 30 "https://purge.jsdelivr.net/gh/${GITHUB_REPOSITORY}@data/rankings.json" || true
-          echo "已请求刷新 CDN 缓存"
+          echo "等待 GitHub 提交同步到 CDN 源站..."
+          sleep 25
+          for i in 1 2; do
+            curl -s --max-time 30 "https://purge.jsdelivr.net/gh/${GITHUB_REPOSITORY}@data/rankings.json" > /dev/null || true
+            echo "第 $i 次 purge 完成"
+            sleep 10
+          done
+          # 验证缓存是否已更新到今天的数据
+          TODAY=$(date -u +%Y-%m-%d)
+          for i in 1 2 3; do
+            d=$(curl -s --max-time 60 "https://cdn.jsdelivr.net/gh/${GITHUB_REPOSITORY}@data/rankings.json" | head -c 80)
+            echo "CDN 返回: $d"
+            case "$d" in
+              *"lastUpdated\":\"$TODAY"*) echo "✅ CDN 已更新到 $TODAY"; break;;
+              *) echo "⚠️ 第 $i 次检查：仍为旧缓存"; sleep 15;;
+            esac
+          done
 
       - name: 配置 GitHub Pages
         uses: actions/configure-pages@v5
