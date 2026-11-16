@@ -17,6 +17,13 @@
     <text class="guide-tipbar-close" bindtap="closeGuide">×</text>
   </view>
 
+  <!-- 场景快捷入口（只做跳转，不合并榜单） -->
+  <scroll-view scroll-x class="scene-bar">
+    <view wx:for="{{scenes}}" wx:key="id" class="scene-item" data-index="{{index}}" bindtap="onSceneTap">
+      <text>{{item.name}}</text>
+    </view>
+  </scroll-view>
+
   <!-- 大类切换 -->
   <scroll-view scroll-x class="category-bar">
     <view wx:for="{{categories}}" wx:key="id"
@@ -34,6 +41,24 @@
       <text>{{item.icon}}{{item.name}}</text>
     </view>
   </scroll-view>
+
+  <!-- 国产 / 海外视角 -->
+  <view class="region-bar">
+    <view class="region-item {{region==='all'?'region-active':''}}" data-region="all" bindtap="onRegionChange">
+      <text>全部</text>
+    </view>
+    <view class="region-item {{region==='cn'?'region-active':''}}" data-region="cn" bindtap="onRegionChange">
+      <text>🇨🇳 国产</text>
+    </view>
+    <view class="region-item {{region==='intl'?'region-active':''}}" data-region="intl" bindtap="onRegionChange">
+      <text>🌍 海外</text>
+    </view>
+  </view>
+
+  <!-- 一句话结论卡 -->
+  <view wx:if="{{conclusion && displayModels.length}}" class="conclusion-card">
+    <text class="conclusion-text">{{conclusion}}</text>
+  </view>
 
   <!-- 搜索和排序 -->
   <view class="toolbar">
@@ -66,7 +91,12 @@
         <text>{{item.rank <= 3 ? medals[item.rank - 1] : item.rank}}</text>
       </view>
       <view class="item-info">
-        <text class="item-name">{{item.baseName}}</text>
+        <view class="item-name-line">
+          <text class="item-name">{{item.baseName}}</text>
+          <text wx:if="{{item.delta > 0}}" class="delta delta-up">↑{{item.delta}}</text>
+          <text wx:elif="{{item.delta < 0}}" class="delta delta-down">↓{{-item.delta}}</text>
+          <text wx:elif="{{item.isNew}}" class="delta delta-new">NEW</text>
+        </view>
         <view class="item-sub">
           <text class="item-provider">{{item.provider}}</text>
           <text wx:if="{{item.variant}}" class="item-variant">{{item.variant}}</text>

@@ -177,6 +177,76 @@ def find_or_model(or_models, name, or_list=None):
 
     return None
 
+GH_REPO = "zzzl0805/ai-model-rankings"
+
+
+def _http_json(url, timeout=60):
+    """GET JSON，自动使用环境变量或 macOS 系统代理"""
+    proxy = os.environ.get("HTTPS_PROXY") or os.environ.get("https_proxy")
+    if not proxy and sys.platform == "darwin":
+        try:
+            import subprocess
+            out = subprocess.run(["scutil", "--proxy"], capture_output=True, text=True, timeout=5).stdout
+            host = port = None
+            for line in out.splitlines():
+                line = line.strip()
+                if line.startswith("HTTPSProxy :"):
+                    host = line.split(":", 1)[1].strip()
+                elif line.startswith("HTTPSPort :"):
+                    port = line.split(":", 1)[1].strip()
+            if host and port:
+                proxy = "http://%s:%s" % (host, port)
+        except Exception:
+            pass
+    handlers = []
+    if proxy:
+        handlers.append(urllib.request.ProxyHandler({"http": proxy, "https": proxy}))
+    opener = urllib.request.build_opener(*handlers)
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+    with opener.open(req, timeout=timeout) as r:
+        return json.loads(r.read().decode("utf-8"))
+
+
+def fetch_previous_rankings():
+    """取最近一天的历史快照（tag vYYYY-MM-DD），取不到返回 None"""
+    from datetime import timedelta
+    for i in range(1, 4):
+        d = (datetime.now() - timedelta(days=i)).strftime("%Y-%m-%d")
+        url = "https://cdn.jsdelivr.net/gh/%s@v%s/rankings.json" % (GH_REPO, d)
+        try:
+            data = _http_json(url)
+            if data and data.get("data"):
+                data["__date__"] = d
+                return data
+        except Exception:
+            continue
+    return None
+
+
+def apply_rank_deltas(processed, prev):
+    """delta = 上期名次 - 本期名次（正数 = 上升）"""
+    prev_data = prev.get("data") or {}
+    changed = 0
+    for cat_id, dims in processed.items():
+        for dim_id, models in dims.items():
+            prev_list = ((prev_data.get(cat_id) or {}).get(dim_id)) or []
+            if not prev_list:
+                continue
+            prev_rank = {}
+            for m in prev_list:
+                prev_rank[m.get("name")] = m.get("rank")
+            for m in models:
+                pr = prev_rank.get(m.get("name"))
+                if pr is None:
+                    m["delta"] = 0
+                    m["isNew"] = True   # 新上榜
+                else:
+                    m["delta"] = int(pr) - int(m.get("rank") or 0)
+                    if m["delta"] != 0:
+                        changed += 1
+    return changed
+
+
 def build():
     print("=" * 60)
     print("构建小程序排行数据")
@@ -324,6 +394,18 @@ def build():
                 })
 
             processed[cat_id][dim_id] = enriched
+
+    # 计算排名变化（与昨天/前几天的快照对比）
+    # 历史快照来自 data 分支的日期 tag：@vYYYY-MM-DD
+    try:
+        prev = fetch_previous_rankings()
+        if prev:
+            added = apply_rank_deltas(processed, prev)
+            print(f"📈 排名变化：已对比 {prev['__date__']} 快照，{added} 个模型有变动")
+        else:
+            print("📈 排名变化：未找到历史快照，本次跳过（首日正常）")
+    except Exception as e:
+        print(f"⚠️ 排名变化计算失败（不影响主流程）: {e}")
 
     # 生成 JS 文件（紧凑格式）
     output = {
