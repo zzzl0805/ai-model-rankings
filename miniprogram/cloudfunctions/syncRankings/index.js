@@ -10,9 +10,8 @@ const https = require('https');
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 const db = cloud.database();
 
-// ⚠️ 部署前必须改成你自己的 GitHub Pages 地址：
-//   https://<你的GitHub用户名>.github.io/<仓库名>/rankings.json
-const DATA_URL = 'https://YOUR_USERNAME.github.io/REPO_NAME/rankings.json';
+// GitHub Pages 数据地址（由 .github/workflows/update-data.yml 每日发布）
+const DATA_URL = 'https://zzzl0805.github.io/ai-model-rankings/rankings.json';
 
 // 兼容 Node16：无全局 fetch，用 https 拉取（支持一次 3xx 重定向）
 function fetchUrl(url) {
