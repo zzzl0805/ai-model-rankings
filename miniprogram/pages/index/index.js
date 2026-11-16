@@ -69,6 +69,7 @@ Page({
     region: 'all',      // all | cn | intl
     conclusion: '',     // 一句话结论卡
     cnCount: 0,         // 当前榜单里的国产模型数
+    priceUnit: '$',     // 价格列币种（按视图统一）
   },
 
   onLoad: function (options) {
@@ -381,18 +382,17 @@ Page({
       copy.globalRank = renumber ? (m.overallRank || 0) : 0;
       copy.badgeRank = copy.globalRank ? ('综合第 ' + copy.globalRank) : '';
       copy.origRank = renumber ? i + 1 : m.rank;
-      copy.eloText = String(Math.round(m.elo));
+      copy.eloText = (Math.round(m.elo * 10) / 10).toFixed(1);
       copy.votesText = m.votes >= 1000 ? (m.votes / 1000).toFixed(1) + 'k' : String(m.votes || '');
+      // 整列统一币种，保证可比：国产视图用 ¥，其余用 $
       if (m.price && m.price.input > 0) {
-        if (m.price.currency === 'CNY') {
-          copy.priceText = '¥' + fmtNum(m.price.inputCNY) + ' 入 / ¥' + fmtNum(m.price.outputCNY) + ' 出';
+        if (region === 'cn') {
+          copy.priceText = '¥' + fmtNum(m.price.inputCNY) + ' / ¥' + fmtNum(m.price.outputCNY);
         } else {
-          copy.priceText = '$' + fmtNum(m.price.input) + ' 入 / $' + fmtNum(m.price.output) + ' 出';
+          copy.priceText = '$' + fmtNum(m.price.input) + ' / $' + fmtNum(m.price.output);
         }
-        copy.priceProxied = /openrouter/i.test(m.price.source || '');
       } else {
         copy.priceText = '';
-        copy.priceProxied = false;
       }
       copy.tie = false;
       copy.rank = copy.origRank;
@@ -405,19 +405,9 @@ Page({
     // 统计不确定性由每行的 ±95%CI 表达，脚注说明"区间重叠时名次差异不显著"。
     // 这样规则全局一致，不会出现"前 3 并列、第 5 名不并列"的自相矛盾。
 
-    // 相邻名次 95%CI 重叠 → 标「≈」（不改名次，只提示差异不显著）
-    for (var k = 0; k < sorted.length; k++) {
-      var prevM = sorted[k - 1], nextM = sorted[k + 1];
-      var cur = sorted[k];
-      var ovPrev = prevM && prevM.margin > 0 && cur.margin > 0 &&
-        Math.abs(cur.elo - prevM.elo) <= (cur.margin + prevM.margin);
-      var ovNext = nextM && nextM.margin > 0 && cur.margin > 0 &&
-        Math.abs(nextM.elo - cur.elo) <= (cur.margin + nextM.margin);
-      cur.tieMark = (ovPrev || ovNext) ? '≈' : '';
-    }
-
     this.setData({
       displayModels: sorted,
+      priceUnit: region === 'cn' ? '¥' : '$',
       conclusion: this.buildConclusion(sorted, region),
       cnCount: allModels.filter(function (m) { return m.isCN; }).length,
     });

@@ -6,7 +6,7 @@
       <text class="header-title">AI 模型排行</text>
       <text class="header-rules" bindtap="onRulesTap">规则</text>
     </view>
-    <text class="header-sub" style="padding-right:{{menuRight}}px;">{{lastUpdated}} 更新 · LMArena · 各榜独立计分 · {{dataSource === '云端' ? '云端' : '本地'}}</text>
+    <text class="header-sub" style="padding-right:{{menuRight}}px;">{{lastUpdated}} · 排名 LMArena · 价格 官网/代理</text>
   </view>
 
 
@@ -45,7 +45,7 @@
   <!-- 列头 -->
   <view class="col-head">
     <text class="ch-rank">名次</text>
-    <text class="ch-main">模型 · 价格（每百万 tokens）</text>
+    <text class="ch-main">模型 · 价格（{{priceUnit}}/百万 tokens）</text>
     <view class="ch-score"><text>Elo ±95%CI</text><text class="ch-info" bindtap="onRulesTap">ⓘ</text></view>
   </view>
 
@@ -65,7 +65,7 @@
       data-name="{{item.name}}" bindtap="onModelTap">
       <!-- 名次 -->
       <view class="col-rank {{item.rank <= 3 ? 'rank-top rank-' + item.rank : ''}}">
-        <text>{{item.rank}}</text><text wx:if="{{item.tieMark}}" class="tie-mark">{{item.tieMark}}</text>
+        <text>{{item.rank}}</text>
       </view>
       <!-- 模型 + 价格 -->
       <view class="col-main">
@@ -82,7 +82,6 @@
             <text class="meta-provider">{{item.provider}}</text>
           </view>
           <text wx:if="{{item.price.input > 0}}" class="meta-price">{{item.priceText}}</text>
-          <text wx:if="{{item.priceProxied}}" class="meta-proxy">代</text>
         </view>
       </view>
       <!-- 分数 -->
