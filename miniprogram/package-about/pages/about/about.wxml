@@ -30,7 +30,7 @@
           <text class="feature-icon">⚖️</text>
           <view class="feature-text">
             <text class="feature-name">模型对比</text>
-            <text class="feature-desc">横向对比最多4个模型的评分、价格和技术规格</text>
+            <text class="feature-desc">横向对比最多3个模型的评分、价格和技术规格</text>
           </view>
         </view>
         <view class="feature-item">

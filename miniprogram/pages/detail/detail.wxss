@@ -53,3 +53,9 @@
 .compare-btn { flex: 1; background: #0F5EF0; color: #fff; text-align: center; padding: 22rpx 0; border-radius: 16rpx; font-size: 30rpx; font-weight: 600; }
 .compare-btn-in { background: #10B981; }
 .compare-go { width: 160rpx; margin-left: 16rpx; text-align: center; padding: 22rpx 0; border: 2rpx solid #0F5EF0; color: #0F5EF0; border-radius: 16rpx; font-size: 28rpx; font-weight: 600; }
+
+/* 数据更新时间提示 */
+.updated-tip { text-align: center; padding: 16rpx 0 140rpx; font-size: 22rpx; color: #94A3B8; }
+
+/* 看完整排行（分享落地页出口） */
+.home-btn { width: 200rpx; margin-left: 16rpx; text-align: center; padding: 22rpx 0; background: #F1F5F9; color: #0F5EF0; border-radius: 16rpx; font-size: 28rpx; font-weight: 600; }

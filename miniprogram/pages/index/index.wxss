@@ -63,3 +63,14 @@
 .guide-icon { font-size: 36rpx; margin-right: 16rpx; }
 .guide-tip { font-size: 22rpx; color: #94A3B8; text-align: center; padding: 16rpx; background: #F8FAFC; border-radius: 8rpx; margin-bottom: 24rpx; }
 .guide-btn { height: 80rpx; background: #0F5EF0; border-radius: 40rpx; color: #fff; font-size: 30rpx; font-weight: 600; display: flex; align-items: center; justify-content: center; }
+
+/* 首次访问提示条（替换原整屏遮罩） */
+.guide-tipbar { display: flex; align-items: center; justify-content: space-between; margin: 0 24rpx 12rpx; padding: 18rpx 24rpx; background: #EFF6FF; border: 2rpx solid #BFDBFE; border-radius: 16rpx; }
+.guide-tipbar-text { flex: 1; font-size: 24rpx; color: #1E40AF; line-height: 1.5; }
+.guide-tipbar-close { padding: 0 8rpx; font-size: 36rpx; color: #64748B; line-height: 1; }
+
+/* 模型名 + 变体标签（避免长名称被截断） */
+.item-name-row { display: flex; align-items: center; overflow: hidden; }
+.item-variant { margin-left: 8rpx; padding: 2rpx 10rpx; background: #EFF6FF; color: #0F5EF0; border-radius: 8rpx; font-size: 20rpx; flex-shrink: 0; }
+.item-name-row .item-name { flex: 1; min-width: 0; }
+.item-sub { white-space: nowrap; overflow: hidden; }

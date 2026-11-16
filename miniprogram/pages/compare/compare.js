@@ -15,9 +15,44 @@ Page({
     loading: false,
   },
 
-  onLoad: function () {
+  // 转发：带上当前对比的模型（否则对方打开是空的）
+  onShareAppMessage: function () {
+    var models = this.data.models || [];
+    var displayNames = models.map(function (m) { return m.displayName || m.name; });
+    var rawNames = models.map(function (m) { return m.name; });
+    var title = displayNames.length
+      ? '我在对比：' + displayNames.join(' vs ')
+      : '多个 AI 模型横向对比｜AI模型排行';
+    return {
+      title: title,
+      path: '/pages/compare/compare?names=' + encodeURIComponent(rawNames.join(',')) + '&from=share',
+    };
+  },
+
+  onShareTimeline: function () {
+    var models = this.data.models || [];
+    var displayNames = models.map(function (m) { return m.displayName || m.name; });
+    var rawNames = models.map(function (m) { return m.name; });
+    return {
+      title: displayNames.length ? displayNames.join(' vs ') + '｜AI模型对比' : 'AI模型横向对比',
+      query: 'names=' + encodeURIComponent(rawNames.join(',')) + '&from=timeline',
+    };
+  },
+
+  onLoad: function (options) {
     var app = getApp();
     if (app.globalData && app.globalData.cloudRankings) rankings = app.globalData.cloudRankings;
+
+    // 从分享进入：用链接里的模型名初始化对比列表
+    try {
+      if (options && options.names) {
+        var shared = decodeURIComponent(options.names).split(',').filter(Boolean).slice(0, 3);
+        if (shared.length) {
+          wx.setStorageSync('compareList', shared);
+          if (app.globalData) app.globalData.compareList = shared;
+        }
+      }
+    } catch (e) {}
     var modelMap = {};
     var data = rankings.data;
 

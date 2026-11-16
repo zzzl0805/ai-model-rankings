@@ -67,6 +67,11 @@
     </view>
   </block>
 
+  <!-- 数据更新时间（从分享进来的用户能看到"数据是最新的"） -->
+  <view wx:if="{{modelName && updatedDate}}" class="updated-tip">
+    <text>数据更新于 {{updatedDate}}</text>
+  </view>
+
   <!-- 底部加入对比栏 -->
   <view wx:if="{{modelName}}" class="compare-bar">
     <view class="compare-btn {{inCompare ? 'compare-btn-in' : ''}}" bindtap="toggleCompare">
@@ -74,6 +79,9 @@
     </view>
     <view wx:if="{{inCompare}}" class="compare-go" bindtap="goCompare">
       <text>去对比</text>
+    </view>
+    <view class="home-btn" bindtap="goHome">
+      <text>看完整排行</text>
     </view>
   </view>
 

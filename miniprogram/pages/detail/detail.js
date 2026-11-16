@@ -26,6 +26,9 @@ Page({
     showSourcePopup: false,
     sourceInfo: null,
     rankInOverall: 0,
+    overallElo: 0,
+    updatedDate: '',
+    shareTitle: '',
     inCompare: false,
   },
 
@@ -60,6 +63,7 @@ Page({
     var votes = 0;
     var context = '';
     var rankInOverall = 0;
+    var overallElo = 0;
 
     try {
       Object.keys(data).forEach(function (catId) {
@@ -87,7 +91,11 @@ Page({
     try {
       var textOverall = ((data.text || data).overall) || [];
       for (var j = 0; j < textOverall.length; j++) {
-        if (textOverall[j].name === name) { rankInOverall = j + 1; break; }
+        if (textOverall[j].name === name) {
+          rankInOverall = j + 1;
+          overallElo = textOverall[j].elo || 0;
+          break;
+        }
       }
     } catch(e) {}
 
@@ -128,9 +136,45 @@ Page({
       context: context,
       categoryList: catList,
       rankInOverall: rankInOverall,
+      overallElo: overallElo,
+      updatedDate: r.lastUpdated || '',
       inCompare: inCompare,
       loading: false,
     });
+
+    // 动态标题：让分享卡片和搜索展示更有信息量
+    var displayName = meta.getDisplayName(name);
+    var shareTitle = rankInOverall > 0
+      ? displayName + ' 综合第' + rankInOverall + '名｜AI模型排行'
+      : displayName + '｜AI模型排行';
+    that.setData({ shareTitle: shareTitle });
+    try { wx.setNavigationBarTitle({ title: displayName + (rankInOverall ? ' · 第' + rankInOverall + '名' : '') }); } catch (e) {}
+  },
+
+  // 云端数据晚到时重新加载（否则从分享卡片进来的用户看到的是旧快照）
+  onCloudDataReady: function () {
+    if (this.data.modelName) this.loadModel(this.data.modelName);
+  },
+
+  // 转发给好友
+  onShareAppMessage: function () {
+    var name = this.data.modelName;
+    var title = this.data.shareTitle || (this.data.displayName + '｜AI模型排行');
+    if (this.data.price && this.data.price.input > 0) {
+      title += '，$' + this.data.price.input + '/百万token';
+    }
+    return {
+      title: title,
+      path: '/pages/detail/detail?name=' + encodeURIComponent(name || '') + '&from=share',
+    };
+  },
+
+  // 分享到朋友圈
+  onShareTimeline: function () {
+    return {
+      title: this.data.shareTitle || (this.data.displayName + '｜AI模型排行'),
+      query: 'name=' + encodeURIComponent(this.data.modelName || '') + '&from=timeline',
+    };
   },
 
   // 加入/移出对比（与 compareList 本地存储同步）
@@ -188,7 +232,18 @@ Page({
     wx.switchTab({ url: '/pages/compare/compare' });
   },
 
-  goBack: function () { wx.navigateBack({ delta: 1 }); },
+  // 从分享卡片冷启动时页面栈只有 1 页，navigateBack 会失败 → 兜底回首页
+  goBack: function () {
+    wx.navigateBack({
+      delta: 1,
+      fail: function () { wx.switchTab({ url: '/pages/index/index' }); },
+    });
+  },
+
+  // 查看完整排行（分享落地页的关键出口）
+  goHome: function () {
+    wx.switchTab({ url: '/pages/index/index' });
+  },
   showSourceInfo: function (e) {
     var cat = e.currentTarget.dataset.cat;
     var dim = e.currentTarget.dataset.dim;

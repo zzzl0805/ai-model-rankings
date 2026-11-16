@@ -11,6 +11,12 @@
     </text>
   </view>
 
+  <!-- 首次访问提示条（原先是整屏黑遮罩，会挡住分享进来的新用户） -->
+  <view wx:if="{{showGuide}}" class="guide-tipbar">
+    <text class="guide-tipbar-text">👋 数据来自 LMArena 人类投票 · 每日更新 · 点任意模型看详情</text>
+    <text class="guide-tipbar-close" bindtap="closeGuide">×</text>
+  </view>
+
   <!-- 大类切换 -->
   <scroll-view scroll-x class="category-bar">
     <view wx:for="{{categories}}" wx:key="id"
@@ -60,9 +66,10 @@
         <text>{{item.rank <= 3 ? medals[item.rank - 1] : item.rank}}</text>
       </view>
       <view class="item-info">
-        <text class="item-name">{{item.displayName}}</text>
+        <text class="item-name">{{item.baseName}}</text>
         <view class="item-sub">
           <text class="item-provider">{{item.provider}}</text>
+          <text wx:if="{{item.variant}}" class="item-variant">{{item.variant}}</text>
           <text class="item-conf" style="color:{{item.confidence.color}};">•{{item.confidence.label}}</text>
         </view>
       </view>
@@ -77,23 +84,9 @@
       </view>
       <view class="item-meta">
         <text class="item-votes" wx:if="{{item.votes}}">{{item.votes}}{{isAgent ? '会话' : '票'}}</text>
-        <text class="item-price" wx:if="{{item.price.input > 0}}">${{item.price.input}}/${{item.price.output}}</text>
+        <text class="item-price" wx:if="{{item.price.input > 0}}">${{item.price.input}}/${{item.price.output}} 每百万token</text>
       </view>
     </view>
   </view>
 
-  <!-- 新手引导 -->
-  <view wx:if="{{showGuide}}" class="guide-mask" bindtap="closeGuide">
-    <view class="guide-content" catchtap="noop">
-      <text class="guide-title">👋 欢迎使用 AI模型排行</text>
-      <view class="guide-list">
-        <view class="guide-item"><text class="guide-icon">📊</text><text>看排行找最强模型（数据来自 LMArena）</text></view>
-        <view class="guide-item"><text class="guide-icon">⚖️</text><text>用对比比较多个模型</text></view>
-        <view class="guide-item"><text class="guide-icon">💰</text><text>算成本预估月费</text></view>
-        <view class="guide-item"><text class="guide-icon">🎯</text><text>按场景智能推荐</text></view>
-      </view>
-      <view class="guide-tip">💡 评分基于人类主观偏好投票，仅供参考</view>
-      <view class="guide-btn" bindtap="closeGuide"><text>开始使用</text></view>
-    </view>
-  </view>
 </view>

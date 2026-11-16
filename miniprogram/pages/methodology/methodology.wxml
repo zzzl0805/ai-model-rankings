@@ -103,7 +103,7 @@
     </view>
 
     <view class="footer">
-      <text class="footer-text">数据更新频率：每周一次</text>
+      <text class="footer-text">数据更新频率：每日自动更新</text>
       <button class="feedback-btn" open-type="feedback">💬 意见反馈</button>
     </view>
 

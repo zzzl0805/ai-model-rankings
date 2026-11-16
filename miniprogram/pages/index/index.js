@@ -24,7 +24,7 @@ Page({
     dataSource: '本地', // 云端 or 本地
   },
 
-  onLoad: function () {
+  onLoad: function (options) {
     var that = this;
     var app = getApp();
     var source = '本地';
@@ -45,9 +45,16 @@ Page({
     });
 
     that.checkFirstVisit();
-    that.loadRankings('text', 'overall');
+
+    // 支持深链直达某个榜单：?category=coding&dim=overall
+    var cat = (options && options.category) || '';
+    var dim = (options && options.dim) || 'overall';
+    var validCat = false;
+    (rankings.categories || []).forEach(function (c) { if (c.id === cat) validCat = true; });
+    that.loadRankings(validCat ? cat : 'text', dim);
   },
 
+  // 首次访问：改成顶部可关闭提示条（原来整屏黑遮罩会挡住分享进来的新用户）
   checkFirstVisit: function () {
     try {
       var visited = wx.getStorageSync('hasVisited');
@@ -60,6 +67,59 @@ Page({
 
   closeGuide: function () {
     this.setData({ showGuide: false });
+  },
+
+  // 下拉刷新：用户手动拉一下就能同步云端最新数据
+  onPullDownRefresh: function () {
+    var that = this;
+    try {
+      var app = getApp();
+      if (app && typeof app.loadCloudData === 'function') app.loadCloudData();
+    } catch (e) {}
+    setTimeout(function () {
+      that.applyCloudData();
+      wx.stopPullDownRefresh();
+    }, 1200);
+  },
+
+  // 转发给好友：标题带榜单信息，落地到当前榜单
+  onShareAppMessage: function () {
+    var cat = this.data.activeCategory;
+    var dim = this.data.activeDimension;
+    var catInfo = null;
+    (this.data.categories || []).forEach(function (c) { if (c.id === cat) catInfo = c; });
+    var catName = catInfo ? catInfo.name : 'AI模型';
+    var dimName = this.getDimName(dim);
+    var top = (this.data.allDisplayModels || [])[0];
+    var title = top
+      ? catName + dimName + '第一是' + top.displayName + '｜AI模型排行'
+      : catName + dimName + '排行｜AI模型排行';
+    return {
+      title: title,
+      path: '/pages/index/index?category=' + cat + '&dim=' + dim + '&from=share',
+    };
+  },
+
+  // 分享到朋友圈
+  onShareTimeline: function () {
+    var cat = this.data.activeCategory;
+    var dim = this.data.activeDimension;
+    var top = (this.data.allDisplayModels || [])[0];
+    return {
+      title: top ? this.getCatName(cat) + '第一：' + top.displayName + '（' + this.data.lastUpdated + '）' : 'AI模型排行',
+      query: 'category=' + cat + '&dim=' + dim + '&from=timeline',
+    };
+  },
+
+  getCatName: function (catId) {
+    var name = 'AI模型';
+    (this.data.categories || []).forEach(function (c) { if (c.id === catId) name = c.name; });
+    return name;
+  },
+
+  getDimName: function (dimId) {
+    var names = { overall: '综合', coding: '编程', math: '数学', writing: '写作', hardprompts: '难题', instruction: '指令', expert: '专家', multiturn: '长对话' };
+    return names[dimId] || '';
   },
 
   onShow: function () {
@@ -105,15 +165,25 @@ Page({
       that.setData({
         models: models,
         allDisplayModels: models.map(function(m) {
+          // 把名称末尾的变体（如 "(High)"、"(Max)"）拆出来单独展示，
+          // 否则模型名过长会被截断成 "Gemini 4 Carbon (…"
+          var full = meta.getDisplayName(m.name);
+          var vm = full.match(/^(.*?)\s*\(([^)]+)\)\s*$/);
           return {
             rank: m.rank,
             name: m.name,
-            displayName: meta.getDisplayName(m.name),
+            displayName: full,
+            baseName: vm ? vm[1] : full,
+            variant: vm ? vm[2] : '',
             provider: meta.getProviderCN(m.name),
             elo: m.elo,
             margin: m.margin,
             votes: m.votes,
-            confidence: meta.getConfidence(m.votes),
+            confidence: (function () {
+              var c = meta.getConfidence(m.votes);
+              // 列表空间紧张，标签缩短（详情页仍显示完整文案）
+              return { color: c.color, label: (c.label || '').replace('样本', '') };
+            })(),
             price: m.price,
             context: m.context,
           };
