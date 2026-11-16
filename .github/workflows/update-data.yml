@@ -62,7 +62,17 @@ jobs:
 
       - name: 抓取并构建数据（update.sh）
         # 抓取失败不阻断：回退用仓库已提交的 rankings.js，保证 Pages 总有数据可发布
-        run: cd pipeline && bash update.sh || echo "SCRAPE_FAILED=true" >> "$GITHUB_ENV"
+        # 日志同时写到 pipeline/update.log，便于排查（会随数据一起推到 data 分支）
+        run: |
+          cd pipeline
+          set +e
+          bash update.sh 2>&1 | tee update.log
+          rc=${PIPESTATUS[0]}
+          if [ "$rc" -ne 0 ]; then
+            echo "SCRAPE_FAILED=true" >> "$GITHUB_ENV"
+            echo "::warning::update.sh 退出码 $rc，将发布仓库中上次构建的数据"
+          fi
+          exit 0
 
       - name: 提示抓取失败（可选）
         if: env.SCRAPE_FAILED == 'true'
@@ -97,6 +107,11 @@ jobs:
           git rm -rf . > /dev/null 2>&1 || true
           cp "$GITHUB_WORKSPACE/dist/rankings.json" rankings.json
           git add rankings.json
+          # 附带本次运行日志，便于排查抓取问题
+          if [ -f "$GITHUB_WORKSPACE/pipeline/update.log" ]; then
+            cp "$GITHUB_WORKSPACE/pipeline/update.log" update.log
+            git add update.log
+          fi
           git -c user.name="github-actions[bot]" -c user.email="github-actions[bot]@users.noreply.github.com" \
               commit -m "data: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
           git push -f origin data
