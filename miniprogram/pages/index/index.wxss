@@ -168,7 +168,8 @@ page {
   color: var(--text-2);
 }
 .ch-rank { width: 64rpx; flex-shrink: 0; text-align: center; }
-.ch-main { flex: 1; }
+.ch-main { flex: 1; display: flex; justify-content: space-between; }
+.ch-price { width: 236rpx; text-align: right; }
 .ch-score { width: 150rpx; flex-shrink: 0; text-align: right; white-space: nowrap; }
 
 /* ============ 列表 ============ */
@@ -197,9 +198,9 @@ page {
   font-variant-numeric: tabular-nums;
 }
 .rank-top { font-weight: 700; font-size: 28rpx; }
-.rank-1 { color: #B7791F; }
-.rank-2 { color: #64748B; }
-.rank-3 { color: #B45309; }
+.rank-1 { color: #8A5D1B; }
+.rank-2 { color: #5B6675; }
+.rank-3 { color: #A05A2C; }
 
 /* 主列 */
 .col-main { flex: 1; min-width: 0; }
@@ -246,10 +247,11 @@ page {
   overflow: hidden;
 }
 .meta-global { color: var(--text-2); margin-right: 10rpx; }
-.meta-provider { color: var(--text-2); }
+.meta-provider { color: var(--text-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
 .meta-sep { margin: 0 8rpx; color: #CBD5E1; }
-.meta-left { display: flex; align-items: center; width: 210rpx; flex-shrink: 0; overflow: hidden; }
-.meta-price { color: #334155; font-variant-numeric: tabular-nums; }
+.meta-left { flex: 1; min-width: 0; display: flex; align-items: center; margin-right: 16rpx; overflow: hidden; }
+.price-cell { width: 236rpx; flex-shrink: 0; display: flex; align-items: center; justify-content: flex-end; }
+.meta-price { flex: 1; text-align: right; color: #334155; font-variant-numeric: tabular-nums; white-space: nowrap; }
 
 /* 分数列 */
 .col-score {
@@ -313,4 +315,30 @@ page {
 /* 首屏常驻口径提示 */
 .ctx-note { margin: 0 24rpx 8rpx; font-size: 20rpx; color: var(--text-2); line-height: 1.5; }
 /* 代理价标记 */
-.meta-proxy { margin-left: 6rpx; padding: 0 6rpx; font-size: 18rpx; color: var(--text-2); background: #EEF2F7; border-radius: 4rpx; flex-shrink: 0; }
+.meta-proxy { width: 48rpx; margin-left: 6rpx; text-align: center; font-size: 18rpx; color: var(--text-2); background: #EEF2F7; border-radius: 4rpx; flex-shrink: 0; }
+.is-hidden { visibility: hidden; }
+
+/* 横滑区右缘渐隐，提示可滑动 */
+.tab-wrap { position: relative; }
+.tab-fade {
+  position: absolute; right: 0; top: 0; bottom: 1rpx; width: 48rpx;
+  background: linear-gradient(90deg, rgba(255,255,255,0), #FFFFFF);
+  pointer-events: none;
+}
+
+/* 价格单元格：代在左、价格在右，保证价格右缘与列头一致 */
+.price-cell { justify-content: flex-end; }
+.price-cell .meta-proxy { margin-right: 6rpx; margin-left: 0; }
+.price-cell .meta-price { flex: 0 1 auto; }
+
+/* 低样本提示 */
+.low-sample {
+  display: inline;
+  margin-left: 2rpx;
+  font-size: 16rpx;
+  color: #B45309;
+  line-height: 1;
+}
+
+/* 低样本标签（与规则页 <1000 票一致） */
+.sample-low { margin-left: 6rpx; padding: 0 6rpx; font-size: 16rpx; color: #64748B; background: #F1F5F9; border-radius: 4rpx; flex-shrink: 0; }

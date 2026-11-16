@@ -6,11 +6,12 @@
       <text class="header-title">AI 模型排行</text>
       <text class="header-rules" bindtap="onRulesTap">规则</text>
     </view>
-    <text class="header-sub" style="padding-right:{{menuRight}}px;">{{lastUpdated}} · 排名 LMArena · 价格 官网/代理</text>
+    <text class="header-sub" style="padding-right:{{menuRight}}px;">数据截至 {{lastUpdated}} · LMArena</text>
   </view>
 
 
   <!-- 大类（纯文字 + 下划线） -->
+  <view class="tab-wrap">
   <scroll-view scroll-x class="tab-bar" enhanced show-scrollbar="{{false}}">
     <view wx:for="{{categories}}" wx:key="id"
       class="tab {{activeCategory===item.id?'tab-active':''}}"
@@ -18,15 +19,20 @@
       <text>{{item.name}}</text>
     </view>
   </scroll-view>
+  <view class="tab-fade"></view>
+  </view>
 
   <!-- 维度 -->
-  <scroll-view scroll-x class="subtab-bar" wx:if="{{dimensions.length > 1}}" enhanced show-scrollbar="{{false}}">
+  <view class="tab-wrap" wx:if="{{dimensions.length > 1}}">
+  <scroll-view scroll-x class="subtab-bar" enhanced show-scrollbar="{{false}}">
     <view wx:for="{{dimensions}}" wx:key="id"
       class="subtab {{activeDimension===item.id?'subtab-active':''}}"
       data-id="{{item.id}}" bindtap="onDimensionChange">
       <text>{{item.name}}</text>
     </view>
   </scroll-view>
+  <view class="tab-fade"></view>
+  </view>
 
   <!-- 搜索 + 视角 -->
   <view class="toolbar">
@@ -45,7 +51,7 @@
   <!-- 列头 -->
   <view class="col-head">
     <text class="ch-rank">名次</text>
-    <text class="ch-main">模型 · 价格（{{priceUnit}}/百万 tokens）</text>
+    <view class="ch-main"><text>模型</text><text class="ch-price">价格 入/出 {{priceUnit}}/M</text></view>
     <view class="ch-score"><text>Elo ±95%CI</text><text class="ch-info" bindtap="onRulesTap">ⓘ</text></view>
   </view>
 
@@ -76,25 +82,26 @@
       <view class="col-main">
         <view class="name-line">
           <text class="model-name">{{item.baseName}}</text>
-          <text wx:if="{{item.variant}}" class="variant">{{item.variant}}</text>
           <text wx:if="{{item.delta > 0}}" class="delta delta-up">+{{item.delta}}</text>
           <text wx:elif="{{item.delta < 0}}" class="delta delta-down">{{item.delta}}</text>
           <text wx:elif="{{item.isNew}}" class="delta delta-new">新</text>
         </view>
         <view class="meta-line">
           <view class="meta-left">
-            <text wx:if="{{item.globalRank}}" class="meta-global">{{item.badgeRank}}</text>
             <text class="meta-provider">{{item.provider}}</text>
+            <text wx:if="{{item.variant}}" class="variant">{{item.variant}}</text>
+            <text wx:if="{{item.lowSample}}" class="sample-low">样本少</text>
           </view>
-          <text wx:if="{{item.price.input > 0}}" class="meta-price">{{item.priceText}}</text>
-          <text wx:if="{{item.priceProxy}}" class="meta-proxy">代</text>
+          <view class="price-cell">
+            <text class="meta-proxy {{item.priceProxy ? '' : 'is-hidden'}}">代理</text>
+            <text wx:if="{{item.price.input > 0}}" class="meta-price">{{item.priceText}}</text>
+          </view>
         </view>
       </view>
       <!-- 分数 -->
       <view class="col-score">
         <text class="score">{{item.eloText}}{{isAgent ? '%' : ''}}</text>
-        <text class="score-sub" wx:if="{{!isAgent}}">±{{item.margin}}</text>
-        <text class="score-sub" wx:if="{{item.votes}}">{{item.votesText}}票</text>
+        <text class="score-sub">{{isAgent ? (item.votesText + ' 会话') : ('±' + item.margin + ' · ' + item.votesText + '票')}}</text>
       </view>
     </view>
   </view>
@@ -107,6 +114,6 @@
 
   <!-- 脚注：口径说明（跨榜不可比是这类产品最易被误读的点） -->
   <view wx:if="{{displayModels.length}}" class="footnote">
-    <text>± 为 95% 置信区间（bootstrap，半宽），区间重叠时名次差异不显著 · 票数为去重有效投票 · 各子榜独立计分，不可跨榜比较 · 价格来自厂商官网或 OpenRouter 代理（标「代」），不含缓存与批量折扣· 数据来源 LMArena</text>
+    <text>± 为 bootstrap 95% 置信区间（半宽），名次按 Elo 点估计排序；置信区间重叠不能直接判定差异不显著，显著性需两两检验 · 票数为去重有效投票 · 价格为厂商官网价或 OpenRouter 代理价，不含缓存与批量折扣；国产视图按当日汇率折算为 ¥ · 各子榜独立计分，Elo 不可跨榜比较</text>
   </view>
 </view>

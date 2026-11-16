@@ -346,13 +346,11 @@ Page({
   },
 
   // 首屏常驻口径提示（一行）：协方差/跨榜/价格来源
-  buildCtxNote: function (region) {
+  buildCtxNote: function (region, renumbered) {
     var parts = [];
-    if (this.data.activeDimension && this.data.activeDimension !== 'overall') {
-      parts.push('子榜独立计分');
-    }
-    parts.push('±95%CI 重叠则不显著');
-    parts.push(region === 'cn' ? '价格按汇率折算 ¥' : '代理价标「代」');
+    if (renumbered) parts.push('名次按当前筛选重排（Elo 不变）');
+    parts.push('Elo 仅榜内可比');
+    parts.push('CI 重叠 ≠ 差异显著');
     return parts.join(' · ');
   },
 
@@ -387,20 +385,23 @@ Page({
     // 筛选/搜索后重新编号：用户看的是"国产榜"，主排名应是 1..N，
     // 全球排名保留在 meta 行（如"全球第 13"）
     var renumber = (region !== 'all' || !!searchText);
+    var catNameForBadge = this.getCatName(this.data.activeCategory);
     sorted = sorted.map(function (m, i) {
       var copy = {};
       for (var k in m) copy[k] = m[k];
       copy.globalRank = renumber ? (m.overallRank || 0) : 0;
-      copy.badgeRank = copy.globalRank ? ('总榜 #' + copy.globalRank) : '';
+      copy.badgeRank = copy.globalRank ? (catNameForBadge + '综合 #' + copy.globalRank) : '';
       copy.origRank = renumber ? i + 1 : m.rank;
       copy.eloText = (Math.round(m.elo * 10) / 10).toFixed(1);
       copy.votesText = m.votes >= 1000 ? (m.votes / 1000).toFixed(1) + 'k' : String(m.votes || '');
       // 整列统一币种，保证可比：国产视图用 ¥，其余用 $
+      copy.priceProxy = /openrouter/i.test((m.price && m.price.source) || '');
       if (m.price && m.price.input > 0) {
+        var nativeCny = m.price.currency === 'CNY';
         if (region === 'cn') {
-          copy.priceText = '¥' + fmtNum(m.price.inputCNY) + ' / ¥' + fmtNum(m.price.outputCNY);
+          copy.priceText = (nativeCny ? '' : '≈') + '¥' + fmtNum(m.price.inputCNY) + ' / ¥' + fmtNum(m.price.outputCNY);
         } else {
-          copy.priceText = '$' + fmtNum(m.price.input) + ' / $' + fmtNum(m.price.output);
+          copy.priceText = (nativeCny ? '≈' : '') + '$' + fmtNum(m.price.input) + ' / $' + fmtNum(m.price.output);
         }
         copy.priceProxy = /openrouter/i.test((m.price && m.price.source) || '');
       } else {
@@ -408,6 +409,7 @@ Page({
         copy.priceProxy = false;
       }
       copy.tie = false;
+      copy.lowSample = (m.votes > 0 && m.votes < 1000);
       copy.rank = copy.origRank;
       return copy;
     });
@@ -415,13 +417,13 @@ Page({
     // 误差区间重叠 → 并列（避免把统计噪声当成确定名次）
     // 用标准的 competition ranking：并列者共享靠前的名次，后续跳号
     // 名次保持严格递增（不做并列重编号）。
-    // 统计不确定性由每行的 ±95%CI 表达，脚注说明"区间重叠时名次差异不显著"。
+    // 统计不确定性由每行的 ±95%CI 表达；脚注说明"名次按点估计，重叠不能直接判定不显著"。
     // 这样规则全局一致，不会出现"前 3 并列、第 5 名不并列"的自相矛盾。
 
     this.setData({
       displayModels: sorted,
       priceUnit: region === 'cn' ? '¥' : '$',
-      ctxNote: this.buildCtxNote(region),
+      ctxNote: this.buildCtxNote(region, renumber),
       conclusion: this.buildConclusion(sorted, region),
       cnCount: allModels.filter(function (m) { return m.isCN; }).length,
     });
