@@ -13,11 +13,26 @@ const db = cloud.database();
 // 数据地址：用 jsDelivr 镜像 GitHub 仓库里的 dist/rankings.json
 // （腾讯云函数在境内，访问 GitHub Pages 会超时/被墙；jsDelivr 国内可达）
 // 多个镜像 + 重试：实测同一地址有时 3 秒、有时会挂起，必须做容错
-const DATA_URLS = [
-  'https://cdn.jsdelivr.net/gh/zzzl0805/ai-model-rankings@data/rankings.json',
-  'https://fastly.jsdelivr.net/gh/zzzl0805/ai-model-rankings@data/rankings.json',
-  'https://gcore.jsdelivr.net/gh/zzzl0805/ai-model-rankings@data/rankings.json',
-];
+// 用「日期 tag」而不是分支：tag 是不可变 URL，
+// 每天一个新 tag 就是新地址，永远不会命中 CDN 的旧缓存
+// （分支 URL 会被 jsDelivr 缓存 12 小时，导致数据看起来没更新）
+function buildDataUrls() {
+  const urls = [];
+  const now = Date.now();
+  for (let i = 0; i < 3; i++) {
+    const d = new Date(now - i * 86400000);
+    const tag = 'v' + d.getUTCFullYear() + '-' +
+      String(d.getUTCMonth() + 1).padStart(2, '0') + '-' +
+      String(d.getUTCDate()).padStart(2, '0');
+    urls.push('https://cdn.jsdelivr.net/gh/zzzl0805/ai-model-rankings@' + tag + '/rankings.json');
+    urls.push('https://fastly.jsdelivr.net/gh/zzzl0805/ai-model-rankings@' + tag + '/rankings.json');
+  }
+  // 兜底：分支地址（可能被 CDN 缓存，但总比拿不到强）
+  urls.push('https://cdn.jsdelivr.net/gh/zzzl0805/ai-model-rankings@data/rankings.json');
+  urls.push('https://gcore.jsdelivr.net/gh/zzzl0805/ai-model-rankings@data/rankings.json');
+  return urls;
+}
+const DATA_URLS = buildDataUrls();
 const DATA_URL = DATA_URLS[0];
 
 // 轮流尝试各镜像，直到拿到【完整且可解析】的数据或超出时间预算
@@ -99,6 +114,16 @@ function withTimeout(promise, ms, label) {
 exports.main = async (event, context) => {
   // 诊断模式：分步计时，定位卡在哪一步
   if (event && event.diag) {
+    // 支持自测任意 URL 的可达性：{diag:'url', url:'https://...'}
+    if (event.diag === 'url' && event.url) {
+      const t0u = Date.now();
+      try {
+        const t = await withTimeout(fetchUrl(event.url), 15000, '请求');
+        return { diag: 'url', ok: true, ms: Date.now() - t0u, bytes: t.length, head: t.slice(0, 400), url: event.url };
+      } catch (e) {
+        return { diag: 'url', ok: false, ms: Date.now() - t0u, err: (e && e.message) || String(e), url: event.url };
+      }
+    }
     const t = {};
     let t0 = Date.now();
     let text;

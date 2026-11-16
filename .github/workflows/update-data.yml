@@ -115,7 +115,11 @@ jobs:
           git -c user.name="github-actions[bot]" -c user.email="github-actions[bot]@users.noreply.github.com" \
               commit -m "data: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
           git push -f origin data
-          echo "已推送 data 分支"
+          # 打日期 tag：云函数按 tag 取数，tag 不可变 → 天然绕开 CDN 缓存
+          DATE=$(date -u +%Y-%m-%d)
+          git tag -f "v$DATE"
+          git push -f origin "refs/tags/v$DATE"
+          echo "已推送 data 分支与 tag v$DATE"
 
       - name: 刷新 jsDelivr 缓存
         # 推送后 GitHub 需要几秒才把新提交同步给 jsDelivr，
