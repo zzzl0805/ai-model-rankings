@@ -49,6 +49,11 @@
     <view class="ch-score"><text>Elo ±95%CI</text><text class="ch-info" bindtap="onRulesTap">ⓘ</text></view>
   </view>
 
+  <!-- 首屏常驻口径提示 -->
+  <view wx:if="{{displayModels.length}}" class="ctx-note">
+    <text>{{ctxNote}}</text>
+  </view>
+
   <!-- 加载中 -->
   <view wx:if="{{loading}}" class="center-box">
     <text class="center-text">加载中</text>
@@ -82,6 +87,7 @@
             <text class="meta-provider">{{item.provider}}</text>
           </view>
           <text wx:if="{{item.price.input > 0}}" class="meta-price">{{item.priceText}}</text>
+          <text wx:if="{{item.priceProxy}}" class="meta-proxy">代</text>
         </view>
       </view>
       <!-- 分数 -->

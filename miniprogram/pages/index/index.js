@@ -345,6 +345,17 @@ Page({
     return prefix + '榜首 ' + top1.baseName + '（' + top1.elo + ' 分）';
   },
 
+  // 首屏常驻口径提示（一行）：协方差/跨榜/价格来源
+  buildCtxNote: function (region) {
+    var parts = [];
+    if (this.data.activeDimension && this.data.activeDimension !== 'overall') {
+      parts.push('子榜独立计分');
+    }
+    parts.push('±95%CI 重叠则不显著');
+    parts.push(region === 'cn' ? '价格按汇率折算 ¥' : '代理价标「代」');
+    return parts.join(' · ');
+  },
+
   applyFilter: function () {
     var allModels = this.data.allDisplayModels || [];
     var searchText = this.data.searchText;
@@ -380,7 +391,7 @@ Page({
       var copy = {};
       for (var k in m) copy[k] = m[k];
       copy.globalRank = renumber ? (m.overallRank || 0) : 0;
-      copy.badgeRank = copy.globalRank ? ('综合第 ' + copy.globalRank) : '';
+      copy.badgeRank = copy.globalRank ? ('总榜 #' + copy.globalRank) : '';
       copy.origRank = renumber ? i + 1 : m.rank;
       copy.eloText = (Math.round(m.elo * 10) / 10).toFixed(1);
       copy.votesText = m.votes >= 1000 ? (m.votes / 1000).toFixed(1) + 'k' : String(m.votes || '');
@@ -391,8 +402,10 @@ Page({
         } else {
           copy.priceText = '$' + fmtNum(m.price.input) + ' / $' + fmtNum(m.price.output);
         }
+        copy.priceProxy = /openrouter/i.test((m.price && m.price.source) || '');
       } else {
         copy.priceText = '';
+        copy.priceProxy = false;
       }
       copy.tie = false;
       copy.rank = copy.origRank;
@@ -408,6 +421,7 @@ Page({
     this.setData({
       displayModels: sorted,
       priceUnit: region === 'cn' ? '¥' : '$',
+      ctxNote: this.buildCtxNote(region),
       conclusion: this.buildConclusion(sorted, region),
       cnCount: allModels.filter(function (m) { return m.isCN; }).length,
     });

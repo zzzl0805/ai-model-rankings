@@ -309,3 +309,8 @@ page {
 
 /* 相邻名次置信区间重叠标记 */
 .tie-mark { font-size: 18rpx; color: var(--text-3); font-weight: 400; margin-left: 1rpx; }
+
+/* 首屏常驻口径提示 */
+.ctx-note { margin: 0 24rpx 8rpx; font-size: 20rpx; color: var(--text-2); line-height: 1.5; }
+/* 代理价标记 */
+.meta-proxy { margin-left: 6rpx; padding: 0 6rpx; font-size: 18rpx; color: var(--text-2); background: #EEF2F7; border-radius: 4rpx; flex-shrink: 0; }
