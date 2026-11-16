@@ -37,18 +37,20 @@ function vendorName(raw) {
   return PROVIDER_CN[k] || raw || '其他';
 }
 
-// 场景快捷入口：只做跳转，**不合并榜单**（不同类目的 Elo 尺度不可比）
-var SCENES = [
-  { id: 'coding', name: '💻 写代码', category: 'text', dim: 'coding' },
-  { id: 'chat', name: '💬 日常对话', category: 'text', dim: 'overall' },
-  { id: 'doc', name: '📄 长文档', category: 'document', dim: 'overall' },
-  { id: 'vision', name: '👁 看图', category: 'vision', dim: 'overall' },
-  { id: 'image', name: '🎨 生成图片', category: 'text-to-image', dim: 'overall' },
-];
+// 价格格式化：去掉多余的小数位（2.00 → 2，0.43 → 0.43）
+function fmtNum(v) {
+  var n = Number(v) || 0;
+  if (n >= 10) return String(Math.round(n));
+  return String(Math.round(n * 100) / 100);
+}
+
+// 说明：场景快捷入口已移除（与分类/维度功能重叠，且增加视觉层级）。
+// 不同类目的 Elo 尺度不可比，任何"跨类目合并"的榜单都不做。
 
 Page({
   data: {
     statusBarHeight: 44,
+    menuRight: 110,
     activeCategory: 'text',
     activeDimension: 'overall',
     categories: [],
@@ -58,7 +60,6 @@ Page({
     displayModels: [],
     allDisplayModels: [],
     loading: false,
-    medals: ['🥇', '🥈', '🥉'],
     searchText: '',
     sortOrder: 'desc',
     isAgent: false,
@@ -66,7 +67,6 @@ Page({
     lastUpdated: '',
     dataSource: '本地', // 云端 or 本地
     region: 'all',      // all | cn | intl
-    scenes: SCENES,
     conclusion: '',     // 一句话结论卡
     cnCount: 0,         // 当前榜单里的国产模型数
   },
@@ -81,7 +81,13 @@ Page({
     }
     try {
       var info = wx.getSystemInfoSync();
-      that.setData({ statusBarHeight: info.statusBarHeight || 44 });
+      // 顶部右侧有微信胶囊按钮（返回/更多），自定义导航栏需避开它
+      var menuRight = 110;
+      try {
+        var rect = wx.getMenuButtonBoundingClientRect();
+        if (rect && rect.left) menuRight = Math.round(info.windowWidth - rect.left + 8);
+      } catch (e2) {}
+      that.setData({ statusBarHeight: info.statusBarHeight || 44, menuRight: menuRight });
     } catch (e) {}
 
     that.setData({
@@ -293,12 +299,6 @@ Page({
     this.applyFilter();
   },
 
-  onSceneTap: function (e) {
-    var idx = Number(e.currentTarget.dataset.index);
-    var s = SCENES[idx];
-    if (!s) return;
-    this.loadRankings(s.category, s.dim);
-  },
 
   // 生成一句话结论（同时也是分享标题），规则固定 + 永远有兜底
   buildConclusion: function (list, region) {
@@ -363,6 +363,31 @@ Page({
     if (sortOrder === 'asc') {
       sorted.reverse();
     }
+
+    // 筛选/搜索后重新编号：用户看的是"国产榜"，主排名应是 1..N，
+    // 全球排名保留在 meta 行（如"全球第 13"）
+    var renumber = (region !== 'all' || !!searchText);
+    sorted = sorted.map(function (m, i) {
+      var copy = {};
+      for (var k in m) copy[k] = m[k];
+      copy.globalRank = renumber ? m.rank : 0;
+      copy.badgeRank = renumber ? ('总榜 ' + m.rank) : '';
+      copy.origRank = renumber ? i + 1 : m.rank;
+      copy.eloText = String(Math.round(m.elo));
+      copy.votesText = m.votes >= 1000 ? (m.votes / 1000).toFixed(1) + 'k' : String(m.votes || '');
+      copy.priceText = (m.price && m.price.input > 0)
+        ? ('$' + fmtNum(m.price.input) + ' / $' + fmtNum(m.price.output))
+        : '';
+      copy.tie = false;
+      copy.rank = copy.origRank;
+      return copy;
+    });
+
+    // 误差区间重叠 → 并列（避免把统计噪声当成确定名次）
+    // 用标准的 competition ranking：并列者共享靠前的名次，后续跳号
+    // 名次保持严格递增（不做并列重编号）。
+    // 统计不确定性由每行的 ±95%CI 表达，脚注说明"区间重叠时名次差异不显著"。
+    // 这样规则全局一致，不会出现"前 3 并列、第 5 名不并列"的自相矛盾。
 
     this.setData({
       displayModels: sorted,
