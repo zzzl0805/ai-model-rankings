@@ -1,0 +1,92 @@
+==========================================
+  AI模型排行 - 数据更新
+  2026-11-17 06:46:35
+==========================================
+
+[1/4] 抓取 LMArena 排行榜...
+启动 Chrome...
+
+========== Agent ==========
+⚠️ 未找到 Sessions 列
+
+========== Text ==========
+  overall: 421个模型
+  coding: 0个模型
+
+========== WebDev ==========
+
+========== Vision ==========
+
+========== Document ==========
+
+========== Search ==========
+
+========== Image-to-WebDev ==========
+
+========== Text to Image ==========
+
+========== Image Edit ==========
+
+========== Text to Video ==========
+
+========== Image to Video ==========
+
+========== Video Edit ==========
+
+✅ 保存到 /home/runner/work/ai-model-rankings/ai-model-rankings/pipeline/rankings.json
+总计: 12个大类 × 8个维度 = 421条数据
+
+✅ 完成
+  本次爬取条目: 421
+
+[2/4] 抓取 Agent 排行...
+⚠️ 未找到 Sessions 列，表头: 
+Agent: 0 个模型
+✅ 已更新 rankings.json
+
+[3/4] 抓取国产模型定价...
+=== 国产模型定价抓取 ===
+
+📊 抓取 智谱AI...
+  提取到 2 个模型定价
+    glm-5.3: ¥8/¥28
+    glm-5.3-flash: ¥0.8/¥2.8
+
+📊 抓取 Kimi(月之暗面)...
+  提取到 2 个表格
+  解析出 0 个模型定价
+
+📊 抓取 阿里通义...
+  提取到 279 个表格
+  解析出 527 个模型定价
+    qwen4-max: ¥10/¥30
+    qwen3.8-max: ¥12/¥36
+    qwen3.8-max-0902: ¥12/¥36
+    qwen3.7-max: ¥12/¥36
+    qwen3.7-max-2026-06-08: ¥12/¥36
+
+✅ 保存到 /home/runner/work/ai-model-rankings/ai-model-rankings/pipeline/cn_prices.json
+   共 165 个模型定价
+   智谱官网: 2个
+   阿里云官网: 163个
+
+[4/4] 构建 rankings.js...
+  已加载 165 个自动抓取的国产定价
+============================================================
+构建小程序排行数据
+============================================================
+
+📊 加载 rankings.json...
+  大类: ['agent', 'text', 'webdev', 'vision', 'document', 'search', 'image-to-webdev', 'text-to-image', 'image-edit', 'text-to-video', 'image-to-video', 'video-edit']
+
+📡 获取 OpenRouter 定价...
+  获取到 470 个模型
+
+💱 获取汇率...
+  1 USD = 6.6793 CNY
+
+🔧 处理数据...
+📈 排名变化：已对比 2026-11-16 快照，0 个模型有变动
+
+❌ 只处理出 421 条数据（<500），拒绝覆盖 rankings.js
+   请检查爬虫 / HF 数据源是否可用
