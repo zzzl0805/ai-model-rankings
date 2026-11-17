@@ -52,7 +52,7 @@
   <view class="col-head">
     <text class="ch-rank">名次</text>
     <view class="ch-main"><text>模型</text><text class="ch-price">价格 入/出 {{priceUnit}}/百万 tokens</text></view>
-    <view class="ch-score"><text>Elo ±95%CI</text><text class="ch-info" bindtap="onRulesTap">ⓘ</text></view>
+    <view class="ch-score"><text>{{isAgent ? '净提升率 %' : 'Elo ±95%CI'}}</text><text class="ch-info" bindtap="onRulesTap">ⓘ</text></view>
   </view>
 
   <!-- 加载中 -->
