@@ -39,9 +39,7 @@ function vendorName(raw) {
 
 // 价格格式化：去掉多余的小数位（2.00 → 2，0.43 → 0.43）
 function fmtNum(v) {
-  var n = Number(v) || 0;
-  if (n >= 10) return String(Math.round(n));
-  return n.toFixed(2);  // $0.3 → $0.30，避免同列小数位不一致
+  return (Number(v) || 0).toFixed(2);  // 全列统一两位，避免 2.87 / 20 / 8.00 混排
 }
 
 // 说明：场景快捷入口已移除（与分类/维度功能重叠，且增加视觉层级）。
@@ -70,6 +68,9 @@ Page({
     conclusion: '',     // 一句话结论卡
     cnCount: 0,         // 当前榜单里的国产模型数
     priceUnit: '$',     // 价格列币种（按视图统一）
+    exchangeRate: 0,    // USD→CNY 汇率（来自 pipeline）
+    exchangeRateDate: '',
+    exchangeRateFallback: false,
   },
 
   onLoad: function (options) {
@@ -96,6 +97,9 @@ Page({
       allDimensions: rankings.dimensions,
       lastUpdated: rankings.lastUpdated || '',
       dataSource: source,
+      exchangeRate: rankings.exchangeRate || 0,
+      exchangeRateDate: rankings.exchangeRateDate || '',
+      exchangeRateFallback: !!rankings.exchangeRateFallback,
     });
 
     that.checkFirstVisit();
@@ -194,7 +198,13 @@ Page({
     var app = getApp();
     if (app.globalData && app.globalData.cloudRankings && rankings !== app.globalData.cloudRankings) {
       rankings = app.globalData.cloudRankings;
-      this.setData({ dataSource: '云端', lastUpdated: rankings.lastUpdated || '' });
+      this.setData({
+        dataSource: '云端',
+        lastUpdated: rankings.lastUpdated || '',
+        exchangeRate: rankings.exchangeRate || 0,
+        exchangeRateDate: rankings.exchangeRateDate || '',
+        exchangeRateFallback: !!rankings.exchangeRateFallback,
+      });
       this.loadRankings(this.data.activeCategory, this.data.activeDimension);
     }
   },
@@ -346,11 +356,20 @@ Page({
   },
 
   // 首屏常驻口径提示（一行）：协方差/跨榜/价格来源
-  buildCtxNote: function (region, renumbered) {
+  buildCtxNote: function (region, renumbered, allProxy) {
     var parts = [];
-    if (renumbered) parts.push('名次按当前筛选重排（Elo 不变）');
-    parts.push('Elo 仅榜内可比');
+    if (this.data.activeDimension && this.data.activeDimension !== 'overall') {
+      parts.push('子榜独立计分');
+    }
+    if (renumbered) parts.push('名次按筛选重排');
     parts.push('CI 重叠 ≠ 差异显著');
+    if (allProxy) parts.push('均为代理价');
+    if (this.data.exchangeRate) {
+      var fx = '≈ 汇率 ' + this.data.exchangeRate;
+      if (this.data.exchangeRateDate) fx += '（' + this.data.exchangeRateDate.slice(5) + '）';
+      if (this.data.exchangeRateFallback) fx += ' 估算';
+      parts.push(fx);
+    }
     return parts.join(' · ');
   },
 
@@ -398,10 +417,12 @@ Page({
       copy.priceProxy = /openrouter/i.test((m.price && m.price.source) || '');
       if (m.price && m.price.input > 0) {
         var nativeCny = m.price.currency === 'CNY';
+        var approxCny = region === 'cn' ? !nativeCny : nativeCny;
+        var pre = approxCny ? '≈' : '';
         if (region === 'cn') {
-          copy.priceText = (nativeCny ? '' : '≈') + '¥' + fmtNum(m.price.inputCNY) + ' / ¥' + fmtNum(m.price.outputCNY);
+          copy.priceText = pre + '¥' + fmtNum(m.price.inputCNY) + ' / ' + pre + '¥' + fmtNum(m.price.outputCNY);
         } else {
-          copy.priceText = (nativeCny ? '≈' : '') + '$' + fmtNum(m.price.input) + ' / $' + fmtNum(m.price.output);
+          copy.priceText = pre + '$' + fmtNum(m.price.input) + ' / ' + pre + '$' + fmtNum(m.price.output);
         }
         copy.priceProxy = /openrouter/i.test((m.price && m.price.source) || '');
       } else {
@@ -420,10 +441,14 @@ Page({
     // 统计不确定性由每行的 ±95%CI 表达；脚注说明"名次按点估计，重叠不能直接判定不显著"。
     // 这样规则全局一致，不会出现"前 3 并列、第 5 名不并列"的自相矛盾。
 
+    var pricedRows = sorted.filter(function (x) { return x.price && x.price.input > 0; });
+    var aProxy = pricedRows.length > 0 && pricedRows.every(function (x) { return x.priceProxy; });
+
     this.setData({
       displayModels: sorted,
       priceUnit: region === 'cn' ? '¥' : '$',
-      ctxNote: this.buildCtxNote(region, renumber),
+      allProxy: aProxy,
+      ctxNote: this.buildCtxNote(region, renumber, aProxy),
       conclusion: this.buildConclusion(sorted, region),
       cnCount: allModels.filter(function (m) { return m.isCN; }).length,
     });

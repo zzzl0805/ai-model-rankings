@@ -55,11 +55,6 @@
     <view class="ch-score"><text>Elo ±95%CI</text><text class="ch-info" bindtap="onRulesTap">ⓘ</text></view>
   </view>
 
-  <!-- 首屏常驻口径提示 -->
-  <view wx:if="{{displayModels.length}}" class="ctx-note">
-    <text>{{ctxNote}}</text>
-  </view>
-
   <!-- 加载中 -->
   <view wx:if="{{loading}}" class="center-box">
     <text class="center-text">加载中</text>
@@ -75,8 +70,8 @@
     <view wx:for="{{displayModels}}" wx:key="rank" class="row"
       data-name="{{item.name}}" bindtap="onModelTap">
       <!-- 名次 -->
-      <view class="col-rank {{item.rank <= 3 ? 'rank-top rank-' + item.rank : ''}}">
-        <text>{{item.rank}}</text>
+      <view class="col-rank">
+        <text class="{{item.rank <= 3 ? 'rank-badge' : ''}}">{{item.rank}}</text>
       </view>
       <!-- 模型 + 价格 -->
       <view class="col-main">
@@ -93,7 +88,7 @@
             <text wx:if="{{item.lowSample}}" class="sample-low">样本少</text>
           </view>
           <view class="price-cell">
-            <text class="meta-proxy {{item.priceProxy ? '' : 'is-hidden'}}">代理</text>
+            <text class="meta-proxy {{(item.priceProxy && !allProxy) ? '' : 'is-hidden'}}">代理</text>
             <text wx:if="{{item.price.input > 0}}" class="meta-price">{{item.priceText}}</text>
           </view>
         </view>
@@ -114,6 +109,8 @@
 
   <!-- 脚注：口径说明（跨榜不可比是这类产品最易被误读的点） -->
   <view wx:if="{{displayModels.length}}" class="footnote">
-    <text>± 为 bootstrap 95% 置信区间（半宽），名次按 Elo 点估计排序；置信区间重叠不能直接判定差异不显著，显著性需两两检验 · 票数为去重有效投票 · 价格为厂商官网价或 OpenRouter 代理价，不含缓存与批量折扣；国产视图按当日汇率折算为 ¥ · 各子榜独立计分，Elo 不可跨榜比较</text>
+    <view class="foot-line"><text>统计：± 为 95% 置信区间，名次按 Elo 点估计；CI 重叠不能认定差异显著，显著性需两两检验；样本 &lt;1000 标「样本少」</text></view>
+    <view class="foot-line"><text>价格：≈ 为外币按汇率折算，未标 ≈ 为官网原币价；「代理」为 OpenRouter 渠道价，不含缓存与批量折扣</text></view>
+    <view class="foot-line"><text>计分：各榜独立计分，Elo 不可跨榜比较；筛选后名次按当前榜单重排</text></view>
   </view>
 </view>

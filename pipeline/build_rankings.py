@@ -119,15 +119,32 @@ def fetch_openrouter():
         return {}, []
 
 def fetch_exchange_rate():
-    """获取汇率"""
+    """获取 USD→CNY 汇率，返回 {rate, date, source, fallback}
+
+    价格折算是否可复算取决于这三项是否随数据下发；失败时显式标记 fallback，
+    UI 会提示"折算为估算值"，而不是静默用一个猜测汇率。
+    """
+    url = "https://open.er-api.com/v6/latest/USD"
     try:
-        url = "https://open.er-api.com/v6/latest/USD"
         req = urllib.request.Request(url)
+        req.add_header("User-Agent", "AI-Model-Rankings/1.0")
         with urllib.request.urlopen(req, timeout=10) as resp:
             data = json.loads(resp.read().decode("utf-8"))
-            return data.get("rates", {}).get("CNY", 7.2)
-    except:
-        return 7.2
+            rate = data.get("rates", {}).get("CNY")
+            if rate and float(rate) > 0:
+                date = datetime.now().strftime("%Y-%m-%d")
+                raw = data.get("time_last_update_utc") or ""
+                try:
+                    from email.utils import parsedate_to_datetime
+                    date = parsedate_to_datetime(raw).strftime("%Y-%m-%d")
+                except Exception:
+                    pass
+                return {"rate": round(float(rate), 4), "date": date,
+                        "source": "open.er-api.com", "fallback": False}
+    except Exception as e:
+        print(f"  ⚠️ 汇率获取失败: {e}")
+    return {"rate": 7.2, "date": datetime.now().strftime("%Y-%m-%d"),
+            "source": "fallback", "fallback": True}
 
 def find_or_model(or_models, name, or_list=None):
     """智能匹配 OpenRouter 模型
@@ -271,7 +288,8 @@ def build():
 
     # 获取汇率
     print("\n💱 获取汇率...")
-    rate = fetch_exchange_rate()
+    fx = fetch_exchange_rate()
+    rate = fx["rate"]
     print(f"  1 USD = {rate} CNY")
 
     # 大类配置
@@ -413,6 +431,11 @@ def build():
         "source": "arena.ai",
         "categories": categories,
         "dimensions": dimensions,
+        "exchangeRate": rate,
+        "exchangeRateDate": fx["date"],
+        "exchangeRateSource": fx["source"],
+        "exchangeRateFallback": fx["fallback"],
+        "priceUpdated": datetime.now().strftime("%Y-%m-%d"),
         "data": processed,
     }
 
@@ -442,6 +465,11 @@ def build():
         "updateTime": datetime.now().isoformat(),
         "lastUpdated": output["lastUpdated"],
         "source": output["source"],
+        "exchangeRate": output["exchangeRate"],
+        "exchangeRateDate": output["exchangeRateDate"],
+        "exchangeRateSource": output["exchangeRateSource"],
+        "exchangeRateFallback": output["exchangeRateFallback"],
+        "priceUpdated": output["priceUpdated"],
         "data": output["data"],
     }
     # 云端版不需要 categories/dimensions（云端数据始终用本地配置）

@@ -197,10 +197,12 @@ page {
   color: var(--text-2);
   font-variant-numeric: tabular-nums;
 }
-.rank-top { font-weight: 700; font-size: 28rpx; }
-.rank-1 { color: #8A5D1B; }
-.rank-2 { color: #5B6675; }
-.rank-3 { color: #A05A2C; }
+.rank-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 44rpx; height: 44rpx;
+  border-radius: 50%; background: #FEF3C7; color: #92400E;
+  font-weight: 700; font-size: 24rpx;
+}
 
 /* 主列 */
 .col-main { flex: 1; min-width: 0; }
@@ -342,3 +344,6 @@ page {
 
 /* 低样本标签（与规则页 <1000 票一致） */
 .sample-low { margin-left: 6rpx; padding: 0 6rpx; font-size: 16rpx; color: #64748B; background: #F1F5F9; border-radius: 4rpx; flex-shrink: 0; }
+
+/* 脚注分行 */
+.foot-line { display: block; margin-bottom: 4rpx; }
