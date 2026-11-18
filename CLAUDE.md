@@ -35,6 +35,10 @@ cd pipeline && bash update.sh
 # 只重建 rankings.js（不重新抓取）
 cd pipeline && python3 build_rankings.py
 
+# 自动更新健康检查（CI / data 分支 / CDN / 云端指针）
+python3 scripts/health_check.py          # 约 5 秒，无需登录
+python3 scripts/health_check.py --cloud  # 含云端指针，需开发者工具已登录
+
 # 上传数据到云端（需开发者工具已登录）
 # 1) 临时在 miniprogram/app.json 加 "pages/admin/admin"
 # 2) 用 automator 调用 admin 页的 doUpload()（见 docs/ops/upload.md）

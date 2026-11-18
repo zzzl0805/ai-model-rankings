@@ -23,3 +23,6 @@ pipeline/cn_prices.json
 
 # HuggingFace parquet 缓存
 pipeline/.cache_hf/
+
+# 运维脚本依赖
+scripts/node_modules/
