@@ -90,6 +90,7 @@ async function updatePointer(fileID, lastUpdated) {
     fileID: fileID,
     lastUpdated: lastUpdated || '',
     updateTime: new Date(),
+    lastCheckedAt: new Date(),
   };
   try {
     await db.collection('rankings').doc('current').set({ data: meta });
@@ -165,6 +166,10 @@ exports.main = async (event, context) => {
     try {
       const cur = await db.collection('rankings').doc('current').get();
       if (cur && cur.data && cur.data.lastUpdated === lastUpdated) {
+        // 记录检查时间，便于确认定时器是否按时运行（数据不变也有痕迹）
+        try {
+          await db.collection('rankings').doc('current').update({ data: { lastCheckedAt: new Date() } });
+        } catch (e2) {}
         return { code: 0, msg: '已是最新，跳过上传', lastUpdated: lastUpdated };
       }
     } catch (e) { /* 指针不存在时继续正常流程 */ }

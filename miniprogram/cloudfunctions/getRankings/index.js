@@ -25,6 +25,7 @@ exports.main = async (event, context) => {
       fileID: doc.fileID, // 兼容旧客户端
       updateTime: doc.updateTime,
       lastUpdated: doc.lastUpdated || '',
+      lastCheckedAt: doc.lastCheckedAt || null,
     };
   } catch (err) {
     return { code: -1, msg: err.message };
