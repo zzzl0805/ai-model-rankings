@@ -1,0 +1,121 @@
+==========================================
+  AI模型排行 - 数据更新
+  2026-11-18 09:34:52
+==========================================
+
+[1/4] 抓取 LMArena 排行榜...
+启动 Chrome...
+
+========== Agent ==========
+⚠️ 未找到 Sessions 列
+
+========== Text ==========
+  overall: 421个模型
+  coding: 421个模型
+  math: 421个模型
+  writing: 421个模型
+  hardprompts: 421个模型
+  instruction: 421个模型
+  expert: 421个模型
+  multiturn: 421个模型
+
+========== WebDev ==========
+
+========== Vision ==========
+
+========== Document ==========
+
+========== Search ==========
+
+========== Image-to-WebDev ==========
+
+========== Text to Image ==========
+
+========== Image Edit ==========
+
+========== Text to Video ==========
+
+========== Image to Video ==========
+
+========== Video Edit ==========
+
+✅ 保存到 /home/runner/work/ai-model-rankings/ai-model-rankings/pipeline/rankings.json
+总计: 12个大类 × 8个维度 = 3368条数据
+
+✅ 完成
+  本次爬取条目: 3368
+
+[2/4] 抓取 Agent 排行...
+Agent: 65 个模型
+  1. Claude Fable 5.2 (Max) | 净提升:28.61% | 会话:10406
+  2. Claude Opus 5.5 (Max) | 净提升:18.19% | 会话:14649
+  3. Gemini 4 Carbon (High) | 净提升:16.45% | 会话:64218
+  4. Claude Sonnet 5.5 (Max) | 净提升:15.29% | 会话:8805
+  5. Gemini 4 Hydrogen (High) | 净提升:14.91% | 会话:8639
+✅ 已更新 rankings.json
+
+[3/4] 抓取国产模型定价...
+=== 国产模型定价抓取 ===
+
+📊 抓取 智谱AI...
+  提取到 2 个模型定价
+    glm-5.3: ¥8/¥28
+    glm-5.3-flash: ¥0.8/¥2.8
+
+📊 抓取 Kimi(月之暗面)...
+  提取到 2 个表格
+  解析出 0 个模型定价
+
+📊 抓取 阿里通义...
+  提取到 281 个表格
+  解析出 527 个模型定价
+    qwen4-max: ¥10/¥30
+    qwen3.8-max: ¥12/¥36
+    qwen3.8-max-0902: ¥12/¥36
+    qwen3.7-max: ¥12/¥36
+    qwen3.7-max-2026-06-08: ¥12/¥36
+
+✅ 保存到 /home/runner/work/ai-model-rankings/ai-model-rankings/pipeline/cn_prices.json
+   共 165 个模型定价
+   智谱官网: 2个
+   阿里云官网: 163个
+
+[4/4] 构建 rankings.js...
+  已加载 165 个自动抓取的国产定价
+============================================================
+构建小程序排行数据
+============================================================
+
+📊 加载 rankings.json...
+  大类: ['agent', 'text', 'webdev', 'vision', 'document', 'search', 'image-to-webdev', 'text-to-image', 'image-edit', 'text-to-video', 'image-to-video', 'video-edit']
+
+📡 获取 OpenRouter 定价...
+  获取到 478 个模型
+
+💱 获取汇率...
+  1 USD = 6.6799 CNY
+
+🔧 处理数据...
+📈 排名变化：已对比 2026-11-17 快照，2386 个模型有变动
+
+💾 保存到 /home/runner/work/ai-model-rankings/ai-model-rankings/miniprogram/data/rankings.js...
+   rankings.js: 770 KB
+   rankings_cloud.json: 769 KB
+
+============================================================
+✅ 完成!
+   大类: 12
+   维度: 8
+   总数据: 3433 条
+============================================================
+
+==========================================
+  ✅ 数据更新完成
+
+  下一步（让云端生效，用户无需重新发布小程序）:
+    1. 在 app.json 临时加 pages/admin/admin
+    2. 开发者工具编译 → admin 页点「一键上传」
+    3. 去掉 app.json 的 admin 页面
+
+  说明: 数据会上传到云存储，小程序启动时自动拉取最新，无需重新发布。
+==========================================
