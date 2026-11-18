@@ -159,9 +159,18 @@ exports.main = async (event, context) => {
     const parsed = downloaded.parsed;
     if (!text || !parsed) return { code: -1, msg: '拉取为空' };
 
+    // 幂等检查：GitHub Actions 定时任务可能延迟数小时，
+    // 云函数改为每天多次触发，数据没变时直接跳过，避免重复上传
+    const lastUpdated = parsed.lastUpdated || '';
+    try {
+      const cur = await db.collection('rankings').doc('current').get();
+      if (cur && cur.data && cur.data.lastUpdated === lastUpdated) {
+        return { code: 0, msg: '已是最新，跳过上传', lastUpdated: lastUpdated };
+      }
+    } catch (e) { /* 指针不存在时继续正常流程 */ }
+
     // 3. 上传云存储（服务端有管理员权限）
     //    用「日期 + 时间戳」的唯一路径，彻底绕开 CDN 对同名文件的缓存
-    const lastUpdated = parsed.lastUpdated || '';
     const cloudPath = 'rankings/rankings-' + (lastUpdated || 'latest') + '-' + Date.now() + '.json';
     const up = await cloud.uploadFile({
       cloudPath: cloudPath,
