@@ -2,6 +2,27 @@
 var localRankings = require('../../data/rankings.js');
 var rankings = localRankings;
 var meta = require('../../utils/model-meta.js');
+var store = require('../../utils/store.js');
+
+// 模型名可能自带逗号（如 "Claude Opus 4.5 (High, 32K, 20251101)"），
+// 所以不能「join(',') → decode → split(',')」。用 JSON 传递，接收端两种形态都能解析。
+function encodeNames(names) {
+  return encodeURIComponent(JSON.stringify(names || []));
+}
+
+function parseSharedNames(raw) {
+  if (!raw) return [];
+  var s = String(raw);
+  var arr = null;
+  try { arr = JSON.parse(s); } catch (e) {
+    try { arr = JSON.parse(decodeURIComponent(s)); } catch (e2) {
+      // 兼容旧版分享：空格串无法区分名字内逗号，尽力解析
+      try { arr = decodeURIComponent(s).split(','); } catch (e3) { arr = s.split(','); }
+    }
+  }
+  if (!Array.isArray(arr)) return [];
+  return arr.filter(function (n) { return typeof n === 'string' && n; }).slice(0, 3);
+}
 
 Page({
   data: {
@@ -13,6 +34,7 @@ Page({
     filteredPickerModels: [],
     allModels: [],
     loading: false,
+    activeGroupName: '',
   },
 
   // 转发：带上当前对比的模型（否则对方打开是空的）
@@ -21,11 +43,13 @@ Page({
     var displayNames = models.map(function (m) { return m.displayName || m.name; });
     var rawNames = models.map(function (m) { return m.name; });
     var title = displayNames.length
-      ? '我在对比：' + displayNames.join(' vs ')
+      ? (this.data.activeGroupName
+        ? '「' + this.data.activeGroupName + '」：' + displayNames.join(' vs ')
+        : '我在对比：' + displayNames.join(' vs '))
       : '多个 AI 模型横向对比｜AI模型排行';
     return {
       title: title,
-      path: '/pages/compare/compare?names=' + encodeURIComponent(rawNames.join(',')) + '&from=share',
+      path: '/pages/compare/compare?names=' + encodeNames(rawNames) + '&from=share',
     };
   },
 
@@ -33,57 +57,171 @@ Page({
     var models = this.data.models || [];
     var displayNames = models.map(function (m) { return m.displayName || m.name; });
     var rawNames = models.map(function (m) { return m.name; });
+    var title = displayNames.length
+      ? (this.data.activeGroupName ? '「' + this.data.activeGroupName + '」：' : '') + displayNames.join(' vs ') + '｜AI模型对比'
+      : 'AI模型横向对比';
     return {
-      title: displayNames.length ? displayNames.join(' vs ') + '｜AI模型对比' : 'AI模型横向对比',
-      query: 'names=' + encodeURIComponent(rawNames.join(',')) + '&from=timeline',
+      title: title,
+      query: 'names=' + encodeNames(rawNames) + '&from=timeline',
     };
+  },
+
+  // 分享链接写入 storage 前先校验：只保留数据里真实存在的模型，去重。
+  // 接收方本地包可能落后于云端（新模型只在云端），校验失败的参数先挂起，
+  // 云端数据到达后由 applyCloudRankings 重试。
+  applySharedNames: function (raw, authoritative) {
+    var names = parseSharedNames(raw);
+    if (!names.length) return false;
+    var valid = [];
+    var seen = {};
+    var all = this.data.allModels || [];
+    names.forEach(function (n) {
+      var exists = false;
+      for (var i = 0; i < all.length; i++) { if (all[i].name === n) { exists = true; break; } }
+      if (exists && !seen[n]) { seen[n] = 1; valid.push(n); }
+    });
+    if (!valid.length) {
+      if (!authoritative) this._pendingSharedNames = raw;
+      return false;
+    }
+    try {
+      wx.setStorageSync('compareList', valid);
+      wx.removeStorageSync('activeGroupId');
+    } catch (e) {}
+    var app = getApp();
+    if (app && app.globalData) app.globalData.compareList = valid;
+    this._pendingSharedNames = (valid.length === names.length || authoritative) ? null : raw;
+    return true;
   },
 
   onLoad: function (options) {
     var app = getApp();
-    if (app.globalData && app.globalData.cloudRankings) rankings = app.globalData.cloudRankings;
+    var cloudReady = !!(app.globalData && app.globalData.cloudRankings);
+    if (cloudReady) rankings = app.globalData.cloudRankings;
+    // 记录本次冷启动已处理的分享参数序号，避免 onShow 重复应用
+    if (app && app.globalData) this._seenLaunchSeq = app.globalData.launchSeq || 0;
 
-    // 从分享进入：用链接里的模型名初始化对比列表
-    try {
-      if (options && options.names) {
-        var shared = decodeURIComponent(options.names).split(',').filter(Boolean).slice(0, 3);
-        if (shared.length) {
-          wx.setStorageSync('compareList', shared);
-          if (app.globalData) app.globalData.compareList = shared;
-        }
-      }
-    } catch (e) {}
+    var allModels = this.buildAllModels();
+    this.setData({ allModels: allModels });
+
+    // 从分享进入：参数校验后再写入 storage（名字可能带逗号）
+    if (options && options.names) this.applySharedNames(options.names, cloudReady);
+  },
+
+  // 全量模型索引（picker 与分享参数校验共用）
+  buildAllModels: function () {
     var modelMap = {};
-    var data = rankings.data;
-
+    var data = (rankings && rankings.data) || {};
     Object.keys(data).forEach(function (catId) {
       var catData = data[catId];
       Object.keys(catData).forEach(function (dimId) {
-        catData[dimId].forEach(function (m) {
-          if (!modelMap[m.name]) {
-            modelMap[m.name] = {
-              name: m.name,
-              displayName: meta.getDisplayName(m.name),
-              provider: meta.getProviderCN(m.name),
-              elo: m.elo,
-              votes: m.votes,
-              price: m.price,
-            };
-          }
+        (catData[dimId] || []).forEach(function (m) {
+          if (!m || !m.name || modelMap[m.name]) return;
+          modelMap[m.name] = {
+            name: m.name,
+            displayName: meta.getDisplayName(m.name),
+            provider: meta.getProviderDisplay(m.provider, m.name),
+            elo: m.elo,
+            votes: m.votes,
+            price: m.price,
+          };
         });
       });
     });
+    return Object.keys(modelMap).map(function (key) { return modelMap[key]; })
+      .sort(function (a, b) { return b.elo - a.elo; });
+  },
 
-    var allModels = Object.keys(modelMap).map(function(key) {
-      return modelMap[key];
-    }).sort(function(a, b) { return b.elo - a.elo; });
+  // 云端数据晚到：重建模型索引，重试挂起的分享参数，再按 storage 重载
+  applyCloudRankings: function () {
+    var app = getApp();
+    if (!app || !app.globalData || !app.globalData.cloudRankings) return;
+    if (rankings === app.globalData.cloudRankings) return;
+    rankings = app.globalData.cloudRankings;
+    this.setData({ allModels: this.buildAllModels() });
+    if (this._pendingSharedNames) {
+      var pending = this._pendingSharedNames;
+      this._pendingSharedNames = null;
+      this.applySharedNames(pending, true);
+    }
+    var ids = [];
+    try { ids = wx.getStorageSync('compareList') || []; } catch (e) {}
+    this.loadModels(ids);
+  },
 
-    this.setData({ allModels: allModels });
+  onCloudDataReady: function () {
+    this.applyCloudRankings();
+  },
+
+  // 保存当前对比组（可命名）
+  saveCurrentGroup: function () {
+    var models = (this.data.models || []).map(function (m) { return m.name; });
+    if (!models.length) {
+      wx.showToast({ title: '还没有添加模型', icon: 'none' });
+      return;
+    }
+    var that = this;
+    var suggest = store.nextGroupName();
+    wx.showModal({
+      title: '保存对比组',
+      editable: true,
+      placeholderText: '给这组对比起个名字',
+      content: suggest,
+      success: function (res) {
+        if (!res.confirm) return;
+        var name = (res.content || '').trim() || suggest;
+        var r = store.saveGroup(name, models);
+        if (r.ok) {
+          try { wx.setStorageSync('activeGroupId', r.id); } catch (e) {}
+          that.setData({ activeGroupName: name });
+          wx.showToast({ title: '已保存', icon: 'success' });
+        } else {
+          wx.showModal({ title: '保存失败', content: r.msg, showCancel: false });
+        }
+      },
+    });
   },
 
   onShow: function () {
+    // 先吃云端数据（若已到达），再用最新索引处理分享参数
+    var app = getApp();
+    this.applyCloudRankings();
+
+    // 热启动：从分享卡片切回已存在的小程序时不会走 onLoad，参数在 App.onShow 缓存
+    if (app && app.globalData) {
+      var seq = app.globalData.launchSeq || 0;
+      if (seq !== this._seenLaunchSeq) {
+        this._seenLaunchSeq = seq;
+        var launch = app.globalData.launch;
+        // 60 秒内的入口才算「本次分享」，避免之后打开对比页被陈旧入口覆盖
+        var fresh = launch && launch.at && (Date.now() - launch.at < 60000);
+        if (fresh && launch.path && launch.path.indexOf('pages/compare/compare') >= 0 &&
+            launch.query && launch.query.names && (this.data.allModels || []).length) {
+          this.applySharedNames(launch.query.names, !!(app.globalData.cloudRankings));
+        }
+      }
+    }
+
     var compareIds = [];
     try { compareIds = wx.getStorageSync('compareList') || []; } catch (e) {}
+
+    // 从「我的」载入的对比组：模型完全一致时才显示组名（分享标题用）
+    var activeGroupName = '';
+    var activeGroupId = '';
+    try { activeGroupId = wx.getStorageSync('activeGroupId') || ''; } catch (e) {}
+    if (activeGroupId) {
+      var group = null;
+      store.getGroups().forEach(function (g) { if (g.id === activeGroupId) group = g; });
+      var same = group && group.models.length === compareIds.length &&
+        group.models.every(function (n) { return compareIds.indexOf(n) >= 0; });
+      if (same) {
+        activeGroupName = group.name;
+      } else {
+        try { wx.removeStorageSync('activeGroupId'); } catch (e2) {}
+      }
+    }
+    this.setData({ activeGroupName: activeGroupName });
+
     // 始终调用 loadModels：即使对比列表为空也要渲染「+」添加按钮，
     // 否则全新用户（storage 为空）页面没有入口，无法添加第一个模型
     this.loadModels(compareIds);
@@ -110,6 +248,7 @@ Page({
             if (!modelData.price && found.price && found.price.input > 0) modelData.price = found.price;
             if (!modelData.votes && found.votes) modelData.votes = found.votes;
             if (!modelData.context && found.context) modelData.context = found.context;
+            if (!modelData.providerRaw) modelData.providerRaw = found.provider || '';
           }
         });
       });
@@ -177,7 +316,7 @@ Page({
     }
 
     var slots = models.map(function (m) {
-      return { id: 'model-' + m.name, type: 'model', name: m.name, provider: meta.getProviderCN(m.name) };
+      return { id: 'model-' + m.name, type: 'model', name: m.name, provider: meta.getProviderDisplay(m.providerRaw || '', m.name) };
     });
     if (slots.length < 3) slots.push({ id: 'add', type: 'add' });
 
@@ -242,6 +381,12 @@ Page({
     this.setData({ filteredPickerModels: result });
   },
 
+  // 对比内容变了，已载入的对比组名不再适用
+  clearGroupContext: function () {
+    try { wx.removeStorageSync('activeGroupId'); } catch (e) {}
+    this.setData({ activeGroupName: '' });
+  },
+
   onSelectModel: function (e) {
     var name = e.currentTarget.dataset.name;
     if (!name) return;
@@ -254,6 +399,7 @@ Page({
 
     currentNames.push(name);
     try { wx.setStorageSync('compareList', currentNames); } catch (e) {}
+    this.clearGroupContext();
     this.closePicker();
     this.loadModels(currentNames);
   },
@@ -270,6 +416,7 @@ Page({
           var currentNames = that.data.models.map(function (m) { return m.name; });
           var newNames = currentNames.filter(function (n) { return n !== name; });
           try { wx.setStorageSync('compareList', newNames); } catch (e) {}
+          that.clearGroupContext();
           that.loadModels(newNames);
         }
       },

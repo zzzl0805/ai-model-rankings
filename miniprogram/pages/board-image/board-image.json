@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "AI画图模型排行",
+  "usingComponents": {
+    "board": "/components/board/board"
+  }
+}

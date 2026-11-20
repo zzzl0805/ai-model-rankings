@@ -47,7 +47,7 @@ Page({
           rank: m.rank,
           name: m.name,
           displayName: meta.getDisplayName(m.name),
-          provider: meta.getProviderCN(m.name),
+          provider: meta.getProviderDisplay(m.provider, m.name),
           confidence: meta.getConfidence(m.votes),
           elo: m.elo,
           margin: m.margin,
@@ -74,7 +74,7 @@ Page({
       this.setData({ recommendedModels: models.slice(0, count).map(function(m) {
         return {
           rank: m.rank, name: m.name, displayName: meta.getDisplayName(m.name),
-          provider: meta.getProviderCN(m.name), confidence: meta.getConfidence(m.votes),
+          provider: meta.getProviderDisplay(m.provider, m.name), confidence: meta.getConfidence(m.votes),
           elo: m.elo, margin: m.margin, votes: m.votes, price: m.price, context: m.context,
           isAgent: scene.isAgent,
         };

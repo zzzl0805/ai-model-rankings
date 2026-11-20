@@ -40,7 +40,7 @@ function getDisplayName(name) {
 function getProviderCN(name) {
   var n = (name || '').toLowerCase();
   // 必须先匹配 kling（避免 kling-o1 被下面的 o\d 误判，且不能匹配 inkling）
-  if (/^kling|kling-/.test(n)) return '快手';
+  if (/^kling/.test(n)) return '快手';
   if (/seedance|dreamina|dola-seed|seed-\d/.test(n)) return '字节跳动';
   if (/wan|wanx/.test(n)) return '阿里万相';
   if (/happyhorse/.test(n)) return '阿里';
@@ -77,6 +77,52 @@ function getProviderCN(name) {
   return '其他';
 }
 
+// 国产厂商白名单（按厂商注册地，取值见 docs/DATA_PIPELINE.md）
+var CN_PROVIDERS = {
+  'alibaba': 1, 'ant-group': 1, 'aorizon': 1, 'baidu': 1, 'bytedance': 1,
+  'deepseek': 1, 'hidream': 1, 'kling': 1, 'meituan': 1, 'minimax': 1,
+  'moonshot': 1, 'shengshu': 1, 'skyreel': 1, 'stepfun': 1, 'tencent': 1,
+  'unisound': 1, 'xiaomi': 1, 'zai': 1
+};
+
+// 原始 provider → 展示名。用 m.provider 比用模型名猜更准
+// （如 Microsoft-ai / bytedance 这类名字里看不出来的）
+var RAW_PROVIDER_CN = {
+  'alibaba': '阿里', 'ant-group': '蚂蚁', 'aorizon': '阿里', 'baidu': '百度', 'bytedance': '字节',
+  'deepseek': 'DeepSeek', 'hidream': 'HiDream', 'kling': '快手', 'meituan': '美团', 'minimax': 'MiniMax',
+  'moonshot': '月之暗面', 'shengshu': '生数', 'skyreel': '昆仑万维', 'stepfun': '阶跃星辰', 'tencent': '腾讯',
+  'unisound': '云知声', 'xiaomi': '小米', 'zai': '智谱',
+  'google': 'Google', 'openai': 'OpenAI', 'anthropic': 'Anthropic', 'meta': 'Meta', 'xai': 'xAI',
+  'mistral': 'Mistral', 'nvidia': 'NVIDIA', 'amazon': 'Amazon', 'cohere': 'Cohere',
+  'microsoft': 'Microsoft', 'microsoft-ai': 'Microsoft', 'bfl': 'Black Forest',
+  'luma-ai': 'Luma', 'runway': 'Runway', 'pika': 'Pika', 'ideogram': 'Ideogram',
+  'recraft': 'Recraft', 'upstage': 'Upstage', 'perplexity': 'Perplexity', 'ibm': 'IBM',
+  'allenai': 'AllenAI', 'poolside': 'Poolside', 'reflection': 'Reflection', 'reve': 'Reve',
+  'genmo': 'Genmo', 'diffbot': 'Diffbot', 'inception-ai': 'Inception', 'krea': 'Krea',
+  'leonardo-ai': 'Leonardo', 'kandinsky': 'Kandinsky', 'thinking machines': 'Thinking Machines',
+};
+
+// 展示名（中文厂商）→ 是否国产。provider 为空时按模型名推断兜底
+var CN_DISPLAY_NAMES = {
+  '阿里': 1, '阿里通义': 1, '阿里万相': 1, '深度求索': 1, '月之暗面': 1, '智谱': 1, '智谱ai': 1,
+  '百度': 1, '腾讯': 1, '小米': 1, 'minimax': 1, '字节豆包': 1, '字节跳动': 1, '快手': 1,
+  '阶跃星辰': 1, '生数': 1, '昆仑万维': 1, '美团': 1, '蚂蚁': 1, '云知声': 1,
+};
+
+function getProviderDisplay(raw, name) {
+  var k = String(raw || '').toLowerCase();
+  if (RAW_PROVIDER_CN[k]) return RAW_PROVIDER_CN[k];
+  return getProviderCN(name);
+}
+
+function isDomestic(rawProvider, modelName) {
+  var k = String(rawProvider || '').toLowerCase();
+  if (k) return !!CN_PROVIDERS[k];
+  // 数据里约 10% 条目 provider 为空（老模型居多），按名称推断兜底
+  if (!modelName) return false;
+  return !!CN_DISPLAY_NAMES[String(getProviderCN(modelName)).toLowerCase()];
+}
+
 // 数据可靠性：根据投票数/会话数
 function getConfidence(votes) {
   if (votes >= 5000) return { level: 'high', label: '样本充足', color: '#10B981' };
@@ -109,4 +155,6 @@ module.exports = {
   getProviderCN: getProviderCN,
   getConfidence: getConfidence,
   getReview: getReview,
+  isDomestic: isDomestic,
+  getProviderDisplay: getProviderDisplay,
 };

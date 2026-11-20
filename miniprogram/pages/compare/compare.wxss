@@ -55,3 +55,9 @@
 .picker-provider { font-size: 22rpx; color: #94A3B8; display: block; }
 .picker-added { font-size: 26rpx; color: #10B981; margin-left: 16rpx; }
 .picker-score { font-size: 32rpx; font-weight: 700; color: #0F5EF0; margin-left: 16rpx; }
+
+/* 保存对比组 */
+.save-row { margin: 0 24rpx 20rpx; display: flex; align-items: center; }
+.save-btn { padding: 16rpx 28rpx; background: #FFFFFF; border: 1rpx solid #E2E8F0; border-radius: 12rpx; font-size: 24rpx; color: #2563EB; font-weight: 500; }
+.save-btn:active { background: #F8FAFC; }
+.save-hint { margin-left: 16rpx; font-size: 20rpx; color: #94A3B8; }

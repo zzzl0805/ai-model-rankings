@@ -27,6 +27,14 @@
       </view>
     </view>
 
+    <!-- 保存这组对比 -->
+    <view wx:if="{{models.length > 0}}" class="save-row">
+      <view class="save-btn" bindtap="saveCurrentGroup">
+        <text>保存这组对比</text>
+      </view>
+      <text class="save-hint">保存后可在「我的」里随时切回</text>
+    </view>
+
     <!-- 空状态 -->
     <view wx:if="{{models.length===0}}" class="center-box">
       <text class="empty-icon">📊</text>

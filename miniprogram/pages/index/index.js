@@ -3,18 +3,8 @@ var localRankings = require('../../data/rankings.js');
 var meta = require('../../utils/model-meta.js');
 var rankings = localRankings;
 
-// 国产厂商白名单（按厂商注册地）
-// 数据里的 provider 字段取值见 docs/DATA_PIPELINE.md
-var CN_PROVIDERS = {
-  'alibaba': 1, 'ant-group': 1, 'aorizon': 1, 'baidu': 1, 'bytedance': 1,
-  'deepseek': 1, 'hidream': 1, 'kling': 1, 'meituan': 1, 'minimax': 1,
-  'moonshot': 1, 'shengshu': 1, 'skyreel': 1, 'stepfun': 1, 'tencent': 1,
-  'unisound': 1, 'xiaomi': 1, 'zai': 1
-};
-
-function isDomestic(rawProvider) {
-  return !!CN_PROVIDERS[String(rawProvider || '').toLowerCase()];
-}
+// 国产厂商判断统一走 model-meta（落地页共用同一份白名单）
+var isDomestic = meta.isDomestic;
 
 // 原始 provider 值 → 展示名（结论卡里用）
 var PROVIDER_CN = {
@@ -71,6 +61,7 @@ Page({
     exchangeRate: 0,    // USD→CNY 汇率（来自 pipeline）
     exchangeRateDate: '',
     exchangeRateFallback: false,
+    generatingPoster: false,
   },
 
   onLoad: function (options) {
@@ -104,15 +95,50 @@ Page({
 
     that.checkFirstVisit();
 
+    // 记录冷启动已处理的分享参数序号（onShow 避免重复应用）
+    try {
+      var app2 = getApp();
+      if (app2 && app2.globalData) that._seenLaunchSeq = app2.globalData.launchSeq || 0;
+    } catch (e3) {}
+
     // 支持深链直达某个榜单：?category=coding&dim=overall
-    var cat = (options && options.category) || '';
-    var dim = (options && options.dim) || 'overall';
-    var region = (options && options.region) || 'all';
+    that.applyDeepLink(options);
+  },
+
+  // 解析分享/小程序码参数，切换到对应榜单
+  applyDeepLink: function (options) {
+    options = options || {};
+    var cat = options.category || '';
+    var dim = options.dim || 'overall';
+    var region = options.region || 'all';
+
+    // 小程序码：scene='c=7&d=0&r=1'（类目/维度按下标编码，控制在 32 字符内）
+    if (options.scene) {
+      var that = this;
+      var scene = String(options.scene);
+      try { scene = decodeURIComponent(scene); } catch (e) {}
+      scene.split('&').forEach(function (pair) {
+        var kv = pair.split('=');
+        var k = kv[0];
+        var v = kv[1] || '';
+        if (k === 'c') {
+          var ci = parseInt(v, 10);
+          var cats = that.data.categories || [];
+          if (ci >= 0 && ci < cats.length) cat = cats[ci].id;
+        } else if (k === 'd') {
+          var di = parseInt(v, 10);
+          var dims = that.data.allDimensions || [];
+          if (di >= 0 && di < dims.length) dim = dims[di].id;
+        } else if (k === 'r') {
+          region = v === '1' ? 'cn' : (v === '2' ? 'intl' : 'all');
+        }
+      });
+    }
     if (['all', 'cn', 'intl'].indexOf(region) < 0) region = 'all';
     var validCat = false;
-    (rankings.categories || []).forEach(function (c) { if (c.id === cat) validCat = true; });
-    that.setData({ region: region });
-    that.loadRankings(validCat ? cat : 'text', dim);
+    (this.data.categories || []).forEach(function (c) { if (c.id === cat) validCat = true; });
+    this.setData({ region: region });
+    this.loadRankings(validCat ? cat : 'text', dim);
   },
 
   // 首次访问：改成顶部可关闭提示条（原来整屏黑遮罩会挡住分享进来的新用户）
@@ -152,10 +178,15 @@ Page({
     var catName = catInfo ? catInfo.name : 'AI模型';
     var dimName = this.getDimName(dim);
     var top = (this.data.allDisplayModels || [])[0];
-    // 优先用结论卡（更有信息量），带 region 让接收方看到同一视角
-    var title = this.data.conclusion
-      ? this.data.conclusion + '｜AI模型排行'
-      : (top ? catName + dimName + '第一是' + top.displayName + '｜AI模型排行' : catName + dimName + '排行｜AI模型排行');
+    // 搜索态不能用筛选结论（接收方打开的是完整榜），改用中性标题
+    var title;
+    if (this.data.searchText) {
+      title = 'AI模型排行｜搜索「' + this.data.searchText + '」看完整榜单';
+    } else {
+      title = this.data.conclusion
+        ? this.data.conclusion + '｜AI模型排行'
+        : (top ? catName + dimName + '第一是' + top.displayName + '｜AI模型排行' : catName + dimName + '排行｜AI模型排行');
+    }
     return {
       title: title,
       path: '/pages/index/index?category=' + cat + '&dim=' + dim + '&region=' + (this.data.region || 'all') + '&from=share',
@@ -167,9 +198,19 @@ Page({
     var cat = this.data.activeCategory;
     var dim = this.data.activeDimension;
     var top = (this.data.allDisplayModels || [])[0];
+    var regionPrefix = this.data.region === 'cn' ? '国产' : (this.data.region === 'intl' ? '海外' : '');
+    var dimName = this.getDimName(dim);
+    var title;
+    if (this.data.searchText) {
+      title = 'AI模型排行｜按能力查主流大模型';
+    } else {
+      title = top
+        ? regionPrefix + this.getCatName(cat) + (dimName && dimName !== '综合' ? '·' + dimName : '') + '第一：' + top.displayName + '（' + this.data.lastUpdated + '）'
+        : 'AI模型排行';
+    }
     return {
-      title: top ? this.getCatName(cat) + '第一：' + top.displayName + '（' + this.data.lastUpdated + '）' : 'AI模型排行',
-      query: 'category=' + cat + '&dim=' + dim + '&from=timeline',
+      title: title,
+      query: 'category=' + cat + '&dim=' + dim + '&region=' + (this.data.region || 'all') + '&from=timeline',
     };
   },
 
@@ -184,7 +225,163 @@ Page({
     return names[dimId] || '';
   },
 
+  onMineTap: function () {
+    wx.navigateTo({ url: '/pages/mine/mine' });
+  },
+
+  onMoreBoardTap: function (e) {
+    var url = e.currentTarget.dataset.url;
+    if (url) wx.navigateTo({ url: url });
+  },
+
+  // 生成榜单海报：TOP10 + 结论 + 落款
+  onGeneratePoster: function () {
+    if (this.data.generatingPoster) return;
+
+    // 搜索/升序时列表是筛选子集或被重排，不能当完整榜单对外传播
+    if (this.data.searchText) {
+      wx.showToast({ title: '请先清空搜索再生成', icon: 'none' });
+      return;
+    }
+    if (this.data.sortOrder === 'asc') {
+      wx.showToast({ title: '请恢复降序再生成', icon: 'none' });
+      return;
+    }
+
+    var that = this;
+    var list = (this.data.displayModels || []).slice(0, 10);
+    if (!list.length) return;
+
+    var cat = this.data.activeCategory;
+    var dim = this.data.activeDimension;
+    var catName = this.getCatName(cat);
+    var dimName = this.getDimName(dim);
+    var regionPrefix = this.data.region === 'cn' ? '国产' : (this.data.region === 'intl' ? '海外' : '');
+    var title = regionPrefix + catName + (dimName && dimName !== '综合' ? '·' + dimName : '') + '榜';
+    var subtitle = this.data.isAgent ? '按净提升率排名' : ('按' + (dimName || '综合') + '能力排名');
+    var unit = this.data.isAgent ? '%' : '';
+
+    var rows = list.map(function (m, i) {
+      return {
+        rank: m.origRank || (i + 1),
+        name: m.displayName,
+        provider: m.provider,
+        elo: m.eloText + unit,
+        priceText: m.priceText ? (m.priceText + '/M') : '',
+      };
+    });
+
+    // 小程序码落点：榜单一致（编程/国产/画图用落地页，其余用 scene 编码回首页）
+    var qrPage = 'pages/index/index';
+    var qrScene = '';
+    if (cat === 'text' && dim === 'coding' && this.data.region === 'all') {
+      qrPage = 'pages/board-coding/board-coding';
+    } else if (cat === 'text' && dim === 'overall' && this.data.region === 'cn') {
+      qrPage = 'pages/board-cn/board-cn';
+    } else if (cat === 'text-to-image' && dim === 'overall' && this.data.region === 'all') {
+      qrPage = 'pages/board-image/board-image';
+    } else {
+      var cats = this.data.categories || [];
+      var dims = this.data.allDimensions || [];
+      var ci = 0;
+      var di = 0;
+      cats.forEach(function (c, i) { if (c.id === cat) ci = i; });
+      dims.forEach(function (d, i) { if (d.id === dim) di = i; });
+      var regionCode = this.data.region === 'cn' ? '1' : (this.data.region === 'intl' ? '2' : '0');
+      qrScene = 'c=' + ci + '&d=' + di + '&r=' + regionCode;
+    }
+
+    var poster = this.selectComponent('#poster');
+    if (!poster) {
+      wx.showToast({ title: '生成组件未就绪', icon: 'none' });
+      return;
+    }
+
+    this.setData({ generatingPoster: true });
+    poster.generate({
+      title: title,
+      subtitle: subtitle,
+      rows: rows,
+      conclusion: this.data.conclusion || '',
+      updated: this.data.lastUpdated || '',
+      qrPage: qrPage,
+      qrScene: qrScene,
+    }, function (err, path) {
+      that.setData({ generatingPoster: false });
+      if (err) {
+        console.error('[Index] poster error:', err);
+        wx.showToast({ title: '生成失败，请重试', icon: 'none' });
+        return;
+      }
+      that.usePoster(path);
+    });
+  },
+
+  usePoster: function (path) {
+    wx.showActionSheet({
+      itemList: ['保存到相册', '分享图片'],
+      success: function (res) {
+        if (res.tapIndex === 0) {
+          wx.saveImageToPhotosAlbum({
+            filePath: path,
+            success: function () { wx.showToast({ title: '已保存到相册' }); },
+            fail: function (e) {
+              var msg = (e && e.errMsg) || '';
+              // 112：后台《用户隐私保护指引》未声明「相册（仅写入）」，只能预览后长按保存
+              if (e && e.errno === 112) {
+                wx.previewImage({ urls: [path] });
+                wx.showToast({ title: '请长按图片保存', icon: 'none' });
+                return;
+              }
+              if (msg.indexOf('auth') >= 0) {
+                wx.showModal({
+                  title: '需要相册权限',
+                  content: '保存榜单图片需要访问相册，请在设置中允许。',
+                  confirmText: '去设置',
+                  success: function (r) { if (r.confirm) wx.openSetting(); },
+                });
+              } else {
+                wx.previewImage({ urls: [path] });
+              }
+            },
+          });
+        } else if (res.tapIndex === 1) {
+          if (wx.showShareImageMenu) {
+            wx.showShareImageMenu({
+              path: path,
+              fail: function () { wx.previewImage({ urls: [path] }); },
+            });
+          } else {
+            wx.previewImage({ urls: [path] });
+          }
+        }
+      },
+    });
+  },
+
   onShow: function () {
+    var app = getApp();
+    // 落地页「查看完整榜单」通过 globalData 传参（switchTab 不能带参数）
+    if (app && app.globalData && app.globalData.pendingBoard) {
+      var pending = app.globalData.pendingBoard;
+      app.globalData.pendingBoard = null;
+      this.applyDeepLink(pending);
+    }
+
+    // 热启动：从分享卡片/小程序码切回已存在的首页时不会走 onLoad
+    if (app && app.globalData) {
+      var seq = app.globalData.launchSeq || 0;
+      if (seq !== this._seenLaunchSeq) {
+        this._seenLaunchSeq = seq;
+        var launch = app.globalData.launch;
+        // 60 秒内的入口才算「本次分享」，避免之后回前台被陈旧入口拉回旧榜单
+        var fresh = launch && launch.at && (Date.now() - launch.at < 60000);
+        if (fresh && launch.path && launch.path.indexOf('pages/index/index') >= 0 && launch.query) {
+          var q = launch.query;
+          if (q.category || q.dim || q.region || q.scene) this.applyDeepLink(q);
+        }
+      }
+    }
     // 云端数据可能刚加载完
     this.applyCloudData();
   },
@@ -248,10 +445,10 @@ Page({
             displayName: full,
             baseName: vm ? vm[1] : full,
             variant: vm ? vm[2] : '',
-            provider: meta.getProviderCN(m.name),
+            provider: meta.getProviderDisplay(m.provider, m.name),
             providerRaw: m.provider || '',
             overallRank: overallRank[m.name] || 0,
-            isCN: isDomestic(m.provider),
+            isCN: isDomestic(m.provider, m.name),
             delta: typeof m.delta === 'number' ? m.delta : 0,
             isNew: !!m.isNew,
             elo: m.elo,

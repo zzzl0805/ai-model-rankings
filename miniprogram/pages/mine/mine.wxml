@@ -1,0 +1,112 @@
+<!-- pages/mine/mine.wxml -->
+<view class="page">
+  <view class="header" style="padding-top:{{statusBarHeight}}px;">
+    <view class="header-row" style="padding-right:{{menuRight}}px;">
+      <view class="header-left">
+        <text class="back-link" bindtap="goBack">← 返回</text>
+        <text class="header-title">我的</text>
+      </view>
+    </view>
+    <text class="header-sub">收藏 {{stats.favCount}} · 对比组 {{stats.groupCount}} · 记录 {{stats.calcCount}}</text>
+  </view>
+
+  <!-- 收藏 -->
+  <view class="section">
+    <view class="section-head">
+      <text class="section-title">收藏的模型</text>
+      <text class="section-hint" wx:if="{{favorites.length}}">显示与收藏时的变化</text>
+    </view>
+
+    <view wx:if="{{!favorites.length}}" class="empty">
+      <text class="empty-text">还没有收藏。在模型详情页点「收藏」，下次回来能直接看到它的排名和价格变化。</text>
+    </view>
+
+    <view wx:else class="list">
+      <view wx:for="{{favorites}}" wx:key="name" class="row" data-name="{{item.name}}" bindtap="onModelTap">
+        <view class="row-main">
+          <view class="name-line">
+            <text class="model-name">{{item.displayName}}</text>
+            <text wx:if="{{item.rankDelta > 0}}" class="delta delta-up">↑{{item.rankDelta}}</text>
+            <text wx:elif="{{item.rankDelta < 0}}" class="delta delta-down">↓{{-item.rankDelta}}</text>
+          </view>
+          <view class="meta-line">
+            <text class="meta-provider">{{item.provider}}</text>
+            <text wx:if="{{item.catLabel}}" class="meta-cat">{{item.catLabel}}</text>
+            <text wx:if="{{item.priceText}}" class="meta-sep">·</text>
+            <text wx:if="{{item.priceProxy}}" class="meta-proxy">代理</text>
+            <text wx:if="{{item.priceText}}" class="meta-price">{{item.priceText}}</text>
+            <text wx:if="{{item.priceDelta > 0}}" class="price-up">涨 {{item.priceCurrency === 'CNY' ? '¥' : '$'}}{{item.priceDelta}}</text>
+            <text wx:elif="{{item.priceDelta < 0}}" class="price-down">降 {{item.priceCurrency === 'CNY' ? '¥' : '$'}}{{-item.priceDelta}}</text>
+          </view>
+        </view>
+        <view class="row-side">
+          <text class="score">{{item.rank ? '#' + item.rank : '—'}}</text>
+          <text class="score-sub">{{item.eloText}}</text>
+        </view>
+        <view class="row-del" data-name="{{item.name}}" catchtap="onRemoveFavorite">
+          <text>移除</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 对比组 -->
+  <view class="section">
+    <view class="section-head">
+      <text class="section-title">保存的对比</text>
+      <text class="section-hint" wx:if="{{groups.length}}">点击载入对比</text>
+    </view>
+
+    <view wx:if="{{!groups.length}}" class="empty">
+      <text class="empty-text">还没有保存的对比。在对比页点「保存这组对比」，可以命名并随时切回来。</text>
+    </view>
+
+    <view wx:else class="list">
+      <view wx:for="{{groups}}" wx:key="id" class="row" data-id="{{item.id}}" bindtap="onGroupTap">
+        <view class="row-main">
+          <text class="model-name">{{item.name}}</text>
+          <view class="meta-line">
+            <text class="meta-provider">{{item.modelNames}}</text>
+          </view>
+          <view class="meta-line">
+            <text class="meta-time">保存于 {{item.timeText}}</text>
+          </view>
+        </view>
+        <view class="row-del" data-id="{{item.id}}" catchtap="onDeleteGroup">
+          <text>删除</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 计算记录 -->
+  <view class="section">
+    <view class="section-head">
+      <text class="section-title">最近计算</text>
+      <text class="section-hint" wx:if="{{calcHistory.length}}" bindtap="onClearCalc">清空</text>
+    </view>
+
+    <view wx:if="{{!calcHistory.length}}" class="empty">
+      <text class="empty-text">还没有计算记录。在计算器里选好模型和用量，会自动留下来。</text>
+    </view>
+
+    <view wx:else class="list">
+      <view wx:for="{{calcHistory}}" wx:key="key" class="row" data-name="{{item.model}}" bindtap="onCalcTap">
+        <view class="row-main">
+          <text class="model-name">{{item.displayName}}</text>
+          <view class="meta-line">
+            <text class="meta-provider">入 {{item.inputText}} · 出 {{item.outputText}} token / 月</text>
+          </view>
+        </view>
+        <view class="row-side">
+          <text class="score">¥{{item.costCNY}}</text>
+          <text class="score-sub">{{item.timeText}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="footer">
+    <text class="footer-link" bindtap="goRanking">去看完整排行 →</text>
+  </view>
+</view>

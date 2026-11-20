@@ -1,0 +1,13 @@
+<!-- pages/board-cn/board-cn.wxml -->
+<view class="page">
+  <view class="hero">
+    <text class="hero-title">国产AI模型排行</text>
+    <text class="hero-sub">只看国产大模型 · LMArena 人类盲测 · 每日更新</text>
+    <text class="hero-desc">汇总国产大模型的综合 Elo 排名，包括 DeepSeek、通义千问、智谱 GLM、Kimi、豆包、文心一言、腾讯混元、MiniMax、小米 MiMo 等。分数来自 LMArena 的匿名成对对战，名次已按国产模型重新排列。</text>
+  </view>
+
+  <board id="board" category="text" dim="overall" region="cn" limit="{{20}}" />
+
+  <view class="more-link" bindtap="goAll"><text>查看完整榜单（全部类目与维度）→</text></view>
+  <view class="page-foot"><text>数据每日自动更新 · ¥ 为人民币原生价 · ≈ 为按汇率折算</text></view>
+</view>

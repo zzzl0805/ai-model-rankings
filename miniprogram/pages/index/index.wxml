@@ -4,7 +4,10 @@
   <view class="header" style="padding-top:{{statusBarHeight}}px;">
     <view class="header-row" style="padding-right:{{menuRight}}px;">
       <text class="header-title">AI 模型排行</text>
-      <text class="header-rules" bindtap="onRulesTap">规则</text>
+      <view class="header-actions">
+        <text class="header-rules" bindtap="onMineTap">我的</text>
+        <text class="header-rules" bindtap="onRulesTap">规则</text>
+      </view>
     </view>
     <text class="header-sub" style="padding-right:{{menuRight}}px;">数据截至 {{lastUpdated}} · LMArena</text>
   </view>
@@ -45,6 +48,18 @@
       <view class="seg {{region==='all'?'seg-active':''}}" data-region="all" bindtap="onRegionChange">全部</view>
       <view class="seg {{region==='cn'?'seg-active':''}}" data-region="cn" bindtap="onRegionChange">国产</view>
       <view class="seg {{region==='intl'?'seg-active':''}}" data-region="intl" bindtap="onRegionChange">海外</view>
+    </view>
+  </view>
+
+  <!-- 快捷操作：海报 + 固定榜单（放列表上方，避免 400+ 行底部不可达） -->
+  <view class="quick-bar">
+    <view wx:if="{{displayModels.length}}" class="poster-btn" bindtap="onGeneratePoster">
+      <text>{{generatingPoster ? '生成中…' : '生成榜单图片'}}</text>
+    </view>
+    <view class="more-links">
+      <text class="more-link" data-url="/pages/board-coding/board-coding" bindtap="onMoreBoardTap">编程榜</text>
+      <text class="more-link" data-url="/pages/board-cn/board-cn" bindtap="onMoreBoardTap">国产榜</text>
+      <text class="more-link" data-url="/pages/board-image/board-image" bindtap="onMoreBoardTap">画图榜</text>
     </view>
   </view>
 
@@ -107,6 +122,8 @@
     <text class="insight-text">{{conclusion}}</text>
   </view>
 
+  <poster id="poster" />
+
   <!-- 脚注：口径说明（跨榜不可比是这类产品最易被误读的点） -->
   <view wx:if="{{displayModels.length}}" class="footnote">
     <view class="foot-line foot-ctx"><text>{{ctxNote}}</text></view>
@@ -114,4 +131,5 @@
     <view class="foot-line"><text>价格：≈ 为外币按汇率折算，未标 ≈ 为官网原币价；「代理」为 OpenRouter 渠道价，不含缓存与批量折扣</text></view>
     <view class="foot-line"><text>计分：各榜独立计分，Elo 不可跨榜比较；筛选后名次按当前榜单重排</text></view>
   </view>
+
 </view>

@@ -1,0 +1,25 @@
+<!-- components/board/board.wxml -->
+<view class="board">
+  <view wx:if="{{loading}}" class="board-empty"><text>加载中…</text></view>
+  <view wx:elif="{{!rows.length}}" class="board-empty"><text>暂无数据</text></view>
+
+  <block wx:else>
+    <view class="board-meta">
+      <text>共 {{total}} 个模型{{region === 'cn' ? '（国产）' : ''}} · 数据截至 {{updated}}</text>
+    </view>
+
+    <view wx:for="{{rows}}" wx:key="name" class="board-row" data-name="{{item.name}}" bindtap="onModelTap">
+      <text class="col-rank {{item.rank <= 3 ? 'rank-top' : ''}}">{{item.rank}}</text>
+      <view class="col-main">
+        <text class="row-name">{{item.displayName}}</text>
+        <view class="row-sub">
+          <text class="row-provider">{{item.provider}}</text>
+          <text wx:if="{{item.priceProxy}}" class="row-proxy">代理</text>
+          <text wx:if="{{item.priceText}}" class="row-price">{{item.priceText}} /M</text>
+          <text wx:else class="row-price row-price-none">价格待补</text>
+        </view>
+      </view>
+      <text class="col-elo">{{item.elo}}</text>
+    </view>
+  </block>
+</view>

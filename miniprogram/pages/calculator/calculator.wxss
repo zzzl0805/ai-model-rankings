@@ -10,6 +10,7 @@
 /* 场景选择 */
 .scene-bar { display: flex; flex-wrap: wrap; padding: 0 24rpx; gap: 12rpx; margin-bottom: 20rpx; }
 .scene-btn { padding: 12rpx 24rpx; border-radius: 32rpx; font-size: 24rpx; color: #64748B; background: #fff; border: 1rpx solid #E2E8F0; }
+.scene-unit { display: block; padding: 0 28rpx; margin: -8rpx 0 20rpx; font-size: 20rpx; color: #94A3B8; }
 .scene-active { background: #0F5EF0; color: #fff; border-color: #0F5EF0; }
 
 /* 自定义输入 */

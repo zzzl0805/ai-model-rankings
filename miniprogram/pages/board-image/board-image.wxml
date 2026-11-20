@@ -1,0 +1,13 @@
+<!-- pages/board-image/board-image.wxml -->
+<view class="page">
+  <view class="hero">
+    <text class="hero-title">AI画图模型排行</text>
+    <text class="hero-sub">文生图能力排名 · LMArena 人类盲测 · 每日更新</text>
+    <text class="hero-desc">汇总文生图模型的 Elo 排名，涵盖 Google、OpenAI、字节、阿里、智谱等厂商。分数来自 LMArena 的图片生成盲测对战，分数越高代表同一提示词下更受人类偏好。图片模型公开 API 价格较少，标「价格待补」的可在详情页查看最新情况。</text>
+  </view>
+
+  <board id="board" category="text-to-image" dim="overall" limit="{{20}}" />
+
+  <view class="more-link" bindtap="goAll"><text>查看完整榜单（全部类目与维度）→</text></view>
+  <view class="page-foot"><text>数据每日自动更新 · $ 为美元 / 百万 tokens · 代理为 OpenRouter 渠道价</text></view>
+</view>

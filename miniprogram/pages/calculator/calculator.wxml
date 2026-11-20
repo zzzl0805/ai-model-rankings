@@ -16,6 +16,8 @@
     </view>
   </view>
 
+  <text class="scene-unit">场景与自定义用量单位：万 token / 月（如 200 = 200 万 token）</text>
+
   <!-- 自定义输入 -->
   <view class="custom-card">
     <text class="custom-label">或自定义月使用量（万token）</text>

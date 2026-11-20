@@ -1,0 +1,9 @@
+{
+  "name": "wxacode",
+  "version": "1.0.0",
+  "description": "生成小程序码（榜单海报用，兼权限验证）",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

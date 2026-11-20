@@ -3,6 +3,26 @@ App({
     favorites: [],
     compareList: [],
     cloudRankings: null, // 云端数据（有则用，无则用本地）
+    launchSeq: 0,       // 每次 onShow 自增：区分「热启动带新参数」
+    launch: null,       // { path, query } 最近一次启动/唤醒的参数
+  },
+
+  // 热启动（小程序在后台时点分享卡片）只会触发 onShow，不会走页面 onLoad。
+  // 把入口参数缓存下来，由 index/compare 的 onShow 消费。
+  // 注意：普通切前台时平台可能沿用上次入口的 path/query，必须按入口指纹去重，
+  // 否则每次回前台都会把页面拉回上次分享的榜单。
+  onShow: function (options) {
+    if (!options || !options.path) return;
+    var query = options.query || {};
+    var fp = options.path + '|' + JSON.stringify(query) + '|' + (options.scene || '');
+    if (fp === this.globalData._lastLaunchFp) return;
+    this.globalData._lastLaunchFp = fp;
+    this.globalData.launchSeq = (this.globalData.launchSeq || 0) + 1;
+    this.globalData.launch = {
+      path: options.path,
+      query: query,
+      at: Date.now(),
+    };
   },
 
   onLaunch: function () {

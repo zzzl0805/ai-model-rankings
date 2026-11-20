@@ -1,11 +1,15 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/mine/mine",
     "pages/detail/detail",
     "pages/compare/compare",
     "pages/calculator/calculator",
     "pages/recommend/recommend",
-    "pages/methodology/methodology"
+    "pages/methodology/methodology",
+    "pages/board-coding/board-coding",
+    "pages/board-cn/board-cn",
+    "pages/board-image/board-image"
   ],
   "subpackages": [
     {

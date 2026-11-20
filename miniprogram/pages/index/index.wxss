@@ -350,3 +350,15 @@ page {
 
 /* 口径披露行（含价格来源与汇率，必须可见） */
 .foot-ctx { color: var(--text-2); font-weight: 500; margin-bottom: 8rpx; }
+
+/* 头部右侧入口 */
+.header-actions { display: flex; align-items: center; }
+.header-actions .header-rules + .header-rules { margin-left: 22rpx; }
+
+/* 快捷操作：榜单海报 + 固定视角榜单 */
+.quick-bar { margin: 16rpx 24rpx 12rpx; display: flex; align-items: center; flex-wrap: wrap; }
+.poster-btn { padding: 14rpx 26rpx; background: #0F5EF0; color: #FFFFFF; border-radius: 12rpx; font-size: 24rpx; font-weight: 600; }
+.poster-btn:active { background: #0B4BC4; }
+.more-links { margin-left: auto; display: flex; align-items: center; }
+.more-link { margin-left: 12rpx; padding: 10rpx 16rpx; background: #FFFFFF; border: 1rpx solid #E2E8F0; border-radius: 10rpx; font-size: 22rpx; color: #2563EB; }
+.more-link:active { background: #F1F5F9; }

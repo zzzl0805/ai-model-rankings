@@ -2,6 +2,7 @@
 var localRankings = require('../../data/rankings.js');
 var rankings = localRankings;
 var meta = require('../../utils/model-meta.js');
+var store = require('../../utils/store.js');
 
 function getRankings() {
   try {
@@ -27,9 +28,12 @@ Page({
     sourceInfo: null,
     rankInOverall: 0,
     overallElo: 0,
+    primaryRank: 0,
+    primaryCatId: '',
     updatedDate: '',
     shareTitle: '',
     inCompare: false,
+    isFav: false,
   },
 
   onLoad: function (options) {
@@ -64,6 +68,7 @@ Page({
     var context = '';
     var rankInOverall = 0;
     var overallElo = 0;
+    var rawProvider = '';
 
     try {
       Object.keys(data).forEach(function (catId) {
@@ -79,6 +84,7 @@ Page({
               if (!price && arr[i].price && arr[i].price.input > 0) price = arr[i].price;
               if (!votes && arr[i].votes) votes = arr[i].votes;
               if (!context && arr[i].context) context = arr[i].context;
+              if (!rawProvider) rawProvider = arr[i].provider || '';
               break;
             }
           }
@@ -98,6 +104,37 @@ Page({
         }
       }
     } catch(e) {}
+
+    // 主类目：优先文本榜，其次模型出现的第一个类目。
+    // 非文本模型不能用 text 榜 Elo（会是 0）生成点评和收藏快照。
+    var primaryCatId = '';
+    var primaryCatName = '';
+    var primaryRank = 0;
+    var primaryElo = 0;
+    try {
+      var catIds = Object.keys(catScores);
+      var prefer = catIds.indexOf('text') >= 0 ? 'text' : catIds[0];
+      if (prefer) {
+        primaryCatId = prefer;
+        (categories || []).forEach(function (c) { if (c.id === prefer) primaryCatName = c.name; });
+        var ov = ((data[prefer] || {}).overall) || [];
+        for (var k = 0; k < ov.length; k++) {
+          if (ov[k].name === name) { primaryRank = k + 1; primaryElo = ov[k].elo || 0; break; }
+        }
+        // 只出现在子维度：用该维度条目里的 rank/elo
+        if (!primaryRank) {
+          var dims = catScores[prefer] || {};
+          Object.keys(dims).forEach(function (d) {
+            if (!primaryRank && dims[d] && dims[d].rank) {
+              primaryRank = dims[d].rank;
+              primaryElo = dims[d].elo || 0;
+            }
+          });
+        }
+      }
+    } catch (e) {}
+    if (!primaryRank) primaryRank = rankInOverall;
+    if (!primaryElo) primaryElo = overallElo;
 
     var dimNames = { overall: '综合', coding: '编程', math: '数学', writing: '写作', hardprompts: '难题', instruction: '指令', expert: '专家', multiturn: '长对话' };
     var catList = [];
@@ -128,17 +165,26 @@ Page({
     that.setData({
       modelName: name,
       displayName: meta.getDisplayName(name),
-      provider: meta.getProviderCN(name),
+      provider: meta.getProviderDisplay(rawProvider, name),
       votes: votes,
       confidence: meta.getConfidence(votes),
-      review: meta.getReview(name, catScores.text ? (catScores.text.overall || {}).elo || 0 : 0, price),
+      review: (function () {
+        // Elo 阈值只适用于文本榜；非文本榜用「该榜第 N 名 + 价格情况」描述
+        if (!primaryCatId || primaryCatId === 'text') return meta.getReview(name, primaryElo, price);
+        var hasPrice = !!(price && (price.input > 0 || price.output > 0 || price.inputCNY > 0 || price.outputCNY > 0));
+        return (primaryCatName || primaryCatId) + (primaryRank ? '第' + primaryRank + '名' : '上榜模型') +
+          (hasPrice ? '，有公开 API 定价' : '，暂无公开 API 定价');
+      })(),
       price: price,
       context: context,
       categoryList: catList,
       rankInOverall: rankInOverall,
       overallElo: overallElo,
+      primaryRank: primaryRank,
+      primaryCatId: primaryCatId,
       updatedDate: r.lastUpdated || '',
       inCompare: inCompare,
+      isFav: store.isFavorite(name),
       loading: false,
     });
 
@@ -226,6 +272,28 @@ Page({
     try { getApp().globalData.compareList = compareList; } catch (e) {}
     this.setData({ inCompare: true });
     wx.showToast({ title: '已加入对比', icon: 'success' });
+  },
+
+  // 收藏：同时记下当前排名与价格，下次在「我的」里能看到变化。
+  // 价格存原始币种，避免汇率波动被当成官方涨跌。
+  toggleFavorite: function () {
+    var name = this.data.modelName;
+    if (!name) return;
+    var price = this.data.price || {};
+    var currency = price.currency || 'USD';
+    var priceNative = currency === 'CNY' ? (price.inputCNY || 0) : (price.input || 0);
+    var snap = {
+      rank: this.data.primaryRank || this.data.rankInOverall || 0,
+      catId: this.data.primaryCatId || 'text',
+      priceInput: priceNative,
+      currency: currency,
+      source: price.source || '',
+      dataDate: this.data.updatedDate || '',
+      savedAt: Date.now(),
+    };
+    var on = store.toggleFavorite(name, snap);
+    this.setData({ isFav: on });
+    wx.showToast({ title: on ? '已收藏' : '已取消收藏', icon: 'none' });
   },
 
   goCompare: function () {
