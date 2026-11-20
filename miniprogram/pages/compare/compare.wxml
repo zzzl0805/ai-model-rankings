@@ -32,8 +32,13 @@
       <view class="save-btn" bindtap="saveCurrentGroup">
         <text>保存这组对比</text>
       </view>
+      <view class="save-btn poster-btn" bindtap="onGeneratePoster">
+        <text>{{generatingPoster ? '生成中…' : '生成对比图片'}}</text>
+      </view>
       <text class="save-hint">保存后可在「我的」里随时切回</text>
     </view>
+
+    <poster id="poster" />
 
     <!-- 空状态 -->
     <view wx:if="{{models.length===0}}" class="center-box">

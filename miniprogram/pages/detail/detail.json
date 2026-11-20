@@ -1,3 +1,6 @@
 {
-  "navigationBarTitleText": "AI模型排名"
+  "navigationBarTitleText": "AI模型排名",
+  "usingComponents": {
+    "poster": "/components/poster/poster"
+  }
 }

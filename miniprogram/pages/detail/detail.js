@@ -3,6 +3,7 @@ var localRankings = require('../../data/rankings.js');
 var rankings = localRankings;
 var meta = require('../../utils/model-meta.js');
 var store = require('../../utils/store.js');
+var presentImage = require('../../utils/share-image.js');
 
 function getRankings() {
   try {
@@ -30,10 +31,13 @@ Page({
     overallElo: 0,
     primaryRank: 0,
     primaryCatId: '',
+    primaryElo: 0,
     updatedDate: '',
     shareTitle: '',
     inCompare: false,
     isFav: false,
+    primaryCatLabel: '',
+    generatingPoster: false,
   },
 
   onLoad: function (options) {
@@ -42,6 +46,14 @@ Page({
       rankings = app.globalData.rankingsData;
     }
     var name = options.name ? decodeURIComponent(options.name) : '';
+    // 小程序码：scene='m=<模型名，空格用 + 代替>'
+    if (!name && options.scene) {
+      try {
+        var scene = String(options.scene);
+        try { scene = decodeURIComponent(scene); } catch (e0) {}
+        if (scene.indexOf('m=') === 0) name = scene.slice(2).replace(/\+/g, ' ');
+      } catch (e) {}
+    }
     if (!name) {
       this.setData({ loading: false });
       return;
@@ -182,6 +194,10 @@ Page({
       overallElo: overallElo,
       primaryRank: primaryRank,
       primaryCatId: primaryCatId,
+      primaryElo: Math.round(primaryElo * 10) / 10,
+      primaryCatLabel: primaryRank
+        ? (primaryCatId === 'text' ? '综合' : (primaryCatName || primaryCatId)) + '第' + primaryRank + '名'
+        : '',
       updatedDate: r.lastUpdated || '',
       inCompare: inCompare,
       isFav: store.isFavorite(name),
@@ -294,6 +310,78 @@ Page({
     var on = store.toggleFavorite(name, snap);
     this.setData({ isFav: on });
     wx.showToast({ title: on ? '已收藏' : '已取消收藏', icon: 'none' });
+  },
+
+  // 生成单模型分享图
+  onGeneratePoster: function () {
+    if (this.data.generatingPoster || !this.data.modelName) return;
+    var that = this;
+    var poster = this.selectComponent('#poster');
+    if (!poster) {
+      wx.showToast({ title: '生成组件未就绪', icon: 'none' });
+      return;
+    }
+
+    var price = this.data.price || {};
+    var currency = price.currency || 'USD';
+    var hasPrice = price.input > 0 || price.output > 0 || price.inputCNY > 0 || price.outputCNY > 0;
+    var sym = currency === 'CNY' ? '¥' : '$';
+    var fmt = function (v) {
+      v = Number(v) || 0;
+      return (v > 0 && v < 0.01 ? v.toFixed(3) : v.toFixed(2));
+    };
+    var pin = currency === 'CNY' ? price.inputCNY : price.input;
+    var pout = currency === 'CNY' ? price.outputCNY : price.output;
+
+    var catList = this.data.categoryList || [];
+    var primary = null;
+    for (var i = 0; i < catList.length; i++) {
+      if (catList[i].id === this.data.primaryCatId) primary = catList[i];
+    }
+    primary = primary || catList[0];
+    var dims = ((primary && primary.dims) || [])
+      .filter(function (d) { return d.id !== 'overall'; })
+      .sort(function (a, b) { return b.elo - a.elo; })
+      .slice(0, 3)
+      .map(function (d) { return { name: d.name, elo: Math.round(d.elo) }; });
+
+    // 码里带模型名（仅限 scene 允许的字符且 <=30），否则回首页
+    var rawName = this.data.modelName || '';
+    var qrPage = 'pages/index/index';
+    var qrScene = '';
+    if (rawName.length <= 30 && /^[A-Za-z0-9 .()_+-]+$/.test(rawName)) {
+      qrPage = 'pages/detail/detail';
+      qrScene = 'm=' + rawName.replace(/ /g, '+');
+    }
+
+    this.setData({ generatingPoster: true });
+    poster.generate({
+      layout: 'detail',
+      title: this.data.displayName || this.data.modelName,
+      subtitle: this.data.provider || '',
+      rankText: this.data.primaryCatLabel || '',
+      elo: this.data.primaryElo || Math.round((this.data.overallElo || 0) * 10) / 10 || '—',
+      votesText: this.data.votes ? this.data.votes + ' 票' : '',
+      contextText: this.data.context ? ('上下文 ' + this.data.context) : '',
+      confidenceText: (this.data.confidence && this.data.confidence.label) || '',
+      hasPrice: hasPrice,
+      priceIn: hasPrice ? sym + fmt(pin) + '/M' : '',
+      priceOut: hasPrice ? sym + fmt(pout) + '/M' : '',
+      priceProxy: /openrouter/i.test(price.source || ''),
+      review: this.data.review || '',
+      dimensions: dims,
+      updated: this.data.updatedDate || '',
+      qrPage: qrPage,
+      qrScene: qrScene,
+    }, function (err, path) {
+      that.setData({ generatingPoster: false });
+      if (err) {
+        console.error('[Detail] poster error:', err);
+        wx.showToast({ title: '生成失败，请重试', icon: 'none' });
+        return;
+      }
+      presentImage(path);
+    });
   },
 
   goCompare: function () {

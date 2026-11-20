@@ -1,6 +1,7 @@
 // pages/index/index.js
 var localRankings = require('../../data/rankings.js');
 var meta = require('../../utils/model-meta.js');
+var presentImage = require('../../utils/share-image.js');
 var rankings = localRankings;
 
 // 国产厂商判断统一走 model-meta（落地页共用同一份白名单）
@@ -317,47 +318,7 @@ Page({
     });
   },
 
-  usePoster: function (path) {
-    wx.showActionSheet({
-      itemList: ['保存到相册', '分享图片'],
-      success: function (res) {
-        if (res.tapIndex === 0) {
-          wx.saveImageToPhotosAlbum({
-            filePath: path,
-            success: function () { wx.showToast({ title: '已保存到相册' }); },
-            fail: function (e) {
-              var msg = (e && e.errMsg) || '';
-              // 112：后台《用户隐私保护指引》未声明「相册（仅写入）」，只能预览后长按保存
-              if (e && e.errno === 112) {
-                wx.previewImage({ urls: [path] });
-                wx.showToast({ title: '请长按图片保存', icon: 'none' });
-                return;
-              }
-              if (msg.indexOf('auth') >= 0) {
-                wx.showModal({
-                  title: '需要相册权限',
-                  content: '保存榜单图片需要访问相册，请在设置中允许。',
-                  confirmText: '去设置',
-                  success: function (r) { if (r.confirm) wx.openSetting(); },
-                });
-              } else {
-                wx.previewImage({ urls: [path] });
-              }
-            },
-          });
-        } else if (res.tapIndex === 1) {
-          if (wx.showShareImageMenu) {
-            wx.showShareImageMenu({
-              path: path,
-              fail: function () { wx.previewImage({ urls: [path] }); },
-            });
-          } else {
-            wx.previewImage({ urls: [path] });
-          }
-        }
-      },
-    });
-  },
+  usePoster: presentImage,
 
   onShow: function () {
     var app = getApp();

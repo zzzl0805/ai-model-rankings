@@ -3,6 +3,7 @@ var localRankings = require('../../data/rankings.js');
 var rankings = localRankings;
 var meta = require('../../utils/model-meta.js');
 var store = require('../../utils/store.js');
+var presentImage = require('../../utils/share-image.js');
 
 // 模型名可能自带逗号（如 "Claude Opus 4.5 (High, 32K, 20251101)"），
 // 所以不能「join(',') → decode → split(',')」。用 JSON 传递，接收端两种形态都能解析。
@@ -35,6 +36,8 @@ Page({
     allModels: [],
     loading: false,
     activeGroupName: '',
+    generatingPoster: false,
+    lastUpdated: '',
   },
 
   // 转发：带上当前对比的模型（否则对方打开是空的）
@@ -102,7 +105,7 @@ Page({
     if (app && app.globalData) this._seenLaunchSeq = app.globalData.launchSeq || 0;
 
     var allModels = this.buildAllModels();
-    this.setData({ allModels: allModels });
+    this.setData({ allModels: allModels, lastUpdated: (rankings && rankings.lastUpdated) || '' });
 
     // 从分享进入：参数校验后再写入 storage（名字可能带逗号）
     if (options && options.names) this.applySharedNames(options.names, cloudReady);
@@ -138,7 +141,7 @@ Page({
     if (!app || !app.globalData || !app.globalData.cloudRankings) return;
     if (rankings === app.globalData.cloudRankings) return;
     rankings = app.globalData.cloudRankings;
-    this.setData({ allModels: this.buildAllModels() });
+    this.setData({ allModels: this.buildAllModels(), lastUpdated: rankings.lastUpdated || '' });
     if (this._pendingSharedNames) {
       var pending = this._pendingSharedNames;
       this._pendingSharedNames = null;
@@ -151,6 +154,116 @@ Page({
 
   onCloudDataReady: function () {
     this.applyCloudRankings();
+  },
+
+  // 生成对比结果图
+  onGeneratePoster: function () {
+    var models = this.data.models || [];
+    if (models.length < 2) {
+      wx.showToast({ title: '至少选择两个模型', icon: 'none' });
+      return;
+    }
+    var poster = this.selectComponent('#poster');
+    if (!poster) {
+      wx.showToast({ title: '生成组件未就绪', icon: 'none' });
+      return;
+    }
+
+    var headers = models.map(function (m) { return m.displayName || m.name; });
+
+    // 综合 Elo：优先文本综合，其次模型出现的第一个类目综合
+    function summaryElo(m) {
+      var cats = m.categories || {};
+      var order = ['text'].concat(Object.keys(cats));
+      for (var i = 0; i < order.length; i++) {
+        var ov = cats[order[i]] && cats[order[i]].overall;
+        if (ov && ov.elo) return ov.elo;
+      }
+      var max = 0;
+      Object.keys(cats).forEach(function (c) {
+        Object.keys(cats[c]).forEach(function (d) {
+          var e = cats[c][d].elo || 0;
+          if (e > max) max = e;
+        });
+      });
+      return max;
+    }
+
+    // 统一折算成美元比较，人民币原生价加 ≈
+    var rate = (rankings && rankings.exchangeRate) || 7.2;
+    function priceOf(m) {
+      var p = m.price || {};
+      var cny = p.currency === 'CNY';
+      var usdIn = p.input || (p.inputCNY ? p.inputCNY / rate : 0);
+      var usdOut = p.output || (p.outputCNY ? p.outputCNY / rate : 0);
+      return {
+        cny: cny,
+        input: usdIn,
+        output: usdOut,
+        has: p.input > 0 || p.output > 0 || p.inputCNY > 0 || p.outputCNY > 0,
+      };
+    }
+    function fmt(v) {
+      v = Number(v) || 0;
+      return (v > 0 && v < 0.01 ? v.toFixed(3) : v.toFixed(2));
+    }
+    function bestIndex(values, lowerIsBetter) {
+      var best = -1;
+      values.forEach(function (v, i) {
+        if (!(v > 0)) return;
+        if (best < 0 || (lowerIsBetter ? v < values[best] : v > values[best])) best = i;
+      });
+      return best;
+    }
+
+    var elos = models.map(function (m) { return Math.round(summaryElo(m) * 10) / 10; });
+    var prices = models.map(priceOf);
+    var inputs = prices.map(function (p) { return p.has ? p.input : 0; });
+    var outputs = prices.map(function (p) { return p.has ? p.output : 0; });
+    var bestElo = bestIndex(elos, false);
+    var bestIn = bestIndex(inputs, true);
+    var bestOut = bestIndex(outputs, true);
+
+    var rows = [
+      { label: '综合 Elo', values: elos.map(String), best: bestElo },
+      {
+        label: '输入价 /M',
+        values: prices.map(function (p) { return p.has ? (p.cny ? '≈$' : '$') + fmt(p.input) : '—'; }),
+        best: bestIn,
+      },
+      {
+        label: '输出价 /M',
+        values: prices.map(function (p) { return p.has ? (p.cny ? '≈$' : '$') + fmt(p.output) : '—'; }),
+        best: bestOut,
+      },
+      { label: '上下文', values: models.map(function (m) { return m.context || '—'; }), best: -1 },
+    ];
+
+    var note = '';
+    if (bestElo >= 0) note = '能力最高：' + headers[bestElo] + '（' + elos[bestElo] + '）';
+    if (bestIn >= 0) note += (note ? ' · ' : '') + '输入价最低：' + headers[bestIn];
+
+    var that = this;
+    this.setData({ generatingPoster: true });
+    poster.generate({
+      layout: 'compare',
+      title: this.data.activeGroupName || '模型对比',
+      subtitle: headers.join(' vs '),
+      models: headers,
+      rows: rows,
+      note: note,
+      updated: this.data.lastUpdated || '',
+      qrPage: 'pages/index/index',
+      qrScene: '',
+    }, function (err, path) {
+      that.setData({ generatingPoster: false });
+      if (err) {
+        console.error('[Compare] poster error:', err);
+        wx.showToast({ title: '生成失败，请重试', icon: 'none' });
+        return;
+      }
+      presentImage(path);
+    });
   },
 
   // 保存当前对比组（可命名）

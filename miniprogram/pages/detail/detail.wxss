@@ -60,6 +60,8 @@
 /* 看完整排行（分享落地页出口） */
 .home-btn { width: 200rpx; margin-left: 16rpx; text-align: center; padding: 22rpx 0; background: #F1F5F9; color: #0F5EF0; border-radius: 16rpx; font-size: 28rpx; font-weight: 600; }
 
-/* 收藏按钮 */
+/* 收藏 / 生成图片 */
+.header-actions { display: flex; align-items: center; }
+.img-btn { margin-right: 14rpx; font-size: 22rpx; color: rgba(255,255,255,0.75); padding: 4rpx 12rpx; border: 1rpx solid rgba(255,255,255,0.25); border-radius: 20rpx; }
 .fav-btn { font-size: 22rpx; color: rgba(255,255,255,0.6); padding: 4rpx 12rpx; border: 1rpx solid rgba(255,255,255,0.2); border-radius: 20rpx; }
 .fav-on { color: #FCD34D; border-color: rgba(252,211,77,0.5); }

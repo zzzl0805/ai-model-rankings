@@ -1,3 +1,6 @@
 {
-  "navigationBarTitleText": "AI大模型对比"
+  "navigationBarTitleText": "AI大模型对比",
+  "usingComponents": {
+    "poster": "/components/poster/poster"
+  }
 }

@@ -12,8 +12,13 @@
     <view class="header">
       <view class="header-top">
         <view class="back-link" bindtap="goBack"><text>← 返回</text></view>
-        <view class="fav-btn {{isFav ? 'fav-on' : ''}}" bindtap="toggleFavorite">
-          <text>{{isFav ? '★ 已收藏' : '☆ 收藏'}}</text>
+        <view class="header-actions">
+          <view class="img-btn" bindtap="onGeneratePoster">
+            <text>{{generatingPoster ? '生成中…' : '生成图片'}}</text>
+          </view>
+          <view class="fav-btn {{isFav ? 'fav-on' : ''}}" bindtap="toggleFavorite">
+            <text>{{isFav ? '★ 已收藏' : '☆ 收藏'}}</text>
+          </view>
         </view>
       </view>
       <text class="model-name">{{displayName}}</text>
@@ -89,6 +94,8 @@
       <text>看完整排行</text>
     </view>
   </view>
+
+  <poster id="poster" />
 
   <!-- 来源弹窗 -->
   <view wx:if="{{showSourcePopup}}" class="popup-mask" bindtap="closeSourcePopup">
