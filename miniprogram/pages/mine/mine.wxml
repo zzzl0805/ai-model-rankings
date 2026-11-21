@@ -2,10 +2,7 @@
 <view class="page">
   <view class="header" style="padding-top:{{statusBarHeight}}px;">
     <view class="header-row" style="padding-right:{{menuRight}}px;">
-      <view class="header-left">
-        <text class="back-link" bindtap="goBack">← 返回</text>
-        <text class="header-title">我的</text>
-      </view>
+      <text class="header-title">我的</text>
     </view>
     <text class="header-sub">收藏 {{stats.favCount}} · 对比组 {{stats.groupCount}} · 记录 {{stats.calcCount}}</text>
   </view>
@@ -102,6 +99,31 @@
           <text class="score">¥{{item.costCNY}}</text>
           <text class="score-sub">{{item.timeText}}</text>
         </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 更多：规则/关于/隐私/导出 -->
+  <view class="section">
+    <view class="section-head">
+      <text class="section-title">更多</text>
+    </view>
+    <view class="list">
+      <view class="row" bindtap="goMethodology">
+        <text class="link-title">评分方法论与口径</text>
+        <text class="link-arrow">›</text>
+      </view>
+      <view class="row" bindtap="goAbout">
+        <text class="link-title">关于 AI模型排行</text>
+        <text class="link-arrow">›</text>
+      </view>
+      <view class="row" bindtap="goPrivacy">
+        <text class="link-title">隐私保护指引</text>
+        <text class="link-arrow">›</text>
+      </view>
+      <view class="row" bindtap="goExport">
+        <text class="link-title">导出数据</text>
+        <text class="link-arrow">›</text>
       </view>
     </view>
   </view>

@@ -4,6 +4,16 @@ var rankings = localRankings;
 var meta = require('../../utils/model-meta.js');
 var store = require('../../utils/store.js');
 var presentImage = require('../../utils/share-image.js');
+var catalogUtil = require('../../utils/catalog.js');
+
+var DIM_NAMES = { overall: '综合', coding: '编程', math: '数学', writing: '写作', hardprompts: '难题', instruction: '指令', expert: '专家', multiturn: '长对话' };
+var VISUAL_CATS = { 'text-to-image': 1, 'image-edit': 1, 'text-to-video': 1, 'image-to-video': 1, 'video-edit': 1 };
+
+function round1(v) { return Math.round((Number(v) || 0) * 10) / 10; }
+function fmtPrice(v) {
+  v = Number(v) || 0;
+  return v > 0 && v < 0.01 ? v.toFixed(3) : v.toFixed(2);
+}
 
 function getRankings() {
   try {
@@ -37,7 +47,42 @@ Page({
     inCompare: false,
     isFav: false,
     primaryCatLabel: '',
+    variantLabel: '',
     generatingPoster: false,
+    primaryIsAgent: false,
+    scoreLabel: '综合 Elo',
+    companyName: '',
+    companySummary: '',
+    companyMeta: '',
+    companyWebsite: '',
+    familyName: '',
+    familyDescription: '',
+    releaseDateText: '',
+    statusText: '',
+    licenseText: '',
+    openWeightsText: '',
+    contextText: '',
+    maxOutputText: '',
+    inputModsText: '',
+    outputModsText: '',
+    knowledgeCutoff: '',
+    apiModelId: '',
+    docsUrl: '',
+    summary: '',
+    strengths: [],
+    bestFor: [],
+    limitations: [],
+    categoryRanks: [],
+    dimensions: [],
+    familyVariants: [],
+    peers: [],
+    timeline: [],
+    priceView: {},
+    archivePending: false,
+    hasSpecs: false,
+    specNote: '',
+    catalogSources: [],
+    verifiedAt: '',
   },
 
   onLoad: function (options) {
@@ -78,8 +123,6 @@ Page({
     var price = null;
     var votes = 0;
     var context = '';
-    var rankInOverall = 0;
-    var overallElo = 0;
     var rawProvider = '';
 
     try {
@@ -106,67 +149,254 @@ Page({
       console.error('[Detail] search error:', e);
     }
 
-    try {
-      var textOverall = ((data.text || data).overall) || [];
-      for (var j = 0; j < textOverall.length; j++) {
-        if (textOverall[j].name === name) {
-          rankInOverall = j + 1;
-          overallElo = textOverall[j].elo || 0;
+    var catInfoById = {};
+    categories.forEach(function (c) { catInfoById[c.id] = c; });
+
+    // 每个类目的 overall 名次/百分位（不做跨类目 Elo 比较）
+    var categoryRanks = [];
+    var rankInOverall = 0;
+    var overallElo = 0;
+    Object.keys(data).forEach(function (catId) {
+      var arr = ((data[catId] || {}).overall) || [];
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i] && arr[i].name === name) {
+          var rank = arr[i].rank || (i + 1);
+          var total = arr.length;
+          var info = catInfoById[catId];
+          categoryRanks.push({
+            id: catId,
+            name: info ? info.name : catId,
+            icon: info ? info.icon : '',
+            rank: rank,
+            total: total,
+            pct: total ? Math.round((1 - (rank - 1) / total) * 100) : 0,
+          });
+          if (catId === 'text') { rankInOverall = rank; overallElo = arr[i].elo || 0; }
           break;
         }
       }
-    } catch(e) {}
+    });
 
-    // 主类目：优先文本榜，其次模型出现的第一个类目。
-    // 非文本模型不能用 text 榜 Elo（会是 0）生成点评和收藏快照。
-    var primaryCatId = '';
-    var primaryCatName = '';
-    var primaryRank = 0;
-    var primaryElo = 0;
-    try {
-      var catIds = Object.keys(catScores);
-      var prefer = catIds.indexOf('text') >= 0 ? 'text' : catIds[0];
-      if (prefer) {
-        primaryCatId = prefer;
-        (categories || []).forEach(function (c) { if (c.id === prefer) primaryCatName = c.name; });
-        var ov = ((data[prefer] || {}).overall) || [];
-        for (var k = 0; k < ov.length; k++) {
-          if (ov[k].name === name) { primaryRank = k + 1; primaryElo = ov[k].elo || 0; break; }
-        }
-        // 只出现在子维度：用该维度条目里的 rank/elo
-        if (!primaryRank) {
-          var dims = catScores[prefer] || {};
-          Object.keys(dims).forEach(function (d) {
-            if (!primaryRank && dims[d] && dims[d].rank) {
-              primaryRank = dims[d].rank;
-              primaryElo = dims[d].elo || 0;
-            }
-          });
-        }
-      }
-    } catch (e) {}
-    if (!primaryRank) primaryRank = rankInOverall;
-    if (!primaryElo) primaryElo = overallElo;
-
-    var dimNames = { overall: '综合', coding: '编程', math: '数学', writing: '写作', hardprompts: '难题', instruction: '指令', expert: '专家', multiturn: '长对话' };
-    var catList = [];
-    try {
-      Object.keys(catScores).forEach(function (catId) {
-        var catInfo = null;
-        for (var k = 0; k < categories.length; k++) {
-          if (categories[k].id === catId) { catInfo = categories[k]; break; }
-        }
-        var dims = [];
-        Object.keys(dimNames).forEach(function (dimId) {
-          if (catScores[catId][dimId]) {
-            dims.push({ id: dimId, name: dimNames[dimId], elo: catScores[catId][dimId].elo, margin: catScores[catId][dimId].margin || 0, votes: catScores[catId][dimId].votes || 0 });
-          }
-        });
-        if (dims.length > 0) {
-          catList.push({ id: catId, name: catInfo ? (catInfo.icon + ' ' + catInfo.name) : catId, dims: dims });
+    // 用基础名打开时（如从系列列表/旧分享），回退到榜单里同基础名的变体
+    if (!categoryRanks.length) {
+      var base = catalogUtil.baseName(name);
+      var alt = '';
+      Object.keys(data).forEach(function (catId) {
+        if (alt) return;
+        var rows = ((data[catId] || {}).overall) || [];
+        for (var i = 0; i < rows.length; i++) {
+          if (rows[i] && catalogUtil.baseName(rows[i].name) === base) { alt = rows[i].name; break; }
         }
       });
-    } catch(e) {}
+      if (alt && alt !== name) { that.loadModel(alt); return; }
+    }
+
+    // 主类目：优先文本，其次第一个上榜类目；只出现在子维度时兜底 catScores
+    var primary = null;
+    for (var ci = 0; ci < categoryRanks.length; ci++) {
+      if (categoryRanks[ci].id === 'text') { primary = categoryRanks[ci]; break; }
+    }
+    if (!primary && categoryRanks.length) primary = categoryRanks[0];
+
+    var primaryCatId = primary ? primary.id : '';
+    var primaryCatName = primary ? primary.name : '';
+    var primaryRank = primary ? primary.rank : 0;
+    var primaryTotal = primary ? primary.total : 0;
+    var primaryElo = 0;
+    if (primaryCatId && catScores[primaryCatId]) {
+      var ovRow = catScores[primaryCatId].overall;
+      if (ovRow) primaryElo = ovRow.elo || 0;
+      if (!primaryElo) {
+        Object.keys(catScores[primaryCatId]).forEach(function (d) {
+          if (!primaryElo && catScores[primaryCatId][d]) primaryElo = catScores[primaryCatId][d].elo || 0;
+        });
+      }
+    }
+    if (!primaryRank) primaryRank = rankInOverall;
+    if (!primaryElo) primaryElo = overallElo;
+    if (!primaryCatId && Object.keys(catScores).length) {
+      primaryCatId = Object.keys(catScores)[0];
+      primaryCatName = catInfoById[primaryCatId] ? catInfoById[primaryCatId].name : primaryCatId;
+    }
+    var primaryIsAgent = primaryCatId === 'agent';
+    var scoreLabel = primaryIsAgent ? '净提升率' : (primaryCatId === 'text' || !primaryCatId ? '综合 Elo' : (primaryCatName + ' Elo'));
+
+    // 档案（Top 70 有；长尾为空）
+    var cm = catalogUtil.findModel(name);
+    var company = catalogUtil.companyOf(cm);
+    var family = catalogUtil.familyOf(cm);
+    var displayName = cm ? cm.displayName : meta.getDisplayName(name);
+    var vm = String(name || '').match(/\(([^)]+)\)\s*$/);
+    var variantLabel = vm ? vm[1] : '';
+    var providerName = company ? (company.nameZh || company.name) : meta.getProviderDisplay(rawProvider, name);
+
+    // 价格口径
+    var sourcePrice = price || (cm && cm.price) || null;
+    var currency = (sourcePrice && sourcePrice.currency) || 'USD';
+    var isCNY = currency === 'CNY';
+    var hasPrice = !!(sourcePrice && (sourcePrice.input > 0 || sourcePrice.output > 0 || sourcePrice.inputCNY > 0 || sourcePrice.outputCNY > 0));
+    var pin = sourcePrice ? (isCNY ? sourcePrice.inputCNY : sourcePrice.input) : 0;
+    var pout = sourcePrice ? (isCNY ? sourcePrice.outputCNY : sourcePrice.output) : 0;
+    var sym = isCNY ? '¥' : '$';
+    var isVisual = !!VISUAL_CATS[primaryCatId];
+    var priceSource = (sourcePrice && sourcePrice.source) || '';
+
+    var altPrice = null;
+    if (price && cm && cm.price && (cm.price.input > 0 || cm.price.output > 0)) {
+      if (Math.abs((cm.price.input || 0) - (price.input || 0)) > 0.01 ||
+          Math.abs((cm.price.output || 0) - (price.output || 0)) > 0.01) {
+        altPrice = {
+          inputText: '$' + fmtPrice(cm.price.input),
+          outputText: '$' + fmtPrice(cm.price.output),
+          asOf: cm.price.asOf || '',
+        };
+      }
+    }
+    var priceView = {
+      has: hasPrice,
+      inputText: hasPrice ? sym + fmtPrice(pin) : '',
+      outputText: hasPrice ? sym + fmtPrice(pout) : '',
+      currency: currency,
+      unitLabel: isVisual ? '计价单位见来源' : '每百万 tokens',
+      unitSuffix: isVisual ? '' : '/M',
+      source: priceSource,
+      isProxy: /openrouter/i.test(priceSource),
+      asOf: price ? (r.priceUpdated || r.lastUpdated || '') : ((cm && cm.price && cm.price.asOf) || r.lastUpdated || ''),
+      alt: altPrice,
+    };
+
+    // 规格
+    var contextTokens = (cm && cm.contextTokens) || catalogUtil.parseContext(context);
+    var contextText = catalogUtil.formatTokens(contextTokens) || context || '—';
+    var maxOutputText = cm && cm.maxOutputTokens ? catalogUtil.formatTokens(cm.maxOutputTokens) : '—';
+    var inputModsText = cm && cm.modalities && cm.modalities.input && cm.modalities.input.length
+      ? catalogUtil.modalityText(cm.modalities.input) : '—';
+    var outputModsText = cm && cm.modalities && cm.modalities.output && cm.modalities.output.length
+      ? catalogUtil.modalityText(cm.modalities.output) : '—';
+    var hasSpecs = !!(
+      (contextText && contextText !== '—') ||
+      (maxOutputText && maxOutputText !== '—') ||
+      (inputModsText && inputModsText !== '—') ||
+      (outputModsText && outputModsText !== '—') ||
+      (cm && cm.releaseDate) ||
+      (cm && cm.knowledgeCutoff) ||
+      (cm && cm.apiModelIds && cm.apiModelIds[0])
+    );
+
+    // 定位 / 优势
+    var summary = (cm && cm.summary) || '';
+    if (!summary) {
+      summary = providerName + '的 ' + (cm ? cm.displayName : catalogUtil.baseName(name));
+      if (primaryRank) summary += '，当前在' + primaryCatName + '榜第 ' + primaryRank + ' / ' + primaryTotal;
+      summary += '。';
+    }
+    var strengths = (cm && cm.strengths) || [];
+    var bestFor = (cm && cm.bestFor) || [];
+    var limitations = (cm && cm.limitations) || [];
+
+    // 分维度（主类目）
+    var dimensions = [];
+    var dimScores = catScores[primaryCatId] || {};
+    function dimWidth(elo) {
+      return primaryIsAgent
+        ? Math.min(100, Math.max(2, elo / 35 * 100))
+        : Math.min(100, Math.max(2, (elo - 1200) / 400 * 100));
+    }
+    if (dimScores.overall) {
+      dimensions.push({
+        id: 'overall', name: primaryIsAgent ? '整体' : '综合',
+        valueText: primaryIsAgent ? (round1(dimScores.overall.elo) + '%') : String(round1(dimScores.overall.elo)),
+        width: dimWidth(dimScores.overall.elo),
+      });
+    }
+    Object.keys(DIM_NAMES).forEach(function (dimId) {
+      if (dimId === 'overall' || !dimScores[dimId]) return;
+      var row = dimScores[dimId];
+      dimensions.push({
+        id: dimId, name: DIM_NAMES[dimId],
+        valueText: primaryIsAgent ? (round1(row.elo) + '%') : String(round1(row.elo)),
+        width: dimWidth(row.elo),
+      });
+    });
+    dimensions.sort(function (a, b) {
+      if (a.id === 'overall') return -1;
+      if (b.id === 'overall') return 1;
+      return parseFloat(b.valueText) - parseFloat(a.valueText);
+    });
+
+    var rankLookup = {};
+    Object.keys(data).forEach(function (catId) {
+      var rows = ((data[catId] || {}).overall) || [];
+      rows.forEach(function (m, i) {
+        if (m && m.name && !rankLookup[m.name]) {
+          rankLookup[m.name] = { rank: m.rank || (i + 1), total: rows.length };
+        }
+      });
+    });
+
+    // 同系列其他版本
+    var familyVariants = [];
+    if (family) {
+      catalogUtil.familyModels(family.id).forEach(function (m) {
+        if (m.id === cm.id) return;
+        var live = rankLookup[m.rankingName || m.displayName];
+        familyVariants.push({
+          id: m.id,
+          name: m.rankingName || m.displayName,
+          displayName: m.displayName,
+          releaseDate: m.releaseDate || '',
+          rankText: live ? ('#' + live.rank + ' / ' + live.total) : '',
+        });
+      });
+      familyVariants.sort(function (a, b) { return a.releaseDate < b.releaseDate ? 1 : -1; });
+      familyVariants = familyVariants.slice(0, 6);
+    }
+
+    // 同价位竞品（同类目 overall）
+    var peers = [];
+    try {
+      if (primary && price && price.input > 0) {
+        var arr = ((data[primary.id] || {}).overall) || [];
+        var own = price.input;
+        var cand = [];
+        arr.forEach(function (m) {
+          if (!m || m.name === name || !m.price || m.price.input <= 0) return;
+          if (m.price.input < own * 0.5 || m.price.input > own * 2) return;
+          cand.push({ m: m, d: Math.abs(m.price.input - own) });
+        });
+        cand.sort(function (a, b) { return a.d - b.d || (a.m.rank - b.m.rank); });
+        peers = cand.slice(0, 3).map(function (x) {
+          var cny = x.m.price.currency === 'CNY';
+          return {
+            name: x.m.name,
+            displayName: meta.getDisplayName(x.m.name),
+            provider: meta.getProviderDisplay(x.m.provider, x.m.name),
+            rank: x.m.rank || 0,
+            priceText: cny ? ('¥' + fmtPrice(x.m.price.inputCNY) + '/M') : ('$' + fmtPrice(x.m.price.input) + '/M'),
+          };
+        });
+      }
+    } catch (e) {}
+
+    // 公开上线时间线
+    var timeline = catalogUtil.eventsForModel(cm).map(function (e) {
+      return { date: e.date, title: e.title, sourceUrl: e.sourceUrl || '' };
+    });
+
+    // 兼容海报：按类目聚合的维度
+    var catList = [];
+    Object.keys(catScores).forEach(function (catId) {
+      var dims = [];
+      Object.keys(DIM_NAMES).forEach(function (dimId) {
+        if (catScores[catId][dimId]) {
+          dims.push({ id: dimId, name: DIM_NAMES[dimId], elo: catScores[catId][dimId].elo, margin: catScores[catId][dimId].margin || 0, votes: catScores[catId][dimId].votes || 0 });
+        }
+      });
+      if (dims.length) {
+        var info = catInfoById[catId];
+        catList.push({ id: catId, name: info ? (info.icon + ' ' + info.name) : catId, dims: dims });
+      }
+    });
 
     var inCompare = false;
     try {
@@ -174,43 +404,72 @@ Page({
       inCompare = Array.isArray(cl) && cl.indexOf(name) >= 0;
     } catch (e) {}
 
+    var primaryCatLabel = primaryRank
+      ? (primaryCatId === 'text' ? '综合' : primaryCatName) + '第' + primaryRank + '名'
+      : '';
+
     that.setData({
       modelName: name,
-      displayName: meta.getDisplayName(name),
-      provider: meta.getProviderDisplay(rawProvider, name),
+      displayName: displayName,
+      variantLabel: variantLabel,
+      provider: providerName,
       votes: votes,
       confidence: meta.getConfidence(votes),
-      review: (function () {
-        // Elo 阈值只适用于文本榜；非文本榜用「该榜第 N 名 + 价格情况」描述
-        if (!primaryCatId || primaryCatId === 'text') return meta.getReview(name, primaryElo, price);
-        var hasPrice = !!(price && (price.input > 0 || price.output > 0 || price.inputCNY > 0 || price.outputCNY > 0));
-        return (primaryCatName || primaryCatId) + (primaryRank ? '第' + primaryRank + '名' : '上榜模型') +
-          (hasPrice ? '，有公开 API 定价' : '，暂无公开 API 定价');
-      })(),
+      review: summary,
+      summary: summary,
+      strengths: strengths,
+      bestFor: bestFor,
+      limitations: limitations,
       price: price,
+      priceView: priceView,
       context: context,
+      contextText: contextText,
+      maxOutputText: maxOutputText,
+      inputModsText: inputModsText,
+      outputModsText: outputModsText,
+      releaseDateText: (cm && cm.releaseDate) || '—',
+      statusText: cm ? ({ ga: '正式', preview: '预览', deprecated: '已下线' }[cm.status] || '') : '',
+      licenseText: cm && cm.license ? cm.license.replace(/\s*license$/i, ' 许可') : '未公开',
+      openWeightsText: cm ? (cm.openWeights ? '开源权重' : '闭源') : '',
+      knowledgeCutoff: (cm && cm.knowledgeCutoff) || '—',
+      apiModelId: (cm && cm.apiModelIds && cm.apiModelIds[0]) || '',
+      docsUrl: (cm && cm.docsUrl) || '',
+      companyName: company ? (company.nameZh || company.name) : '',
+      companySummary: company ? company.summary : '',
+      companyMeta: company ? [company.country, company.founded ? ('成立 ' + company.founded) : '', company.hq].filter(Boolean).join(' · ') : '',
+      companyWebsite: company ? company.website : '',
+      familyName: family ? (family.nameZh || family.name) : '',
+      familyDescription: family ? family.description : '',
+      categoryRanks: categoryRanks,
+      dimensions: dimensions,
+      familyVariants: familyVariants,
+      peers: peers,
+      timeline: timeline,
+      archivePending: !cm || !hasSpecs,
+      hasSpecs: hasSpecs,
+      specNote: (cm && cm.specNote) || '',
+      catalogSources: (cm && cm.sources) || [],
+      verifiedAt: (cm && cm.verifiedAt) || '',
       categoryList: catList,
       rankInOverall: rankInOverall,
       overallElo: overallElo,
       primaryRank: primaryRank,
       primaryCatId: primaryCatId,
-      primaryElo: Math.round(primaryElo * 10) / 10,
-      primaryCatLabel: primaryRank
-        ? (primaryCatId === 'text' ? '综合' : (primaryCatName || primaryCatId)) + '第' + primaryRank + '名'
-        : '',
+      primaryElo: round1(primaryElo),
+      primaryIsAgent: primaryIsAgent,
+      scoreLabel: scoreLabel,
+      primaryCatLabel: primaryCatLabel,
       updatedDate: r.lastUpdated || '',
       inCompare: inCompare,
       isFav: store.isFavorite(name),
       loading: false,
     });
 
-    // 动态标题：让分享卡片和搜索展示更有信息量
-    var displayName = meta.getDisplayName(name);
-    var shareTitle = rankInOverall > 0
-      ? displayName + ' 综合第' + rankInOverall + '名｜AI模型排行'
-      : displayName + '｜AI模型排行';
+    var shareTitle = displayName + (primaryRank ? ' ' + (primaryCatId === 'text' ? '综合' : primaryCatName) + '第' + primaryRank + '名' : '') + '｜AI模型排行';
     that.setData({ shareTitle: shareTitle });
-    try { wx.setNavigationBarTitle({ title: displayName + (rankInOverall ? ' · 第' + rankInOverall + '名' : '') }); } catch (e) {}
+    try {
+      wx.setNavigationBarTitle({ title: displayName + (primaryRank ? ' · 第' + primaryRank + '名' : '') });
+    } catch (e) {}
   },
 
   // 云端数据晚到时重新加载（否则从分享卡片进来的用户看到的是旧快照）
@@ -322,17 +581,7 @@ Page({
       return;
     }
 
-    var price = this.data.price || {};
-    var currency = price.currency || 'USD';
-    var hasPrice = price.input > 0 || price.output > 0 || price.inputCNY > 0 || price.outputCNY > 0;
-    var sym = currency === 'CNY' ? '¥' : '$';
-    var fmt = function (v) {
-      v = Number(v) || 0;
-      return (v > 0 && v < 0.01 ? v.toFixed(3) : v.toFixed(2));
-    };
-    var pin = currency === 'CNY' ? price.inputCNY : price.input;
-    var pout = currency === 'CNY' ? price.outputCNY : price.output;
-
+    var pv = this.data.priceView || {};
     var catList = this.data.categoryList || [];
     var primary = null;
     for (var i = 0; i < catList.length; i++) {
@@ -354,21 +603,26 @@ Page({
       qrScene = 'm=' + rawName.replace(/ /g, '+');
     }
 
+    var eloText = this.data.primaryIsAgent
+      ? (this.data.primaryElo + '%')
+      : this.data.primaryElo;
+
     this.setData({ generatingPoster: true });
     poster.generate({
       layout: 'detail',
       title: this.data.displayName || this.data.modelName,
       subtitle: this.data.provider || '',
       rankText: this.data.primaryCatLabel || '',
-      elo: this.data.primaryElo || Math.round((this.data.overallElo || 0) * 10) / 10 || '—',
+      scoreLabel: this.data.scoreLabel || '综合 Elo',
+      elo: eloText || '—',
       votesText: this.data.votes ? this.data.votes + ' 票' : '',
-      contextText: this.data.context ? ('上下文 ' + this.data.context) : '',
+      contextText: this.data.contextText ? ('上下文 ' + this.data.contextText) : '',
       confidenceText: (this.data.confidence && this.data.confidence.label) || '',
-      hasPrice: hasPrice,
-      priceIn: hasPrice ? sym + fmt(pin) + '/M' : '',
-      priceOut: hasPrice ? sym + fmt(pout) + '/M' : '',
-      priceProxy: /openrouter/i.test(price.source || ''),
-      review: this.data.review || '',
+      hasPrice: !!pv.has,
+      priceIn: pv.has ? (pv.inputText + (pv.unitSuffix || '')) : '',
+      priceOut: pv.has ? (pv.outputText + (pv.unitSuffix || '')) : '',
+      priceProxy: !!pv.isProxy,
+      review: this.data.summary || this.data.review || '',
       dimensions: dims,
       updated: this.data.updatedDate || '',
       qrPage: qrPage,
@@ -382,6 +636,31 @@ Page({
       }
       presentImage(path);
     });
+  },
+
+  onFamilyVariantTap: function (e) {
+    var name = e.currentTarget.dataset.name;
+    if (name) wx.navigateTo({ url: '/pages/detail/detail?name=' + encodeURIComponent(name) });
+  },
+
+  onPeerTap: function (e) {
+    var name = e.currentTarget.dataset.name;
+    if (name) wx.navigateTo({ url: '/pages/detail/detail?name=' + encodeURIComponent(name) });
+  },
+
+  copyDocs: function () {
+    if (!this.data.docsUrl) return;
+    wx.setClipboardData({ data: this.data.docsUrl });
+  },
+
+  copySources: function () {
+    var list = (this.data.catalogSources || []).slice();
+    if (!list.length && this.data.docsUrl) list.push(this.data.docsUrl);
+    if (!list.length) {
+      wx.showToast({ title: '暂无来源链接', icon: 'none' });
+      return;
+    }
+    wx.setClipboardData({ data: list.join('\n') });
   },
 
   goCompare: function () {

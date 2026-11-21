@@ -1,0 +1,222 @@
+[
+ {
+  "id": "gemini-4",
+  "companyId": "google",
+  "name": "Gemini 4",
+  "nameZh": "Gemini 4 系列",
+  "description": "Google 第四代 Gemini 系列，覆盖 Carbon、Argon、Neon、Hydrogen 等版本，包含旗舰与中端定位。",
+  "sources": [
+   "https://openrouter.ai/google"
+  ]
+ },
+ {
+  "id": "gemini-3",
+  "companyId": "google",
+  "name": "Gemini 3",
+  "nameZh": "Gemini 3 系列",
+  "description": "Google Gemini 3 系列，包含 Pro 与 Flash 等版本，是 Gemini 4 之前的主力产品线。",
+  "sources": [
+   "https://openrouter.ai/google"
+  ]
+ },
+ {
+  "id": "claude-opus",
+  "companyId": "anthropic",
+  "name": "Claude Opus",
+  "nameZh": "Claude Opus 系列",
+  "description": "Anthropic 的旗舰产品线，面向复杂推理、编程和长程 Agent 任务。",
+  "sources": [
+   "https://www.anthropic.com"
+  ]
+ },
+ {
+  "id": "claude-fable",
+  "companyId": "anthropic",
+  "name": "Claude Fable",
+  "nameZh": "Claude Fable 系列",
+  "description": "Anthropic 的 Fable 产品线，与 Opus/Sonnet 并列出现在 LMArena 榜单中。",
+  "sources": [
+   "https://openrouter.ai/anthropic"
+  ]
+ },
+ {
+  "id": "claude-sonnet",
+  "companyId": "anthropic",
+  "name": "Claude Sonnet",
+  "nameZh": "Claude Sonnet 系列",
+  "description": "Anthropic 的均衡产品线，兼顾能力、速度与成本。",
+  "sources": [
+   "https://www.anthropic.com"
+  ]
+ },
+ {
+  "id": "gpt-6",
+  "companyId": "openai",
+  "name": "GPT-6",
+  "nameZh": "GPT-6 系列",
+  "description": "OpenAI GPT-6 系列，Astra 为旗舰版本，Sol 为次旗舰/高性价比版本。",
+  "sources": [
+   "https://openai.com"
+  ]
+ },
+ {
+  "id": "gpt-5",
+  "companyId": "openai",
+  "name": "GPT-5",
+  "nameZh": "GPT-5 系列",
+  "description": "OpenAI GPT-5 系列，包含 5.x 多个版本与 Chat 变体。",
+  "sources": [
+   "https://openai.com"
+  ]
+ },
+ {
+  "id": "gpt-image",
+  "companyId": "openai",
+  "name": "GPT-Image",
+  "nameZh": "GPT-Image 系列",
+  "description": "OpenAI 的图像生成与编辑模型系列。",
+  "sources": [
+   "https://openai.com"
+  ]
+ },
+ {
+  "id": "muse",
+  "companyId": "meta",
+  "name": "Muse",
+  "nameZh": "Muse 系列",
+  "description": "Meta 的 Muse 系列，包含 Wonder 与 Spark 等版本，面向复杂推理与 Agent 任务。",
+  "sources": [
+   "https://ai.meta.com"
+  ]
+ },
+ {
+  "id": "kimi",
+  "companyId": "moonshot",
+  "name": "Kimi",
+  "nameZh": "Kimi 系列",
+  "description": "月之暗面 Kimi 系列，主打长上下文、多模态与 Agent 工作流。",
+  "sources": [
+   "https://www.moonshot.cn"
+  ]
+ },
+ {
+  "id": "qwen",
+  "companyId": "alibaba",
+  "name": "Qwen",
+  "nameZh": "通义千问 Qwen 系列",
+  "description": "阿里巴巴通义千问系列，覆盖文本、视觉、图像与视频生成。",
+  "sources": [
+   "https://qwen.ai"
+  ]
+ },
+ {
+  "id": "glm",
+  "companyId": "zai",
+  "name": "GLM",
+  "nameZh": "GLM 系列",
+  "description": "智谱 GLM 系列，覆盖通用推理、代码与 Agent 场景。",
+  "sources": [
+   "https://z.ai"
+  ]
+ },
+ {
+  "id": "deepseek",
+  "companyId": "deepseek",
+  "name": "DeepSeek",
+  "nameZh": "DeepSeek 系列",
+  "description": "深度求索 DeepSeek 系列，以开源权重与高性价比著称。",
+  "sources": [
+   "https://www.deepseek.com"
+  ]
+ },
+ {
+  "id": "mimo",
+  "companyId": "xiaomi",
+  "name": "MiMo",
+  "nameZh": "MiMo 系列",
+  "description": "小米自研 MiMo 系列模型。",
+  "sources": [
+   "https://www.mi.com"
+  ]
+ },
+ {
+  "id": "nano-banana",
+  "companyId": "google",
+  "name": "Nano Banana",
+  "nameZh": "Nano Banana 图像系列",
+  "description": "Google 的图像生成模型系列，常以 Gemini Nano Banana 名称出现。",
+  "sources": [
+   "https://openrouter.ai/google"
+  ]
+ },
+ {
+  "id": "omni",
+  "companyId": "google",
+  "name": "Gemini Omni",
+  "nameZh": "Gemini Omni 系列",
+  "description": "Google 的多模态/视频生成系列。",
+  "sources": [
+   "https://openrouter.ai/google"
+  ]
+ },
+ {
+  "id": "flux",
+  "companyId": "bfl",
+  "name": "FLUX",
+  "nameZh": "FLUX 系列",
+  "description": "Black Forest Labs 的 FLUX 图像与视频生成系列。",
+  "sources": [
+   "https://bfl.ai"
+  ]
+ },
+ {
+  "id": "step",
+  "companyId": "stepfun",
+  "name": "Step",
+  "nameZh": "Step 系列",
+  "description": "阶跃星辰 Step 系列多模态模型。",
+  "sources": [
+   "https://www.stepfun.com"
+  ]
+ },
+ {
+  "id": "grok",
+  "companyId": "xai",
+  "name": "Grok",
+  "nameZh": "Grok 系列",
+  "description": "xAI 的 Grok 系列模型。",
+  "sources": [
+   "https://x.ai"
+  ]
+ },
+ {
+  "id": "ernie",
+  "companyId": "baidu",
+  "name": "ERNIE",
+  "nameZh": "文心 ERNIE 系列",
+  "description": "百度文心 ERNIE 系列，面向中文通用任务与知识问答。",
+  "sources": [
+   "https://www.baidu.com"
+  ]
+ },
+ {
+  "id": "seedance",
+  "companyId": "bytedance",
+  "name": "Seedance",
+  "nameZh": "Seedance 系列",
+  "description": "字节跳动 Seedance 视频生成系列。",
+  "sources": [
+   "https://www.bytedance.com"
+  ]
+ },
+ {
+  "id": "mai-image",
+  "companyId": "microsoft",
+  "name": "MAI-Image",
+  "nameZh": "MAI-Image 系列",
+  "description": "Microsoft 的图像生成与编辑模型系列。",
+  "sources": [
+   "https://www.microsoft.com"
+  ]
+ }
+]

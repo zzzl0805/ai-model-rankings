@@ -240,10 +240,20 @@ Page({
     });
   },
 
-  goBack: function () {
-    wx.navigateBack({
-      fail: function () { wx.switchTab({ url: '/pages/index/index' }); },
-    });
+  goMethodology: function () {
+    wx.navigateTo({ url: '/pages/methodology/methodology' });
+  },
+
+  goAbout: function () {
+    wx.navigateTo({ url: '/package-about/pages/about/about' });
+  },
+
+  goPrivacy: function () {
+    wx.navigateTo({ url: '/package-about/pages/privacy/privacy' });
+  },
+
+  goExport: function () {
+    wx.navigateTo({ url: '/package-export/pages/export/export' });
   },
 
   goRanking: function () {

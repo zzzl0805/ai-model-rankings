@@ -4,10 +4,6 @@
   <view class="header" style="padding-top:{{statusBarHeight}}px;">
     <view class="header-row" style="padding-right:{{menuRight}}px;">
       <text class="header-title">AI 模型排行</text>
-      <view class="header-actions">
-        <text class="header-rules" bindtap="onMineTap">我的</text>
-        <text class="header-rules" bindtap="onRulesTap">规则</text>
-      </view>
     </view>
     <text class="header-sub" style="padding-right:{{menuRight}}px;">数据截至 {{lastUpdated}} · LMArena</text>
   </view>
@@ -66,7 +62,7 @@
   <!-- 列头 -->
   <view class="col-head">
     <text class="ch-rank">名次</text>
-    <view class="ch-main"><text>模型</text><text class="ch-price">价格 入/出 {{priceUnit}}/百万 tokens</text></view>
+    <view class="ch-main"><text>模型</text><text class="ch-price">{{priceHeader}}</text></view>
     <view class="ch-score"><text>{{isAgent ? '净提升率 %' : 'Elo ±95%CI'}}</text><text class="ch-info" bindtap="onRulesTap">ⓘ</text></view>
   </view>
 
@@ -98,6 +94,7 @@
         </view>
         <view class="meta-line">
           <view class="meta-left">
+            <text wx:if="{{item.badgeRank}}" class="meta-global">{{item.badgeRank}}</text>
             <text class="meta-provider">{{item.provider}}</text>
             <text wx:if="{{item.variant}}" class="variant">{{item.variant}}</text>
             <text wx:if="{{item.lowSample}}" class="sample-low">样本少</text>
@@ -117,7 +114,7 @@
   </view>
 
   <!-- 本榜结论（也是分享标题；放在底部，不挤占首屏） -->
-  <view wx:if="{{conclusion && displayModels.length}}" class="insight">
+  <view wx:if="{{conclusion && displayModels.length && !searchText}}" class="insight">
     <text class="insight-label">本榜结论</text>
     <text class="insight-text">{{conclusion}}</text>
   </view>

@@ -171,13 +171,24 @@ Page({
 
     var headers = models.map(function (m) { return m.displayName || m.name; });
 
-    // 综合 Elo：优先文本综合，其次模型出现的第一个类目综合
-    function summaryElo(m) {
+    // 主榜得分：优先文本综合；Agent 是净提升率（%），不能混进 Elo 行
+    var catNames = {};
+    (rankings.categories || []).forEach(function (c) { catNames[c.id] = c.name; });
+    function scoreInfo(m) {
       var cats = m.categories || {};
       var order = ['text'].concat(Object.keys(cats));
       for (var i = 0; i < order.length; i++) {
-        var ov = cats[order[i]] && cats[order[i]].overall;
-        if (ov && ov.elo) return ov.elo;
+        var key = order[i];
+        var ov = cats[key] && cats[key].overall;
+        if (ov && typeof ov.elo === 'number') {
+          if (key === 'agent') return { value: ov.elo, type: 'pct', label: '净提升率', cat: 'Agent' };
+          return {
+            value: ov.elo,
+            type: 'elo',
+            label: key === 'text' ? '综合 Elo' : ((catNames[key] || key) + ' Elo'),
+            cat: catNames[key] || key,
+          };
+        }
       }
       var max = 0;
       Object.keys(cats).forEach(function (c) {
@@ -186,7 +197,7 @@ Page({
           if (e > max) max = e;
         });
       });
-      return max;
+      return { value: max, type: 'elo', label: 'Elo', cat: '' };
     }
 
     // 统一折算成美元比较，人民币原生价加 ≈
@@ -216,16 +227,35 @@ Page({
       return best;
     }
 
-    var elos = models.map(function (m) { return Math.round(summaryElo(m) * 10) / 10; });
+    var infos = models.map(scoreInfo);
     var prices = models.map(priceOf);
     var inputs = prices.map(function (p) { return p.has ? p.input : 0; });
     var outputs = prices.map(function (p) { return p.has ? p.output : 0; });
-    var bestElo = bestIndex(elos, false);
     var bestIn = bestIndex(inputs, true);
     var bestOut = bestIndex(outputs, true);
+    var sameScale = infos.every(function (i) { return i.label === infos[0].label && i.type === infos[0].type; });
+    var scoreRow;
+    var bestScore = -1;
+    if (sameScale) {
+      var vals = infos.map(function (i) { return i.value; });
+      bestScore = bestIndex(vals, false);
+      scoreRow = {
+        label: infos[0].label,
+        values: infos.map(function (i) { return i.type === 'pct' ? (Math.round(i.value * 10) / 10 + '%') : String(Math.round(i.value * 10) / 10); }),
+        best: bestScore,
+      };
+    } else {
+      scoreRow = {
+        label: '主榜得分',
+        values: infos.map(function (i) {
+          return (Math.round(i.value * 10) / 10) + (i.type === 'pct' ? '%' : '') + (i.cat ? ' (' + i.cat + ')' : '');
+        }),
+        best: -1,
+      };
+    }
 
     var rows = [
-      { label: '综合 Elo', values: elos.map(String), best: bestElo },
+      scoreRow,
       {
         label: '输入价 /M',
         values: prices.map(function (p) { return p.has ? (p.cny ? '≈$' : '$') + fmt(p.input) : '—'; }),
@@ -240,7 +270,8 @@ Page({
     ];
 
     var note = '';
-    if (bestElo >= 0) note = '能力最高：' + headers[bestElo] + '（' + elos[bestElo] + '）';
+    if (sameScale && bestScore >= 0) note = '得分最高：' + headers[bestScore];
+    else if (!sameScale) note = '不同类目/指标不可直接比较';
     if (bestIn >= 0) note += (note ? ' · ' : '') + '输入价最低：' + headers[bestIn];
 
     var that = this;

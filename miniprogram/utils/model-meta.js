@@ -112,7 +112,8 @@ var CN_DISPLAY_NAMES = {
 function getProviderDisplay(raw, name) {
   var k = String(raw || '').toLowerCase();
   if (RAW_PROVIDER_CN[k]) return RAW_PROVIDER_CN[k];
-  return getProviderCN(name);
+  var guessed = getProviderCN(name);
+  return guessed === '其他' ? '未知厂商' : guessed;
 }
 
 function isDomestic(rawProvider, modelName) {

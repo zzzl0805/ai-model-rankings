@@ -1,0 +1,1597 @@
+[
+ {
+  "rankingName": "Gemini 4 Carbon (High)",
+  "companyZh": "Google",
+  "familyName": "Gemini 4",
+  "summaryZh": "Google 的 Gemini 4 前沿模型，面向编程、智能体与复杂推理工作，支持文本、图像、音频、视频和文件等多种输入，拥有 1M 超长上下文，适合处理大规模代码、长文档与多模态内容。",
+  "strengths": [
+   "1M 上下文",
+   "多模态输入",
+   "编程与智能体",
+   "复杂推理"
+  ],
+  "bestFor": [
+   "复杂编程",
+   "Agent 工作流",
+   "多模态理解",
+   "长文档"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/google/gemini-4-carbon"
+ },
+ {
+  "rankingName": "Gemini 4 Argon (High)",
+  "companyZh": "Google",
+  "familyName": "Gemini 4",
+  "summaryZh": "Google 的旗舰推理模型，面向复杂软件工程、数学与科学问题及自主多步智能体，支持文本、图像、音频、视频等输入，具备 1M 上下文，适合高难度推理、科研与工程任务。",
+  "strengths": [
+   "1M 上下文",
+   "多模态输入",
+   "复杂推理",
+   "自主智能体"
+  ],
+  "bestFor": [
+   "复杂编程",
+   "科学推理",
+   "Agent 工作流",
+   "长文档"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/google/gemini-4-argon"
+ },
+ {
+  "rankingName": "Muse Wonder (Max)",
+  "companyZh": "Meta",
+  "familyName": "Muse",
+  "summaryZh": "Meta 的前沿推理模型，专为个人与专业场景的复杂智能体任务设计，可接收文本、图像、视频、音频和 PDF 文档并输出文本，上下文达 1M，适合长程自主与专业任务。",
+  "strengths": [
+   "1M 上下文",
+   "多模态输入",
+   "复杂智能体",
+   "前沿推理"
+  ],
+  "bestFor": [
+   "个人助理",
+   "专业工作流",
+   "多模态理解",
+   "Agent 工作流"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/meta/muse-wonder"
+ },
+ {
+  "rankingName": "Claude Opus 5.5 (High)",
+  "companyZh": "Anthropic",
+  "familyName": "Claude Opus",
+  "summaryZh": "Anthropic 的旗舰模型，专注高难度推理、编程与长周期智能体任务，擅长大型代码库的多步修改，支持文本、图像与文件输入，具备 1M 上下文与出色的复杂代码能力。",
+  "strengths": [
+   "旗舰推理",
+   "多步编程",
+   "长程智能体",
+   "多模态输入"
+  ],
+  "bestFor": [
+   "复杂编程",
+   "代码重构",
+   "Agent 工作流",
+   "长期项目"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/anthropic/claude-opus-5.5"
+ },
+ {
+  "rankingName": "Claude Fable 5 (High)",
+  "companyZh": "Anthropic",
+  "familyName": "Claude Fable",
+  "summaryZh": "Anthropic 的 旗舰级模型，专为自主知识工作与编程打造，支持文本、图像和文件输入并具备推理能力，拥有 1M 上下文，适合长周期、多步骤的复杂工程与知识工作任务。",
+  "strengths": [
+   "自主知识工作",
+   "编程能力",
+   "多模态输入",
+   "1M 上下文"
+  ],
+  "bestFor": [
+   "知识工作",
+   "复杂编程",
+   "长文档",
+   "Agent 工作流"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/anthropic/claude-fable-5"
+ },
+ {
+  "rankingName": "Claude Opus 4.6 (High)",
+  "companyZh": "Anthropic",
+  "familyName": "Claude Opus",
+  "summaryZh": "Anthropic 的 Opus 4.6，主打编程与长周期专业任务，适合跨完整工作流而非单一提示的智能体，支持文本、图像和文件等多种输入，上下文达 1M 令牌，可处理复杂多步工程任务。",
+  "strengths": [
+   "编程强项",
+   "长周期任务",
+   "工作流智能体",
+   "多模态输入"
+  ],
+  "bestFor": [
+   "长期项目",
+   "复杂编程",
+   "Agent 工作流",
+   "专业工作流"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/anthropic/claude-opus-4.6"
+ },
+ {
+  "rankingName": "Claude Fable 5.1 (Max)",
+  "companyZh": "Anthropic",
+  "familyName": "Claude Fable",
+  "summaryZh": "Anthropic 的 Fable 5.1，全面提升智能体编程、长周期智能体工作流与知识工作，擅长大型代码重构和前端视觉开发，支持文本、图像和文件输入，上下文达 1M，适合长周期的大型工程项目。",
+  "strengths": [
+   "智能体编程",
+   "代码重构",
+   "长程工作流",
+   "知识工作"
+  ],
+  "bestFor": [
+   "代码重构",
+   "前端开发",
+   "Agent 工作流",
+   "知识工作"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/anthropic/claude-fable-5.1"
+ },
+ {
+  "rankingName": "Claude Opus 4.7 (High)",
+  "companyZh": "Anthropic",
+  "familyName": "Claude Opus",
+  "summaryZh": "Anthropic 的 Opus 4.7，面向长周期异步智能体，在 Opus 4.6 的编程与智能体能力上进一步增强，支持文本、图像和文件输入，上下文达 1M，适合持续运行、分阶段推进的复杂工程项目。",
+  "strengths": [
+   "长周期智能体",
+   "异步运行",
+   "编程增强",
+   "多模态输入"
+  ],
+  "bestFor": [
+   "异步智能体",
+   "长期项目",
+   "复杂编程",
+   "专业工作流"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/anthropic/claude-opus-4.7"
+ },
+ {
+  "rankingName": "Gemini 3.8 Flash (High)",
+  "companyZh": "Google",
+  "familyName": "Gemini 3",
+  "summaryZh": "Google 迄今最智能的 Flash 模型，在软件工程、智能体任务和多步推理上较 3.7 Flash 显著提升，支持文本、图像、视频、音频和文件输入，适合编程、智能体与多模态处理，上下文达 1M。",
+  "strengths": [
+   "多步推理",
+   "智能体任务",
+   "多模态输入",
+   "1M 上下文"
+  ],
+  "bestFor": [
+   "编程辅助",
+   "Agent 工作流",
+   "长文档",
+   "多模态理解"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/google/gemini-3.8-flash"
+ },
+ {
+  "rankingName": "Muse Spark 1.3 (Max)",
+  "companyZh": "Meta",
+  "familyName": "Muse",
+  "summaryZh": "Meta 的多模态推理模型，面向长周期智能体、多智能体与编程工作流，擅长在扩展任务中持续追踪信息，支持文本、图像、视频和文件输入，上下文达 1M，适合复杂协作任务。",
+  "strengths": [
+   "多模态推理",
+   "多智能体",
+   "长程任务",
+   "1M 上下文"
+  ],
+  "bestFor": [
+   "多智能体协作",
+   "长期项目",
+   "复杂编程",
+   "多模态理解"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/meta/muse-spark-1.3"
+ },
+ {
+  "rankingName": "Muse Spark 1.2 (xHigh)",
+  "companyZh": "Meta",
+  "familyName": "Muse",
+  "summaryZh": "Meta 的推理模型，专为复杂智能体任务打造，可接收文本、图像、视频和 PDF 文档并返回文本，拥有 1M 令牌上下文窗口，适合超长上下文、多步骤的复杂智能体任务。",
+  "strengths": [
+   "多模态输入",
+   "1M 上下文",
+   "复杂智能体"
+  ],
+  "bestFor": [
+   "Agent 工作流",
+   "多模态理解",
+   "长文档",
+   "复杂编程"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/meta/muse-spark-1.2"
+ },
+ {
+  "rankingName": "Muse Spark 1.1",
+  "companyZh": "Meta",
+  "familyName": "Muse",
+  "summaryZh": "Meta 的多模态推理模型，面向智能体任务，支持文本、图像、视频和 PDF 文档输入并输出文本，提供 1M 令牌上下文窗口，适合超长上下文、多模态的复杂智能体应用场景。",
+  "strengths": [
+   "多模态输入",
+   "1M 上下文",
+   "智能体任务"
+  ],
+  "bestFor": [
+   "Agent 工作流",
+   "多模态理解",
+   "文档处理",
+   "复杂任务"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/meta/muse-spark-1.1"
+ },
+ {
+  "rankingName": "Gemini 4 Hydrogen (High)",
+  "companyZh": "Google",
+  "familyName": "Gemini 4",
+  "summaryZh": "Google Gemini 4 家族的高效主力模型，面向高吞吐 Agent 工作流、编程与多模型路由，成本与延迟更低。支持音视频、图像与文件等输入，上下文约 100 万 tokens。",
+  "strengths": [
+   "1M 上下文",
+   "多模态输入",
+   "高吞吐",
+   "低成本低延迟"
+  ],
+  "bestFor": [
+   "高吞吐 Agent",
+   "复杂编程",
+   "多模型路由"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/google/gemini-4-hydrogen"
+ },
+ {
+  "rankingName": "Claude Opus 5 (High)",
+  "companyZh": "Anthropic",
+  "familyName": "Claude Opus",
+  "summaryZh": "Anthropic 旗舰模型，面向高难度推理、编程与长周期 Agent 任务，擅长端到端软件开发、代码审查与缺陷定位，以及视觉分析。支持文本、图像与文件输入，上下文窗口达 100 万 tokens。",
+  "strengths": [
+   "旗舰推理",
+   "端到端编程",
+   "代码审查",
+   "视觉分析"
+  ],
+  "bestFor": [
+   "复杂编程",
+   "代码审查",
+   "长周期 Agent",
+   "视觉分析"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/anthropic/claude-opus-5"
+ },
+ {
+  "rankingName": "Gemini 3.7 Flash (High)",
+  "companyZh": "Google",
+  "familyName": "Gemini 3",
+  "summaryZh": "Google 的多模态 Flash 模型，主打快速 Agent 工作流、编程与复杂多步推理，兼顾响应速度与多步任务可靠性。支持文本、图像、视频、音频与文件输入，上下文窗口约 100 万 tokens。",
+  "strengths": [
+   "多模态输入",
+   "快速响应",
+   "多步推理",
+   "1M 上下文"
+  ],
+  "bestFor": [
+   "快速 Agent",
+   "复杂编程",
+   "多模态理解"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/google/gemini-3.7-flash"
+ },
+ {
+  "rankingName": "Kimi K3 (Max)",
+  "companyZh": "月之暗面",
+  "familyName": "Kimi",
+  "summaryZh": "月之暗面的 2.8 万亿参数开源多模态推理模型，面向复杂编程、知识工作与长周期 Agent 工作流。支持文本、图像与视频输入，上下文窗口约 100 万 tokens。",
+  "strengths": [
+   "2.8T 参数",
+   "开源权重",
+   "多模态推理",
+   "长周期任务"
+  ],
+  "bestFor": [
+   "复杂编程",
+   "知识工作",
+   "长周期 Agent"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/moonshotai/kimi-k3"
+ },
+ {
+  "rankingName": "Gemini 3.1 Pro Preview",
+  "companyZh": "Google",
+  "familyName": "Gemini 3",
+  "summaryZh": "Google 的前沿推理模型，提升软件工程表现与 Agent 可靠性，并更高效地使用 tokens，适用于复杂工作流。支持音频、文件、图像、视频与文本输入，上下文窗口约 100 万 tokens。",
+  "strengths": [
+   "前沿推理",
+   "软件工程",
+   "多模态输入",
+   "更省 token"
+  ],
+  "bestFor": [
+   "复杂工作流",
+   "软件工程",
+   "Agent 任务"
+  ],
+  "limitations": [
+   "预览版"
+  ],
+  "sourceUrl": "https://openrouter.ai/google/gemini-3.1-pro-preview"
+ },
+ {
+  "rankingName": "GPT-5.6 Sol (xHigh)",
+  "companyZh": "OpenAI",
+  "familyName": "GPT-5",
+  "summaryZh": "OpenAI GPT-5.6 系列的旗舰模型，面向复杂推理、编程与 Agent 工作流，尤其擅长命令行操作与多步编程任务。支持文本、图像与文件输入，上下文窗口约 105 万 tokens。",
+  "strengths": [
+   "系列旗舰",
+   "复杂推理",
+   "多步编程",
+   "1M 上下文"
+  ],
+  "bestFor": [
+   "复杂推理",
+   "命令行编程",
+   "Agent 工作流"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/openai/gpt-5.6-sol"
+ },
+ {
+  "rankingName": "Kimi K3.1 Pro (Max)",
+  "companyZh": "月之暗面",
+  "familyName": "Kimi",
+  "summaryZh": "月之暗面的旗舰开源多模态推理模型，Kimi K3 的后训练升级版，面向长周期编程与 3D 等复杂任务。支持文本、图像与视频输入，上下文窗口约 100 万 tokens。",
+  "strengths": [
+   "旗舰开源",
+   "多模态推理",
+   "长周期编程",
+   "1M 上下文"
+  ],
+  "bestFor": [
+   "长周期编程",
+   "3D 任务",
+   "Agent 工作流"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/moonshotai/kimi-k3.1-pro"
+ },
+ {
+  "rankingName": "Qwen3.8-Max",
+  "companyZh": "阿里",
+  "familyName": "Qwen",
+  "summaryZh": "阿里 Qwen 团队的 Qwen3.8 Max 更新快照，2.4 万亿参数混合专家模型，可接收文本、图像与视频输入并输出文本。上下文窗口达 100 万 tokens。",
+  "strengths": [
+   "2.4T 参数",
+   "MoE 架构",
+   "多模态输入",
+   "1M 上下文"
+  ],
+  "bestFor": [
+   "复杂推理",
+   "多模态理解",
+   "视频分析"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/qwen/qwen3.8-max-0902"
+ },
+ {
+  "rankingName": "Gemini 3.6 Flash (High)",
+  "companyZh": "Google",
+  "familyName": "Gemini 3",
+  "summaryZh": "Google 的高效 Flash 模型，面向编程、Agent 工作流与网页及应用开发，输出更精致、减少多余改动。支持文本、图像、视频、音频与文件输入，上下文窗口约 100 万 tokens。",
+  "strengths": [
+   "高效模型",
+   "编程开发",
+   "少多余改动",
+   "多模态输入"
+  ],
+  "bestFor": [
+   "网页开发",
+   "应用开发",
+   "Agent 工作流"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/google/gemini-3.6-flash"
+ },
+ {
+  "rankingName": "Claude Opus 4.8 (High)",
+  "companyZh": "Anthropic",
+  "familyName": "Claude Opus",
+  "summaryZh": "Anthropic Opus 家族中能力最强的正式可用模型，具备推理能力，支持文本、图像与文件输入并输出文本。上下文窗口达 100 万 tokens。",
+  "strengths": [
+   "最强可用",
+   "推理支持",
+   "多模态输入",
+   "1M 上下文"
+  ],
+  "bestFor": [
+   "通用高难任务",
+   "图像分析",
+   "文档处理"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/anthropic/claude-opus-4.8"
+ },
+ {
+  "rankingName": "GLM-5.3 (Max)",
+  "companyZh": "智谱",
+  "familyName": "GLM",
+  "summaryZh": "智谱的大规模推理模型，面向复杂软件工程与长周期 Agent 任务，采用 MIT 许可。仅支持文本输入输出，上下文窗口约 100 万 tokens。",
+  "strengths": [
+   "大规模推理",
+   "软件工程",
+   "长周期任务",
+   "MIT 许可"
+  ],
+  "bestFor": [
+   "软件工程",
+   "长周期 Agent",
+   "文本推理"
+  ],
+  "limitations": [
+   "仅文本输入"
+  ],
+  "sourceUrl": "https://openrouter.ai/z-ai/glm-5.3"
+ },
+ {
+  "rankingName": "GPT-5.5 (High)",
+  "companyZh": "OpenAI",
+  "familyName": "GPT-5",
+  "summaryZh": "OpenAI 的前沿模型，面向复杂专业工作负载，在 GPT-5.4 基础上强化推理、可靠性与 token 效率。支持文本、图像与文件输入，上下文窗口超过 100 万 tokens。",
+  "strengths": [
+   "前沿模型",
+   "复杂推理",
+   "更高可靠性",
+   "1M+ 上下文"
+  ],
+  "bestFor": [
+   "专业工作负载",
+   "复杂推理",
+   "文档处理"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/openai/gpt-5.5"
+ },
+ {
+  "rankingName": "GPT-6.1 Sol (Max)",
+  "companyZh": "OpenAI",
+  "familyName": "GPT-6",
+  "summaryZh": "OpenAI 的 GPT-6.1 Sol 升级版定位在旗舰 GPT-6 Astra 之下，擅长智能体编程、计算机操作与文档密集型工作，支持约 105 万上下文及图片、文件输入。",
+  "strengths": [
+   "百万级上下文",
+   "智能体编程",
+   "计算机操作",
+   "文档密集处理"
+  ],
+  "bestFor": [
+   "智能体编程",
+   "计算机操作",
+   "专业文档处理",
+   "长上下文任务"
+  ],
+  "limitations": [
+   "定位低于旗舰 GPT-6 Astra"
+  ],
+  "sourceUrl": "https://openrouter.ai/openai/gpt-6.1-sol"
+ },
+ {
+  "rankingName": "MiMo-V2.6-Pro",
+  "companyZh": "小米",
+  "familyName": "MiMo",
+  "summaryZh": "小米的旗舰基础模型 MiMo-V2.6-Pro，面向最苛刻的高难度任务，原生支持文本、图像、视频与音频输入，提供约 100 万 token 上下文与 13 万 token 输出。",
+  "strengths": [
+   "全模态输入",
+   "百万级上下文",
+   "旗舰定位",
+   "MIT 许可"
+  ],
+  "bestFor": [
+   "复杂任务",
+   "多模态理解",
+   "长上下文",
+   "Agent 工作流"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/xiaomi/mimo-v2.6-pro"
+ },
+ {
+  "rankingName": "Gemini 3.5 Flash (High)",
+  "companyZh": "Google",
+  "familyName": "Gemini 3",
+  "summaryZh": "Google Gemini 3.5 Flash 是高效多模态模型，以 Flash 级成本与速度提供接近 Pro 的编程和推理能力，针对编程与并行智能体执行优化，支持文本、图像、视频、音频与文件输入。",
+  "strengths": [
+   "高效低成本",
+   "多模态输入",
+   "并行 Agent",
+   "接近 Pro 级"
+  ],
+  "bestFor": [
+   "日常编程",
+   "并行 Agent",
+   "多模态理解",
+   "文档处理"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/google/gemini-3.5-flash"
+ },
+ {
+  "rankingName": "GPT-5.2 Chat (20260210)",
+  "companyZh": "OpenAI",
+  "familyName": "GPT-5",
+  "summaryZh": "OpenAI GPT-5.2 家族中快速、轻量的聊天模型，主打低延迟对话，同时保留较强通用智能，并借助自适应推理按需思考。支持图片与文件输入，上下文为 128K。",
+  "strengths": [
+   "低延迟对话",
+   "自适应推理",
+   "图片文件输入",
+   "通用智能"
+  ],
+  "bestFor": [
+   "日常对话",
+   "低延迟应用",
+   "快速问答",
+   "轻量助手"
+  ],
+  "limitations": [
+   "家族轻量成员"
+  ],
+  "sourceUrl": "https://openrouter.ai/openai/gpt-5.2-chat"
+ },
+ {
+  "rankingName": "GLM-5.3-Flash",
+  "companyZh": "智谱",
+  "familyName": "GLM",
+  "summaryZh": "智谱 Z.ai 的原生多模态模型 GLM-5.3-Flash，适合高效编程与长程智能体任务，混合稀疏与线性注意力让长上下文保持准确。支持 100 万上下文及图像、视频输入。",
+  "strengths": [
+   "原生多模态",
+   "高效编程",
+   "长程 Agent",
+   "百万级上下文"
+  ],
+  "bestFor": [
+   "高效编程",
+   "长程 Agent",
+   "多模态理解",
+   "长上下文任务"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/z-ai/glm-5.3-flash"
+ },
+ {
+  "rankingName": "GPT-5.4 (High)",
+  "companyZh": "OpenAI",
+  "familyName": "GPT-5",
+  "summaryZh": "OpenAI 的前沿模型 GPT-5.4，将 Codex 与 GPT 两条产品线统一为单一系统，具备 100 万级以上 token 上下文与 128K 输出，支持图片和文件输入。",
+  "strengths": [
+   "双线合一",
+   "百万级上下文",
+   "128K 输出",
+   "图像文件输入"
+  ],
+  "bestFor": [
+   "复杂编程",
+   "长文档分析",
+   "视觉理解",
+   "专业问答"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/openai/gpt-5.4"
+ },
+ {
+  "rankingName": "GLM-5.2 (Max)",
+  "companyZh": "智谱",
+  "familyName": "GLM",
+  "summaryZh": "智谱 Z.ai 的大规模推理模型 GLM-5.2，支持 100 万 token 上下文与纯文本输入输出，面向长程智能体工作流和项目级软件工程。",
+  "strengths": [
+   "百万级上下文",
+   "大规模推理",
+   "长程 Agent",
+   "超长输出"
+  ],
+  "bestFor": [
+   "长程 Agent",
+   "项目级编程",
+   "代码重构",
+   "长文档推理"
+  ],
+  "limitations": [
+   "仅支持文本"
+  ],
+  "sourceUrl": "https://openrouter.ai/z-ai/glm-5.2"
+ },
+ {
+  "rankingName": "Claude Fable 5.2 (xHigh)",
+  "companyZh": "Anthropic",
+  "familyName": "Claude Fable",
+  "summaryZh": "Anthropic 的 Claude Fable 5.2 是面向最苛刻技术工作的最强模型，编程、推理与视觉较 Fable 5.1 均有提升，预发布测试完成高难任务。支持百万上下文与图像、文件输入。",
+  "strengths": [
+   "最强技术模型",
+   "编程推理提升",
+   "视觉能力提升",
+   "百万级上下文"
+  ],
+  "bestFor": [
+   "高端编程",
+   "复杂推理",
+   "视觉理解",
+   "大型重构"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/anthropic/claude-fable-5.2"
+ },
+ {
+  "rankingName": "Claude Sonnet 5.5 (xHigh)",
+  "companyZh": "Anthropic",
+  "familyName": "Claude Sonnet",
+  "summaryZh": "Anthropic 的 Claude Sonnet 5.5 是 Sonnet 级模型，面向边界清晰的日常工作，接替 Sonnet 5，擅长构建功能与修复缺陷，支持百万上下文及图像、文件输入。",
+  "strengths": [
+   "功能构建",
+   "缺陷修复",
+   "百万级上下文",
+   "图像文件输入"
+  ],
+  "bestFor": [
+   "日常编程",
+   "功能开发",
+   "Bug 修复",
+   "日常办公"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/anthropic/claude-sonnet-5.5"
+ },
+ {
+  "rankingName": "GPT-6 Astra (Max)",
+  "companyZh": "OpenAI",
+  "familyName": "GPT-6",
+  "summaryZh": "OpenAI 的旗舰模型 GPT-6 Astra，面向高要求的端到端工作，适合高级分析、软件工程、深度研究、科学与文档创作，尤其擅长长程任务。支持 100 万级上下文与图片、文件输入。",
+  "strengths": [
+   "旗舰定位",
+   "端到端工作",
+   "深度研究",
+   "百万级上下文"
+  ],
+  "bestFor": [
+   "软件工程",
+   "深度研究",
+   "科学工作",
+   "文档创作"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/openai/gpt-6-astra"
+ },
+ {
+  "rankingName": "Gemini Nano Banana 2.1",
+  "companyZh": "Google",
+  "familyName": "Nano Banana",
+  "summaryZh": "Google 的 Nano Banana 2.1 是 Flash 档图像生成与编辑模型，接替 Nano Banana 2 与 Pro，改进商品场景重构等能力，支持图像、文本输入并直接输出图像与文本。",
+  "strengths": [
+   "图像生成",
+   "图像编辑",
+   "商品场景重构",
+   "图文输入输出"
+  ],
+  "bestFor": [
+   "图像生成",
+   "图像编辑",
+   "商品图制作",
+   "创意设计"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/google/gemini-nano-banana-2.1"
+ },
+ {
+  "rankingName": "Gemini Omni 1.2 Flash",
+  "companyZh": "Google",
+  "familyName": "Omni",
+  "summaryZh": "Google 的 Gemini Omni 1.2 Flash 是原生多模态视频生成与编辑模型，接替 Omni 1.1 Flash，可生成最长 15 秒的原生视频片段，支持文本、图像与视频输入。",
+  "strengths": [
+   "视频生成",
+   "视频编辑",
+   "多模态输入",
+   "15 秒片段"
+  ],
+  "bestFor": [
+   "视频生成",
+   "视频编辑",
+   "短视频创作",
+   "多模态内容"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/google/gemini-omni-1.2-flash"
+ },
+ {
+  "rankingName": "Gemini Omni 1.1 Flash",
+  "companyZh": "Google",
+  "familyName": "Omni",
+  "summaryZh": "Google 推出的原生多模态视频生成与编辑模型，是 Omni Flash Preview 的正式可用版本，擅长文生视频与图生视频，可接收文本、图像、视频输入，输出视频与文本内容，适用于视频创作。",
+  "strengths": [
+   "原生多模态",
+   "视频生成",
+   "视频编辑",
+   "文本视频输出"
+  ],
+  "bestFor": [
+   "文生视频",
+   "图生视频",
+   "视频编辑"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/google/gemini-omni-1.1-flash"
+ },
+ {
+  "rankingName": "MiMo-V2.5-Pro",
+  "companyZh": "小米",
+  "familyName": "MiMo",
+  "summaryZh": "小米旗舰模型，主打通用智能体能力、复杂软件工程与长周期任务，在多项智能体与编程基准上名列前茅，支持 256K 上下文与纯文本输入输出，适合复杂开发任务。",
+  "strengths": [
+   "Agent 能力",
+   "复杂软件工程",
+   "长周期任务",
+   "256K 上下文"
+  ],
+  "bestFor": [
+   "Agent 工作流",
+   "复杂编程",
+   "长周期任务"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/xiaomi/mimo-v2.5-pro"
+ },
+ {
+  "rankingName": "GLM-5.1",
+  "companyZh": "智谱",
+  "familyName": "GLM",
+  "summaryZh": "智谱 GLM 系列新版本，在编程能力上实现大幅跃升，尤其擅长长周期任务，能够独立持续工作，支持 200K 上下文，并以 MIT 许可证开源发布，适用于各类大型编程项目。",
+  "strengths": [
+   "编程能力强",
+   "长周期任务",
+   "独立持续工作",
+   "200K 上下文"
+  ],
+  "bestFor": [
+   "复杂编程",
+   "长周期任务",
+   "Agent 工作流"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/z-ai/glm-5.1"
+ },
+ {
+  "rankingName": "DeepSeek-V4-Pro (High, 20260813)",
+  "companyZh": "DeepSeek",
+  "familyName": "DeepSeek",
+  "summaryZh": "DeepSeek 推出的大规模混合专家模型，总参数 1.6T、每次激活 49B，支持百万级 token 的超长上下文，擅长高级推理与编程，并以 MIT 许可开源，适合长文档与复杂代码等实际任务。",
+  "strengths": [
+   "1M 上下文",
+   "MoE 架构",
+   "高级推理",
+   "编程能力"
+  ],
+  "bestFor": [
+   "长文档",
+   "复杂编程",
+   "深度推理"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/deepseek/deepseek-v4-pro"
+ },
+ {
+  "rankingName": "Kimi K2.6",
+  "companyZh": "月之暗面",
+  "familyName": "Kimi",
+  "summaryZh": "月之暗面新一代多模态模型，面向长周期编程、代码驱动的界面生成与多智能体编排，可端到端处理 Python、Rust、Go 复杂项目，支持图像输入与 256K 上下文，适合前端开发。",
+  "strengths": [
+   "长周期编程",
+   "多模态输入",
+   "多智能体",
+   "256K 上下文"
+  ],
+  "bestFor": [
+   "复杂编程",
+   "UI/UX 生成",
+   "多智能体协作"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/moonshotai/kimi-k2.6"
+ },
+ {
+  "rankingName": "GLM-5",
+  "companyZh": "智谱",
+  "familyName": "GLM",
+  "summaryZh": "智谱旗舰开源基础模型，面向复杂系统设计与长周期智能体工作流，在大规模编程任务上达到生产级水准，可对标领先模型，支持 200K 上下文，适合大型工程。",
+  "strengths": [
+   "复杂系统设计",
+   "长周期任务",
+   "大规模编程",
+   "200K 上下文"
+  ],
+  "bestFor": [
+   "复杂编程",
+   "Agent 工作流",
+   "系统设计"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/z-ai/glm-5"
+ },
+ {
+  "rankingName": "Qwen3.7-Plus",
+  "companyZh": "阿里",
+  "familyName": "Qwen",
+  "summaryZh": "阿里通义千问 Qwen3.7 系列的高性价比成员，支持文本与图像输入、文本输出，在系列文本能力基础上全面升级，具备百万级 token 上下文，可处理长篇图文资料与文档。",
+  "strengths": [
+   "高性价比",
+   "图文输入",
+   "1M 上下文",
+   "视觉理解"
+  ],
+  "bestFor": [
+   "长文档",
+   "图文问答",
+   "文档理解"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/qwen/qwen3.7-plus"
+ },
+ {
+  "rankingName": "Kimi K2.5 (Thinking)",
+  "companyZh": "月之暗面",
+  "familyName": "Kimi",
+  "summaryZh": "月之暗面原生多模态模型，具备领先的视觉编程能力与自主智能体集群范式，基于 Kimi K2 继续预训练，支持图像输入与 256K 上下文，适合前端生成与多智能体协作。",
+  "strengths": [
+   "视觉编程",
+   "多模态输入",
+   "Agent 集群",
+   "256K 上下文"
+  ],
+  "bestFor": [
+   "视觉编程",
+   "前端生成",
+   "多智能体任务"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/moonshotai/kimi-k2.5"
+ },
+ {
+  "rankingName": "Step 5 Preview",
+  "companyZh": "阶跃星辰",
+  "familyName": "Step",
+  "summaryZh": "阶跃星辰面向智能体任务的旗舰模型，采用稀疏混合专家架构，激活参数 27B、总参数 600B，擅长软件工程与专业任务，支持文本、图像、视频输入和百万级上下文。",
+  "strengths": [
+   "Agent 能力",
+   "稀疏 MoE",
+   "软件工程",
+   "1M 上下文"
+  ],
+  "bestFor": [
+   "Agent 工作流",
+   "软件工程",
+   "多模态理解"
+  ],
+  "limitations": [
+   "预览版本"
+  ],
+  "sourceUrl": "https://openrouter.ai/stepfun/step-5-preview"
+ },
+ {
+  "rankingName": "MiMo-V2.6-Flash",
+  "companyZh": "小米",
+  "familyName": "MiMo",
+  "summaryZh": "小米开源基础模型，混合专家架构总参数 309B、每次激活 15B，采用混合注意力机制，支持文本、图像、视频、音频输入与百万级上下文，适合多模态理解与前端生成。",
+  "strengths": [
+   "全模态输入",
+   "MoE 架构",
+   "混合注意力",
+   "1M 上下文"
+  ],
+  "bestFor": [
+   "多模态理解",
+   "前端生成",
+   "Agent 工作流"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/xiaomi/mimo-v2.6-flash"
+ },
+ {
+  "rankingName": "Grok 4.20 Beta 1",
+  "companyZh": "xAI",
+  "familyName": "Grok",
+  "summaryZh": "xAI 的 Grok 4.20 推理模型，主打高速与 Agent 工具调用，强调低幻觉和严格遵循提示词；当前为 Beta 版。",
+  "strengths": [
+   "高速推理",
+   "Agent 工具调用",
+   "低幻觉",
+   "提示词遵循"
+  ],
+  "bestFor": [
+   "Agent 工作流",
+   "实时任务",
+   "工具调用"
+  ],
+  "limitations": [
+   "Beta 版"
+  ],
+  "sourceUrl": "https://openrouter.ai/x-ai/grok-4.20"
+ },
+ {
+  "rankingName": "Qwen3.7-Max-Preview",
+  "companyZh": "阿里",
+  "familyName": "Qwen",
+  "summaryZh": "阿里 Qwen3.7 系列的旗舰预览版，面向 Agent 工作负载，重点增强编程与办公生产力任务，仅支持文本输入输出。",
+  "strengths": [
+   "旗舰模型",
+   "Agent 场景",
+   "编程/办公",
+   "文本推理"
+  ],
+  "bestFor": [
+   "办公生产力",
+   "复杂编程",
+   "Agent 工作流"
+  ],
+  "limitations": [
+   "预览版",
+   "仅文本"
+  ],
+  "sourceUrl": "https://openrouter.ai/qwen/qwen3.7-max"
+ },
+ {
+  "rankingName": "DeepSeek-V4.1-Flash-20260910 (Max)",
+  "companyZh": "DeepSeek",
+  "familyName": "DeepSeek",
+  "summaryZh": "DeepSeek V4.1 Flash 是稀疏 MoE 模型，采用 Causal Encoder-Decoder 架构，激活参数较少，主打高性价比推理与 Agent 场景。",
+  "strengths": [
+   "稀疏 MoE",
+   "高性价比",
+   "推理能力"
+  ],
+  "bestFor": [
+   "成本敏感业务",
+   "批量推理",
+   "Agent 工作流"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/deepseek/deepseek-v4.1-flash"
+ },
+ {
+  "rankingName": "Gemini 3 Pro",
+  "companyZh": "Google",
+  "familyName": "Gemini 3",
+  "summaryZh": "Google Gemini 3 系列旗舰，综合能力与多模态表现均衡；在 Gemini 4 发布后仍保持较高排名。",
+  "strengths": [
+   "旗舰模型",
+   "综合能力",
+   "多模态"
+  ],
+  "bestFor": [
+   "通用任务",
+   "多模态理解",
+   "复杂推理"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/google"
+ },
+ {
+  "rankingName": "Muse Spark",
+  "companyZh": "Meta",
+  "familyName": "Muse",
+  "summaryZh": "Meta Muse Spark 系列基础版本，面向复杂推理与 Agent 任务；具体规格以官方说明为准。",
+  "strengths": [
+   "推理模型",
+   "Agent 场景"
+  ],
+  "bestFor": [
+   "复杂任务",
+   "Agent 工作流"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/meta"
+ },
+ {
+  "rankingName": "GPT-Image-2.5 Sunburst",
+  "companyZh": "OpenAI",
+  "familyName": "GPT-Image",
+  "summaryZh": "OpenAI 的图像生成模型，在文生图榜排名第 1，适合高质量图像生成与创意场景。",
+  "strengths": [
+   "文生图榜首",
+   "高质量生成"
+  ],
+  "bestFor": [
+   "图像生成",
+   "创意设计"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openai.com"
+ },
+ {
+  "rankingName": "GPT-Image-2.6 Sunburst (Medium)",
+  "companyZh": "OpenAI",
+  "familyName": "GPT-Image",
+  "summaryZh": "OpenAI GPT-Image 2.6 的快照版本，文生图榜第 2，适合追求新版本效果的图像生成。",
+  "strengths": [
+   "新版快照",
+   "文生图第 2"
+  ],
+  "bestFor": [
+   "图像生成",
+   "创意设计"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openai.com"
+ },
+ {
+  "rankingName": "GPT-Image-2.5 Flare",
+  "companyZh": "OpenAI",
+  "familyName": "GPT-Image",
+  "summaryZh": "OpenAI 图像生成系列中偏创意风格的模型，文生图榜前列。",
+  "strengths": [
+   "风格化生成",
+   "文生图前列"
+  ],
+  "bestFor": [
+   "创意图像",
+   "视觉设计"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openai.com"
+ },
+ {
+  "rankingName": "GPT-Image-2.6 Flare (Medium)",
+  "companyZh": "OpenAI",
+  "familyName": "GPT-Image",
+  "summaryZh": "OpenAI GPT-Image 2.6 的 Flare 版本，偏创意风格的图像生成。",
+  "strengths": [
+   "新版快照",
+   "风格化生成"
+  ],
+  "bestFor": [
+   "创意图像",
+   "视觉设计"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openai.com"
+ },
+ {
+  "rankingName": "GPT-Image-2 (Medium)",
+  "companyZh": "OpenAI",
+  "familyName": "GPT-Image",
+  "summaryZh": "OpenAI 上一代图像生成模型，仍在文生图与图片编辑榜保持竞争力。",
+  "strengths": [
+   "上一代主力",
+   "图像编辑"
+  ],
+  "bestFor": [
+   "图像生成",
+   "图片编辑"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openai.com"
+ },
+ {
+  "rankingName": "MAI-Image-2.6",
+  "companyZh": "Microsoft",
+  "familyName": "MAI-Image",
+  "summaryZh": "Microsoft 的图像生成模型，在图片编辑榜排名第 6。",
+  "strengths": [
+   "图片编辑",
+   "微软出品"
+  ],
+  "bestFor": [
+   "图片编辑",
+   "图像生成"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://www.microsoft.com"
+ },
+ {
+  "rankingName": "MAI-Image-2.7",
+  "companyZh": "Microsoft",
+  "familyName": "MAI-Image",
+  "summaryZh": "Microsoft 新一代图像模型预览版，在图片编辑榜排名第 4。",
+  "strengths": [
+   "新版预览",
+   "图片编辑第 4"
+  ],
+  "bestFor": [
+   "图片编辑",
+   "图像生成"
+  ],
+  "limitations": [
+   "预览版"
+  ],
+  "sourceUrl": "https://www.microsoft.com"
+ },
+ {
+  "rankingName": "Grok Imagine Image 2.0",
+  "companyZh": "xAI",
+  "familyName": "Grok",
+  "summaryZh": "xAI 的图像生成模型，属于 Grok Imagine 系列。",
+  "strengths": [
+   "Grok 生态",
+   "图像生成"
+  ],
+  "bestFor": [
+   "图像生成",
+   "创意设计"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://x.ai"
+ },
+ {
+  "rankingName": "gemini-omni-flash",
+  "companyZh": "Google",
+  "familyName": "Omni",
+  "summaryZh": "Google Gemini Omni 系列的视频生成模型，偏轻量/快速版本。",
+  "strengths": [
+   "视频生成",
+   "快速版本"
+  ],
+  "bestFor": [
+   "视频生成",
+   "多模态创作"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/google"
+ },
+ {
+  "rankingName": "FLUX 3 Video",
+  "companyZh": "Black Forest Labs",
+  "familyName": "FLUX",
+  "summaryZh": "Black Forest Labs 的新一代视频生成模型，属于 FLUX 3 系列。",
+  "strengths": [
+   "视频生成",
+   "FLUX 系列"
+  ],
+  "bestFor": [
+   "视频生成",
+   "创意视频"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://bfl.ai"
+ },
+ {
+  "rankingName": "Grok Imagine Video 1.5",
+  "companyZh": "xAI",
+  "familyName": "Grok",
+  "summaryZh": "xAI 的视频生成模型，属于 Grok Imagine 1.5 系列。",
+  "strengths": [
+   "视频生成",
+   "Grok 生态"
+  ],
+  "bestFor": [
+   "视频生成",
+   "创意视频"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://x.ai"
+ },
+ {
+  "rankingName": "Dreamina Seedance 2.5 (720p)",
+  "companyZh": "字节跳动",
+  "familyName": "Seedance",
+  "summaryZh": "字节跳动 Seedance 视频生成模型，支持 720p 输出。",
+  "strengths": [
+   "720p 输出",
+   "视频生成"
+  ],
+  "bestFor": [
+   "视频生成",
+   "短视频创作"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://www.bytedance.com"
+ },
+ {
+  "rankingName": "Qwen3.5-Max-Preview",
+  "companyZh": "阿里",
+  "familyName": "Qwen",
+  "summaryZh": "阿里通义千问 Qwen3.5 Max 预览版，面向通用推理与 Agent 场景；具体规格以官方说明为准。",
+  "strengths": [
+   "Max 系列",
+   "通用推理"
+  ],
+  "bestFor": [
+   "通用任务",
+   "Agent 工作流"
+  ],
+  "limitations": [
+   "预览版"
+  ],
+  "sourceUrl": "https://qwen.ai"
+ },
+ {
+  "rankingName": "Qwen3.6-Max-Preview",
+  "companyZh": "阿里",
+  "familyName": "Qwen",
+  "summaryZh": "阿里通义千问 Qwen3.6 Max 预览版，面向通用推理与 Agent 场景；具体规格以官方说明为准。",
+  "strengths": [
+   "Max 系列",
+   "通用推理"
+  ],
+  "bestFor": [
+   "通用任务",
+   "Agent 工作流"
+  ],
+  "limitations": [
+   "预览版"
+  ],
+  "sourceUrl": "https://qwen.ai"
+ },
+ {
+  "rankingName": "ERNIE 5.1",
+  "companyZh": "百度",
+  "familyName": "ERNIE",
+  "summaryZh": "百度文心 ERNIE 5.1 模型，面向中文通用任务与知识问答；具体规格以官方说明为准。",
+  "strengths": [
+   "中文能力",
+   "知识问答"
+  ],
+  "bestFor": [
+   "中文任务",
+   "知识问答"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://www.baidu.com"
+ },
+ {
+  "rankingName": "ERNIE-5.0-Preview (1203)",
+  "companyZh": "百度",
+  "familyName": "ERNIE",
+  "summaryZh": "百度文心 ERNIE 5.0 预览版快照（1203），面向中文通用任务。",
+  "strengths": [
+   "中文能力",
+   "预览版"
+  ],
+  "bestFor": [
+   "中文任务",
+   "通用问答"
+  ],
+  "limitations": [
+   "预览版"
+  ],
+  "sourceUrl": "https://www.baidu.com"
+ },
+ {
+  "rankingName": "MiMo-V2-Pro",
+  "companyZh": "小米",
+  "familyName": "MiMo",
+  "summaryZh": "小米 MiMo V2 Pro，面向复杂推理与通用任务；具体规格以官方说明为准。",
+  "strengths": [
+   "复杂推理",
+   "小米自研"
+  ],
+  "bestFor": [
+   "通用任务",
+   "复杂推理"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://www.mi.com"
+ },
+ {
+  "rankingName": "DeepSeek-V4-Pro Preview (High)",
+  "companyZh": "DeepSeek",
+  "familyName": "DeepSeek",
+  "summaryZh": "DeepSeek V4 Pro 预览版，面向高难度推理与 Agent 任务；具体规格以官方说明为准。",
+  "strengths": [
+   "高难推理",
+   "Agent 场景"
+  ],
+  "bestFor": [
+   "复杂推理",
+   "Agent 工作流"
+  ],
+  "limitations": [
+   "预览版"
+  ],
+  "sourceUrl": "https://www.deepseek.com"
+ },
+ {
+  "rankingName": "Gemini 4 Neon (High)",
+  "companyZh": "Google",
+  "familyName": "Gemini 4",
+  "summaryZh": "Google Gemini 4 系列中的快速中价位模型，面向代码仓库、终端编程与 Agent 工作流，兼顾速度与成本。支持多模态输入，上下文约 100 万 tokens。",
+  "strengths": [
+   "快速",
+   "中价位",
+   "编程/Agent",
+   "1M 上下文"
+  ],
+  "bestFor": [
+   "终端编程",
+   "Agent 工作流",
+   "成本敏感场景"
+  ],
+  "limitations": [],
+  "sourceUrl": "https://openrouter.ai/google/gemini-4-neon"
+ },
+ {
+  "rankingName": "GPT-6.1 Terra (Max)",
+  "companyZh": "OpenAI",
+  "familyName": "GPT-6",
+  "summaryZh": "OpenAI GPT-6.1 系列的中端模型，定位低于 Sol，面向日常 Agent、编程与写作，擅长理解截图。",
+  "strengths": [
+   "中端定位",
+   "日常 Agent",
+   "编程/写作",
+   "截图理解"
+  ],
+  "bestFor": [
+   "日常 Agent",
+   "编程",
+   "写作"
+  ],
+  "limitations": [
+   "低于旗舰 Sol"
+  ],
+  "sourceUrl": ""
+ },
+ {
+  "rankingName": "Claude Opus 4.5 (High, 32K, 20251101)",
+  "companyZh": "Anthropic",
+  "familyName": "Claude Opus",
+  "summaryZh": "Anthropic 面向复杂软件工程、Agent 与长程电脑操作的前沿推理模型，具备强多模态与真实编码能力。",
+  "strengths": [
+   "前沿推理",
+   "软件工程",
+   "长程 Agent",
+   "多模态"
+  ],
+  "bestFor": [
+   "复杂编程",
+   "Agent",
+   "电脑操作"
+  ],
+  "limitations": [],
+  "sourceUrl": ""
+ },
+ {
+  "rankingName": "Gemini 3 Flash",
+  "companyZh": "Google",
+  "familyName": "Gemini 3",
+  "summaryZh": "Google 的高速高性价比思考模型，面向 Agent 工作流、多轮对话与编程辅助，接近 Pro 级推理。",
+  "strengths": [
+   "高速",
+   "高性价比",
+   "Agent",
+   "多轮对话"
+  ],
+  "bestFor": [
+   "编程辅助",
+   "多轮对话",
+   "Agent 工作流"
+  ],
+  "limitations": [
+   "预览版"
+  ],
+  "sourceUrl": ""
+ },
+ {
+  "rankingName": "Grok 4.20 Beta",
+  "companyZh": "xAI",
+  "familyName": "Grok",
+  "summaryZh": "xAI Grok 4.20 推理模型，强调高速与 Agent 工具调用、低幻觉与严格提示词遵循；当前为 Beta 版。",
+  "strengths": [
+   "高速",
+   "Agent 工具调用",
+   "低幻觉",
+   "提示词遵循"
+  ],
+  "bestFor": [
+   "Agent 工作流",
+   "实时任务",
+   "工具调用"
+  ],
+  "limitations": [
+   "Beta 版"
+  ],
+  "sourceUrl": ""
+ },
+ {
+  "rankingName": "Claude Sonnet 4.6",
+  "companyZh": "Anthropic",
+  "familyName": "Claude Sonnet",
+  "summaryZh": "Anthropic Sonnet 级最强模型，面向编程、Agent 与专业工作，擅长迭代开发与大型代码库导航。",
+  "strengths": [
+   "Sonnet 旗舰",
+   "编程",
+   "Agent",
+   "项目级工作"
+  ],
+  "bestFor": [
+   "迭代开发",
+   "代码库导航",
+   "专业工作"
+  ],
+  "limitations": [],
+  "sourceUrl": ""
+ },
+ {
+  "rankingName": "Grok 4.20 Multi-Agent Beta",
+  "companyZh": "xAI",
+  "familyName": "Grok",
+  "summaryZh": "xAI Grok 4.20 的多智能体变体，多个 Agent 并行做深度研究、工具调用与信息综合；当前为 Beta 版。",
+  "strengths": [
+   "多智能体",
+   "并行研究",
+   "工具调用"
+  ],
+  "bestFor": [
+   "深度研究",
+   "多 Agent 协作",
+   "信息综合"
+  ],
+  "limitations": [
+   "Beta 版"
+  ],
+  "sourceUrl": ""
+ },
+ {
+  "rankingName": "GPT-6.2 Astra (Max)",
+  "companyZh": "OpenAI",
+  "familyName": "GPT-6",
+  "summaryZh": "OpenAI GPT-6.2 系列旗舰，面向高难工程、专业工作与科学研究。",
+  "strengths": [
+   "系列旗舰",
+   "高难工程",
+   "科研"
+  ],
+  "bestFor": [
+   "复杂工程",
+   "科研",
+   "专业工作"
+  ],
+  "limitations": [],
+  "sourceUrl": ""
+ },
+ {
+  "rankingName": "GPT-5.6 Terra (xHigh)",
+  "companyZh": "OpenAI",
+  "familyName": "GPT-5",
+  "summaryZh": "OpenAI GPT-5.6 系列的均衡版本，介于旗舰 Sol 与低成本 Luna 之间，面向日常编程、推理与 Agent。",
+  "strengths": [
+   "均衡定位",
+   "日常编程",
+   "推理",
+   "Agent"
+  ],
+  "bestFor": [
+   "日常编程",
+   "通用推理",
+   "Agent 工作流"
+  ],
+  "limitations": [],
+  "sourceUrl": ""
+ },
+ {
+  "rankingName": "Grok 4.5",
+  "companyZh": "xAI",
+  "familyName": "Grok",
+  "summaryZh": "xAI Grok 4.5，面向编程、知识工作与 STEM 的前沿模型。",
+  "strengths": [
+   "前沿性能",
+   "编程",
+   "知识工作",
+   "STEM"
+  ],
+  "bestFor": [
+   "编程",
+   "知识工作",
+   "STEM 任务"
+  ],
+  "limitations": [],
+  "sourceUrl": ""
+ },
+ {
+  "rankingName": "GPT-6.2 Sol (Max)",
+  "companyZh": "OpenAI",
+  "familyName": "GPT-6",
+  "summaryZh": "OpenAI GPT-6.2 系列次旗舰，定位低于 Astra，面向日常工作的通用高效模型。",
+  "strengths": [
+   "次旗舰",
+   "通用高效",
+   "日常工作"
+  ],
+  "bestFor": [
+   "日常工作",
+   "通用任务"
+  ],
+  "limitations": [
+   "低于旗舰 Astra"
+  ],
+  "sourceUrl": ""
+ },
+ {
+  "rankingName": "GPT-5.5 Instant",
+  "companyZh": "OpenAI",
+  "familyName": "GPT-5",
+  "summaryZh": "OpenAI GPT-5.5 的即时响应版本，面向低延迟日常任务；具体规格以官方说明为准。",
+  "strengths": [
+   "低延迟",
+   "日常任务"
+  ],
+  "bestFor": [
+   "实时对话",
+   "日常写作"
+  ],
+  "limitations": [],
+  "sourceUrl": ""
+ },
+ {
+  "rankingName": "Grok 4.1 (Thinking)",
+  "companyZh": "xAI",
+  "familyName": "Grok",
+  "summaryZh": "xAI Grok 4.1，面向通用推理与多轮对话；具体规格以官方说明为准。",
+  "strengths": [
+   "通用推理",
+   "多轮对话"
+  ],
+  "bestFor": [
+   "通用任务",
+   "对话"
+  ],
+  "limitations": [],
+  "sourceUrl": ""
+ },
+ {
+  "rankingName": "Reve 2.1",
+  "companyZh": "Reve",
+  "familyName": "Reve",
+  "summaryZh": "Reve 的图像生成模型，在文生图榜排名第 10。",
+  "strengths": [
+   "文生图前十",
+   "图像生成"
+  ],
+  "bestFor": [
+   "图像生成",
+   "创意设计"
+  ],
+  "limitations": [],
+  "sourceUrl": ""
+ },
+ {
+  "rankingName": "Dreamina Seedance 2.0",
+  "companyZh": "字节跳动",
+  "familyName": "Seedance",
+  "summaryZh": "字节跳动 Seedance 2.0 视频生成模型。",
+  "strengths": [
+   "视频生成"
+  ],
+  "bestFor": [
+   "视频生成",
+   "短视频创作"
+  ],
+  "limitations": [],
+  "sourceUrl": ""
+ },
+ {
+  "rankingName": "MiniMax H3",
+  "companyZh": "MiniMax",
+  "familyName": "MiniMax",
+  "summaryZh": "MiniMax 的视频生成模型，在文生视频榜排名第 11。",
+  "strengths": [
+   "视频生成"
+  ],
+  "bestFor": [
+   "视频生成",
+   "创意视频"
+  ],
+  "limitations": [],
+  "sourceUrl": ""
+ }
+]

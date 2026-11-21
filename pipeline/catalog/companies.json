@@ -1,0 +1,200 @@
+[
+ {
+  "id": "google",
+  "name": "Google",
+  "nameZh": "Google",
+  "country": "美国",
+  "founded": "1998",
+  "hq": "Mountain View",
+  "website": "https://www.google.com",
+  "summary": "Alphabet 旗下公司，Gemini 系列模型由 Google DeepMind 研发，覆盖文本、视觉、音频与视频多模态。",
+  "sources": [
+   "https://www.google.com",
+   "https://deepmind.google"
+  ]
+ },
+ {
+  "id": "anthropic",
+  "name": "Anthropic",
+  "nameZh": "Anthropic",
+  "country": "美国",
+  "founded": "2021",
+  "hq": "San Francisco",
+  "website": "https://www.anthropic.com",
+  "summary": "以 AI 安全为核心的模型公司，Claude 系列包含 Opus、Sonnet、Haiku、Fable 等产品线。",
+  "sources": [
+   "https://www.anthropic.com"
+  ]
+ },
+ {
+  "id": "openai",
+  "name": "OpenAI",
+  "nameZh": "OpenAI",
+  "country": "美国",
+  "founded": "2015",
+  "hq": "San Francisco",
+  "website": "https://openai.com",
+  "summary": "GPT 与 o 系列模型的研发公司，同时运营 ChatGPT。",
+  "sources": [
+   "https://openai.com"
+  ]
+ },
+ {
+  "id": "meta",
+  "name": "Meta",
+  "nameZh": "Meta",
+  "country": "美国",
+  "founded": "2004",
+  "hq": "Menlo Park",
+  "website": "https://ai.meta.com",
+  "summary": "Meta 的 AI 研究体系（FAIR/GenAI），Llama 开源系列与 Muse 系列模型。",
+  "sources": [
+   "https://ai.meta.com"
+  ]
+ },
+ {
+  "id": "deepseek",
+  "name": "DeepSeek",
+  "nameZh": "深度求索",
+  "country": "中国",
+  "founded": "2023",
+  "hq": "杭州",
+  "website": "https://www.deepseek.com",
+  "summary": "中国大模型公司深度求索，DeepSeek V 系列与 R 系列以开源权重和高性价比著称。",
+  "sources": [
+   "https://www.deepseek.com"
+  ]
+ },
+ {
+  "id": "alibaba",
+  "name": "Alibaba",
+  "nameZh": "阿里",
+  "country": "中国",
+  "founded": "1999",
+  "hq": "杭州",
+  "website": "https://www.alibabacloud.com",
+  "summary": "阿里巴巴旗下通义千问（Qwen）系列模型，覆盖文本、视觉与多模态，并提供云 API。",
+  "sources": [
+   "https://www.alibabacloud.com",
+   "https://qwen.ai"
+  ]
+ },
+ {
+  "id": "moonshot",
+  "name": "Moonshot AI",
+  "nameZh": "月之暗面",
+  "country": "中国",
+  "founded": "2023",
+  "hq": "北京",
+  "website": "https://www.moonshot.cn",
+  "summary": "月之暗面（Moonshot AI），Kimi 系列模型以长上下文与 Agent 能力见长。",
+  "sources": [
+   "https://www.moonshot.cn"
+  ]
+ },
+ {
+  "id": "zai",
+  "name": "Z.ai",
+  "nameZh": "智谱",
+  "country": "中国",
+  "founded": "2019",
+  "hq": "北京",
+  "website": "https://z.ai",
+  "summary": "智谱 AI，GLM 系列模型，覆盖通用对话、代码与 Agent 场景。",
+  "sources": [
+   "https://z.ai",
+   "https://www.zhipuai.cn"
+  ]
+ },
+ {
+  "id": "xiaomi",
+  "name": "Xiaomi",
+  "nameZh": "小米",
+  "country": "中国",
+  "founded": "2010",
+  "hq": "北京",
+  "website": "https://www.mi.com",
+  "summary": "小米自研 MiMo 系列模型，面向端侧与云端推理场景。",
+  "sources": [
+   "https://www.mi.com"
+  ]
+ },
+ {
+  "id": "xai",
+  "name": "xAI",
+  "nameZh": "xAI",
+  "country": "美国",
+  "founded": "2023",
+  "hq": "Palo Alto",
+  "website": "https://x.ai",
+  "summary": "xAI 的 Grok 系列模型，与 X 平台深度集成。",
+  "sources": [
+   "https://x.ai"
+  ]
+ },
+ {
+  "id": "baidu",
+  "name": "Baidu",
+  "nameZh": "百度",
+  "country": "中国",
+  "founded": "2000",
+  "hq": "北京",
+  "website": "https://www.baidu.com",
+  "summary": "百度文心（ERNIE）系列模型，依托百度智能云提供 API。",
+  "sources": [
+   "https://www.baidu.com"
+  ]
+ },
+ {
+  "id": "microsoft",
+  "name": "Microsoft",
+  "nameZh": "Microsoft",
+  "country": "美国",
+  "founded": "1975",
+  "hq": "Redmond",
+  "website": "https://www.microsoft.com",
+  "summary": "Microsoft AI，MAI 与 Phi 系列模型，同时通过 Azure 提供第三方模型服务。",
+  "sources": [
+   "https://www.microsoft.com"
+  ]
+ },
+ {
+  "id": "bfl",
+  "name": "Black Forest Labs",
+  "nameZh": "Black Forest Labs",
+  "country": "德国",
+  "founded": "2024",
+  "hq": "Freiburg",
+  "website": "https://bfl.ai",
+  "summary": "FLUX 系列图像生成模型的研发公司。",
+  "sources": [
+   "https://bfl.ai"
+  ]
+ },
+ {
+  "id": "bytedance",
+  "name": "ByteDance",
+  "nameZh": "字节跳动",
+  "country": "中国",
+  "founded": "2012",
+  "hq": "北京",
+  "website": "https://www.bytedance.com",
+  "summary": "字节跳动 Seed 团队，豆包与 Seedream/Seedance 系列模型。",
+  "sources": [
+   "https://www.bytedance.com"
+  ]
+ },
+ {
+  "id": "stepfun",
+  "name": "StepFun",
+  "nameZh": "阶跃星辰",
+  "country": "中国",
+  "founded": "2023",
+  "hq": "上海",
+  "website": "https://www.stepfun.com",
+  "summary": "阶跃星辰，Step 系列多模态模型。",
+  "sources": [
+   "https://www.stepfun.com"
+  ]
+ }
+]

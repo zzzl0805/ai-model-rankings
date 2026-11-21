@@ -94,3 +94,34 @@ console.log('agent votes为0',(d.data.agent.overall||[]).filter(m=>!m.votes).len
 - 各维度撞名 ≤ 2（同名但不同变体的正常情况）
 - agent votes 无 0
 - 无空类目
+
+## 模型档案（v1.4）
+
+模型档案与榜单是两套数据：榜单是每日事实，档案是**低频编辑型数据**。
+
+```
+pipeline/catalog/companies.json      公司档案（15 家）
+pipeline/catalog/families.json       系列档案（22 个）
+pipeline/catalog/model_content.json  中文摘要/优势/适用场景（按模型名，人工审校）
+              ↓
+pipeline/build_catalog.py            合并 OpenRouter + 榜单 + 许可证
+              ↓
+miniprogram/data/model-catalog.js    随包发布（当前 66 个模型 / ~111KB）
+```
+
+```bash
+# 用当天云端数据快照构建（推荐）
+python3 pipeline/build_catalog.py \
+  --rankings /tmp/rankings_cloud.json \
+  --openrouter /tmp/openrouter_models.json   # 可选；不传则在线拉取
+
+# 在线构建
+python3 pipeline/build_catalog.py --rankings /tmp/rankings_cloud.json
+```
+
+规则：
+- 只给**头部模型**做档案（当前 66 个）；长尾在详情页显示「档案建设中」，不编造。
+- 中文摘要/优势来自 OpenRouter 描述与规格，只做翻译压缩；新增事实必须来自官方页面。
+- 每个模型带 `sources` 与 `verifiedAt`，详情页展示来源核对日期。
+- 新增模型档案：在 `model_content.json` 增加 entry（`rankingName` 用榜单原name），再运行构建脚本。
+- 许可证从上游 `rawName` 的 `· License` 尾巴解析；OpenRouter 提供上下文/模态/发布/API ID。

@@ -384,7 +384,7 @@ Component({
       // 大号 Elo
       ctx.fillStyle = COLOR.faint;
       ctx.font = '24px "PingFang SC", sans-serif';
-      ctx.fillText('综合 Elo', PAD, 432);
+      ctx.fillText(opts.scoreLabel || '综合 Elo', PAD, 432);
       ctx.fillStyle = COLOR.blue;
       ctx.font = 'bold 108px "PingFang SC", sans-serif';
       ctx.fillText(String(opts.elo || '—'), PAD, 542);

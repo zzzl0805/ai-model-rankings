@@ -59,6 +59,7 @@ Page({
     conclusion: '',     // 一句话结论卡
     cnCount: 0,         // 当前榜单里的国产模型数
     priceUnit: '$',     // 价格列币种（按视图统一）
+    priceHeader: '价格 入/出 $/百万 tokens',
     exchangeRate: 0,    // USD→CNY 汇率（来自 pipeline）
     exchangeRateDate: '',
     exchangeRateFallback: false,
@@ -224,10 +225,6 @@ Page({
   getDimName: function (dimId) {
     var names = { overall: '综合', coding: '编程', math: '数学', writing: '写作', hardprompts: '难题', instruction: '指令', expert: '专家', multiturn: '长对话' };
     return names[dimId] || '';
-  },
-
-  onMineTap: function () {
-    wx.navigateTo({ url: '/pages/mine/mine' });
   },
 
   onMoreBoardTap: function (e) {
@@ -602,9 +599,14 @@ Page({
     var pricedRows = sorted.filter(function (x) { return x.price && x.price.input > 0; });
     var aProxy = pricedRows.length > 0 && pricedRows.every(function (x) { return x.priceProxy; });
 
+    var VISUAL_CATS = ['text-to-image', 'image-edit', 'text-to-video', 'image-to-video', 'video-edit'];
+    var isVisual = VISUAL_CATS.indexOf(this.data.activeCategory) >= 0;
     this.setData({
       displayModels: sorted,
       priceUnit: region === 'cn' ? '¥' : '$',
+      priceHeader: isVisual
+        ? '价格（口径见详情）'
+        : ('价格 入/出 ' + (region === 'cn' ? '¥' : '$') + '/百万 tokens'),
       allProxy: aProxy,
       ctxNote: this.buildCtxNote(region, renumber, aProxy),
       conclusion: this.buildConclusion(sorted, region),

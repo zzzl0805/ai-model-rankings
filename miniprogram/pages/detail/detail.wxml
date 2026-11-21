@@ -8,11 +8,10 @@
   </view>
 
   <block wx:else>
-    <!-- 头部 -->
-    <view class="header">
-      <view class="header-top">
-        <view class="back-link" bindtap="goBack"><text>← 返回</text></view>
-        <view class="header-actions">
+    <!-- 身份卡 -->
+    <view class="hero">
+      <view class="hero-top">
+        <view class="hero-actions">
           <view class="img-btn" bindtap="onGeneratePoster">
             <text>{{generatingPoster ? '生成中…' : '生成图片'}}</text>
           </view>
@@ -22,65 +21,159 @@
         </view>
       </view>
       <text class="model-name">{{displayName}}</text>
-      <text class="model-provider">{{provider}}</text>
+      <view class="model-sub">
+        <text>{{provider}}</text>
+        <text wx:if="{{familyName}}" class="dot">·</text>
+        <text wx:if="{{familyName}}">{{familyName}}</text>
+      </view>
       <view class="badges">
-        <text wx:if="{{rankInOverall}}" class="badge badge-rank">🏆 综合第{{rankInOverall}}</text>
+        <text wx:if="{{primaryCatLabel}}" class="badge badge-rank">{{primaryCatLabel}}</text>
+        <text wx:if="{{variantLabel}}" class="badge">{{variantLabel}}</text>
+        <text wx:if="{{statusText}}" class="badge">{{statusText}}</text>
+        <text wx:if="{{openWeightsText}}" class="badge">{{openWeightsText}}</text>
         <text class="badge" style="background:{{confidence.color}}22;color:{{confidence.color}};">{{confidence.label}}</text>
       </view>
     </view>
 
-    <!-- 一句话点评 -->
-    <view class="card review-card">
-      <text class="card-title">💡 一句话点评</text>
-      <text class="review-text">{{review}}</text>
-      <view class="meta-row">
-        <text wx:if="{{votes}}" class="meta-item">🗳 {{votes}}票</text>
-        <text wx:if="{{context}}" class="meta-item">📏 {{context}}</text>
+    <view class="body">
+      <view wx:if="{{archivePending}}" class="card pending">
+        <text class="pending-title">档案建设中</text>
+        <text class="pending-text">该模型暂无完整公开档案，以下为榜单、价格中可确认的信息。</text>
       </view>
-    </view>
 
-    <!-- 定价 -->
-    <view class="card">
-      <text class="card-title">💰 定价</text>
-      <block wx:if="{{price}}">
-        <view class="price-row">
-          <text class="price-label">输入</text>
-          <text class="price-val">${{price.input}}/M</text>
-          <text class="price-cny">≈¥{{price.inputCNY}}</text>
-        </view>
-        <view class="price-row">
-          <text class="price-label">输出</text>
-          <text class="price-val">${{price.output}}/M</text>
-          <text class="price-cny">≈¥{{price.outputCNY}}</text>
-        </view>
-        <text class="price-source">来源: {{price.source}}</text>
-      </block>
-      <text wx:else class="no-data">暂无定价数据</text>
-    </view>
 
-    <!-- 各大类排行 -->
-    <view class="card">
-      <text class="card-title">📊 能力评分（点击查看来源）</text>
-      <block wx:for="{{categoryList}}" wx:key="id">
-        <view class="cat-section">
-          <text class="cat-name">{{item.name}}</text>
-          <view wx:for="{{item.dims}}" wx:for-item="dim" wx:key="id"
-            class="dim-row" data-cat="{{item.id}}" data-dim="{{dim.id}}" bindtap="showSourceInfo">
-            <text class="dim-name">{{dim.name}}</text>
-            <view class="dim-bar-wrap">
-              <view class="dim-bar-bg"><view class="dim-bar-fill" style="width:{{dim.elo > 1200 ? ((dim.elo-1200)/400*100) : 0}}%;"></view></view>
-            </view>
-            <text class="dim-elo">{{dim.elo}}</text>
+      <!-- 首屏关键数据：名次 / 上下文 / 价格 -->
+      <view class="card quick-card">
+        <view class="quick-row">
+          <view class="quick-item">
+            <text class="quick-label">主榜名次</text>
+            <text class="quick-value">{{primaryCatLabel ? primaryCatLabel : '—'}}</text>
+          </view>
+          <view class="quick-item">
+            <text class="quick-label">上下文</text>
+            <text class="quick-value">{{contextText}}</text>
           </view>
         </view>
-      </block>
+        <view class="quick-price" wx:if="{{priceView.has}}">
+          <view class="quick-price-row">
+            <text class="quick-price-value">输入 {{priceView.inputText}}{{priceView.unitSuffix}}</text>
+            <text class="quick-price-value">输出 {{priceView.outputText}}{{priceView.unitSuffix}}</text>
+          </view>
+          <text class="quick-source">{{priceView.source}}{{priceView.isProxy ? '（代理价）' : ''}} · {{priceView.asOf}}</text>
+          <text wx:if="{{priceView.alt}}" class="quick-alt">OpenRouter 参考价 {{priceView.alt.inputText}} / {{priceView.alt.outputText}}{{priceView.alt.asOf ? '（' + priceView.alt.asOf + '）' : ''}}</text>
+        </view>
+        <text wx:else class="quick-none">暂无公开 API 价格</text>
+      </view>
+
+      <!-- 定位 -->
+      <view class="card">
+        <text class="card-title">定位</text>
+        <text class="intro-text">{{summary}}</text>
+        <view wx:if="{{bestFor.length}}" class="chips">
+          <text wx:for="{{bestFor}}" wx:key="*this" class="chip">{{item}}</text>
+        </view>
+      </view>
+
+      <!-- 公司 -->
+      <view wx:if="{{companyName}}" class="card">
+        <view class="card-head">
+          <text class="card-title">{{companyName}}</text>
+          <text wx:if="{{companyMeta}}" class="card-aside">{{companyMeta}}</text>
+        </view>
+        <text class="intro-text">{{companySummary}}</text>
+      </view>
+
+      <!-- 关键规格 -->
+      <view wx:if="{{hasSpecs}}" class="card">
+        <text class="card-title">关键规格</text>
+        <text wx:if="{{specNote}}" class="card-note">{{specNote}}</text>
+        <view class="spec-grid">
+          <view class="spec"><text class="spec-label">上下文</text><text class="spec-value">{{contextText}}</text></view>
+          <view class="spec"><text class="spec-label">最大输出</text><text class="spec-value">{{maxOutputText}}</text></view>
+          <view class="spec spec-wide"><text class="spec-label">输入</text><text class="spec-value">{{inputModsText}}</text></view>
+          <view class="spec spec-wide"><text class="spec-label">输出</text><text class="spec-value">{{outputModsText}}</text></view>
+          <view class="spec"><text class="spec-label">发布</text><text class="spec-value">{{releaseDateText}}</text></view>
+          <view class="spec"><text class="spec-label">许可证</text><text class="spec-value">{{licenseText}}</text></view>
+          <view class="spec"><text class="spec-label">知识截止</text><text class="spec-value">{{knowledgeCutoff}}</text></view>
+          <view class="spec"><text class="spec-label">API ID</text><text class="spec-value spec-mono">{{apiModelId ? apiModelId : '—'}}</text></view>
+        </view>
+        <view wx:if="{{docsUrl}}" class="link-row" bindtap="copyDocs"><text>复制官方文档链接</text></view>
+      </view>
+
+      <!-- 榜单表现 -->
+      <view wx:if="{{categoryRanks.length}}" class="card">
+        <text class="card-title">榜单表现</text>
+        <text class="card-note">类目内排名；不同类目的 Elo 尺度不可直接比较</text>
+        <view wx:for="{{categoryRanks}}" wx:key="id" class="rank-row">
+          <text class="rank-name">{{item.icon}} {{item.name}}</text>
+          <view class="rank-bar-wrap"><view class="rank-bar-bg"><view class="rank-bar-fill" style="width:{{item.pct}}%;"></view></view></view>
+          <text class="rank-value">#{{item.rank}}<text class="rank-total">/{{item.total}}</text></text>
+        </view>
+      </view>
+
+      <!-- 分维度 -->
+      <view wx:if="{{dimensions.length > 1}}" class="card">
+        <text class="card-title">{{primaryIsAgent ? '分维度净提升率' : '分维度 Elo'}}</text>
+        <view wx:for="{{dimensions}}" wx:key="id" class="dim-row">
+          <text class="dim-name">{{item.name}}</text>
+          <view class="dim-bar-wrap"><view class="dim-bar-bg"><view class="dim-bar-fill" style="width:{{item.width}}%;"></view></view></view>
+          <text class="dim-value">{{item.valueText}}</text>
+        </view>
+      </view>
+
+      <!-- 优势与限制 -->
+      <view wx:if="{{strengths.length || limitations.length}}" class="card">
+        <text class="card-title">优势与限制</text>
+        <view class="pros-cons">
+          <view class="pros">
+            <text wx:for="{{strengths}}" wx:key="*this" class="pro-item">+ {{item}}</text>
+          </view>
+          <view class="cons">
+            <text wx:for="{{limitations}}" wx:key="*this" class="con-item">− {{item}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 同系列 -->
+      <view wx:if="{{familyVariants.length}}" class="card">
+        <text class="card-title">{{familyName}}</text>
+        <text wx:if="{{familyDescription}}" class="card-note">{{familyDescription}}</text>
+        <view wx:for="{{familyVariants}}" wx:key="id" class="link-row model-link" data-name="{{item.name}}" bindtap="onFamilyVariantTap">
+          <text class="link-main">{{item.displayName}}</text>
+          <text class="link-meta">{{item.releaseDate}}<text wx:if="{{item.rankText}}"> · {{item.rankText}}</text></text>
+        </view>
+      </view>
+
+      <!-- 同价位竞品 -->
+      <view wx:if="{{peers.length}}" class="card">
+        <text class="card-title">同价位竞品</text>
+        <view wx:for="{{peers}}" wx:key="name" class="link-row model-link" data-name="{{item.name}}" bindtap="onPeerTap">
+          <text class="link-main">{{item.displayName}}</text>
+          <text class="link-meta">{{item.provider}} · #{{item.rank}} · {{item.priceText}}</text>
+        </view>
+      </view>
+
+      <!-- 公开历程 -->
+      <view wx:if="{{timeline.length}}" class="card">
+        <text class="card-title">公开历程</text>
+        <text class="card-note">来自 OpenRouter 公开上线记录</text>
+        <view wx:for="{{timeline}}" wx:key="title" class="timeline-row">
+          <text class="timeline-date">{{item.date}}</text>
+          <view class="timeline-main"><text class="timeline-title">{{item.title}}</text></view>
+        </view>
+      </view>
+
+      <!-- 来源 -->
+      <view class="card sources">
+        <text class="card-title">数据来源</text>
+        <text class="source-line">排名：LMArena · 数据截至 {{updatedDate}}</text>
+        <text class="source-line" wx:if="{{verifiedAt}}">档案：OpenRouter / 官方公开信息 · 核对于 {{verifiedAt}}</text>
+        <view class="link-row" bindtap="copySources"><text>复制来源链接</text></view>
+      </view>
+
+      <view wx:if="{{updatedDate}}" class="updated-tip"><text>数据更新于 {{updatedDate}}</text></view>
     </view>
   </block>
-
-  <!-- 数据更新时间（从分享进来的用户能看到"数据是最新的"） -->
-  <view wx:if="{{modelName && updatedDate}}" class="updated-tip">
-    <text>数据更新于 {{updatedDate}}</text>
-  </view>
 
   <!-- 底部加入对比栏 -->
   <view wx:if="{{modelName}}" class="compare-bar">
@@ -96,19 +189,4 @@
   </view>
 
   <poster id="poster" />
-
-  <!-- 来源弹窗 -->
-  <view wx:if="{{showSourcePopup}}" class="popup-mask" bindtap="closeSourcePopup">
-    <view class="popup-content" catchtap="noop">
-      <text class="popup-title">数据来源</text>
-      <view wx:if="{{sourceInfo}}" class="popup-body">
-        <view class="popup-row"><text class="popup-label">大类</text><text class="popup-value">{{sourceInfo.cat}}</text></view>
-        <view class="popup-row"><text class="popup-label">维度</text><text class="popup-value">{{sourceInfo.dim}}</text></view>
-        <view class="popup-row"><text class="popup-label">Elo</text><text class="popup-value">{{sourceInfo.elo}} ±{{sourceInfo.margin}}</text></view>
-        <view class="popup-row"><text class="popup-label">票数</text><text class="popup-value">{{sourceInfo.votes}}</text></view>
-        <view class="popup-row"><text class="popup-label">来源</text><text class="popup-value">arena.ai (LMArena)</text></view>
-      </view>
-      <view class="popup-close" bindtap="closeSourcePopup"><text>关闭</text></view>
-    </view>
-  </view>
 </view>
