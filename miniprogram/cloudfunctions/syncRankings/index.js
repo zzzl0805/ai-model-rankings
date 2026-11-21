@@ -20,7 +20,8 @@ function buildDataUrls() {
   const urls = [];
   const now = Date.now();
   for (let i = 0; i < 3; i++) {
-    const d = new Date(now - i * 86400000);
+    // 工作流按北京时间日期打 tag；这里 +8 小时后用 UTC 字段取北京日期
+    const d = new Date(now - i * 86400000 + 8 * 3600000);
     const tag = 'v' + d.getUTCFullYear() + '-' +
       String(d.getUTCMonth() + 1).padStart(2, '0') + '-' +
       String(d.getUTCDate()).padStart(2, '0');

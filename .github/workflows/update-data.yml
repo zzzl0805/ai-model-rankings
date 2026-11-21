@@ -34,6 +34,10 @@ jobs:
     env:
       # 让 pipeline 里的 puppeteer-core 找到 CI 装的 Chrome
       CHROME_PATH: /usr/bin/google-chrome
+      # 统一用北京时间：cron 在 UTC 18:00（北京次日 02:00）触发，
+      # 若用 UTC 日期打 tag / 写 lastUpdated，数据会被标成前一天，
+      # 云端按北京日期取 tag 时就找不到「今天」的数据。
+      TZ: Asia/Shanghai
 
     steps:
       - uses: actions/checkout@v4
@@ -115,8 +119,9 @@ jobs:
           git -c user.name="github-actions[bot]" -c user.email="github-actions[bot]@users.noreply.github.com" \
               commit -m "data: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
           git push -f origin data
-          # 打日期 tag：云函数按 tag 取数，tag 不可变 → 天然绕开 CDN 缓存
-          DATE=$(date -u +%Y-%m-%d)
+          # 打日期 tag：云函数按 tag 取数，tag 不可变 → 天然绕开 CDN 缓存。
+          # 用北京时间日期（TZ=Asia/Shanghai），与用户看到的「数据截至」一致。
+          DATE=$(date +%Y-%m-%d)
           git tag -f "v$DATE"
           git push -f origin "refs/tags/v$DATE"
           echo "已推送 data 分支与 tag v$DATE"
@@ -133,7 +138,7 @@ jobs:
             sleep 10
           done
           # 验证缓存是否已更新到今天的数据
-          TODAY=$(date -u +%Y-%m-%d)
+          TODAY=$(date +%Y-%m-%d)
           for i in 1 2 3; do
             d=$(curl -s --max-time 60 "https://cdn.jsdelivr.net/gh/${GITHUB_REPOSITORY}@data/rankings.json" | head -c 80)
             echo "CDN 返回: $d"
