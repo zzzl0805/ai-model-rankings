@@ -2,6 +2,7 @@
 var localRankings = require('../../data/rankings.js');
 var meta = require('../../utils/model-meta.js');
 var presentImage = require('../../utils/share-image.js');
+var landingConfig = require('../../utils/landing-config.js');
 var rankings = localRankings;
 
 // 国产厂商判断统一走 model-meta（落地页共用同一份白名单）
@@ -64,6 +65,8 @@ Page({
     exchangeRateDate: '',
     exchangeRateFallback: false,
     generatingPoster: false,
+    hotLinks: [],
+    familyLinks: [],
   },
 
   onLoad: function (options) {
@@ -93,6 +96,16 @@ Page({
       exchangeRate: rankings.exchangeRate || 0,
       exchangeRateDate: rankings.exchangeRateDate || '',
       exchangeRateFallback: !!rankings.exchangeRateFallback,
+    });
+
+    var baseTitle = function (n) { return String(n || '').replace(/\s*\([^)]*\)\s*$/, ''); };
+    that.setData({
+      hotLinks: (landingConfig.models || []).slice(0, 10).map(function (m) {
+        return { label: baseTitle(m.name), path: '/pages/model-' + m.slug + '/model-' + m.slug };
+      }),
+      familyLinks: (landingConfig.families || []).slice(0, 8).map(function (f) {
+        return { label: f.title.replace(' 模型排行', '').replace(' 系列排行', ''), path: '/pages/family-' + f.slug + '/family-' + f.slug };
+      }),
     });
 
     that.checkFirstVisit();
@@ -225,6 +238,11 @@ Page({
   getDimName: function (dimId) {
     var names = { overall: '综合', coding: '编程', math: '数学', writing: '写作', hardprompts: '难题', instruction: '指令', expert: '专家', multiturn: '长对话' };
     return names[dimId] || '';
+  },
+
+  onLandingTap: function (e) {
+    var path = e.currentTarget.dataset.path;
+    if (path) wx.navigateTo({ url: path });
   },
 
   onMoreBoardTap: function (e) {

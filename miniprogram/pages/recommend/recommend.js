@@ -15,6 +15,8 @@ var SCENES = [
 ];
 
 Page({
+  goBudget: function () { wx.navigateTo({ url: '/pages/budget/budget' }); },
+
   onLoad: function () {
     var app = getApp();
     if (app.globalData && app.globalData.cloudRankings) rankings = app.globalData.cloudRankings;

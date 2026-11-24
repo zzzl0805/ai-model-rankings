@@ -1,0 +1,69 @@
+<!-- templates/model-landing.wxml -->
+<template name="model-landing">
+  <view class="page">
+    <view class="hero">
+      <text class="hero-kicker">AI模型排行 · {{kind === 'family' ? '系列档案' : '模型档案'}}</text>
+      <text class="hero-title">{{title}}</text>
+      <text class="hero-sub">{{subtitle}}</text>
+      <text class="hero-desc">{{description}}</text>
+    </view>
+
+    <view class="body">
+      <view class="card">
+        <view class="stat-grid">
+          <view wx:for="{{stats}}" wx:key="label" class="stat">
+            <text class="stat-label">{{item.label}}</text>
+            <text class="stat-value">{{item.value}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view wx:if="{{summary}}" class="card">
+        <text class="card-title">定位</text>
+        <text class="text">{{summary}}</text>
+        <view wx:if="{{strengths.length}}" class="chips">
+          <text wx:for="{{strengths}}" wx:key="*this" class="chip">{{item}}</text>
+        </view>
+      </view>
+
+      <view wx:if="{{ranks.length}}" class="card">
+        <text class="card-title">榜单表现</text>
+        <text class="card-note">类目内排名；不同类目的 Elo 尺度不可直接比较</text>
+        <view wx:for="{{ranks}}" wx:key="name" class="rank-row">
+          <text class="rank-name">{{item.name}}</text>
+          <view class="rank-bar-bg"><view class="rank-bar-fill" style="width:{{item.pct}}%;"></view></view>
+          <text class="rank-value">#{{item.rank}}<text class="rank-total">/{{item.total}}</text></text>
+        </view>
+      </view>
+
+      <view wx:if="{{specs.length}}" class="card">
+        <text class="card-title">关键规格</text>
+        <view class="spec-grid">
+          <view wx:for="{{specs}}" wx:key="label" class="spec">
+            <text class="spec-label">{{item.label}}</text>
+            <text class="spec-value">{{item.value}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view wx:if="{{links.length}}" class="card">
+        <text class="card-title">{{linkTitle}}</text>
+        <view wx:for="{{links}}" wx:key="label" class="link-row" data-path="{{item.path}}" bindtap="goPath">
+          <text class="link-main">{{item.label}}</text>
+          <text class="link-meta">{{item.meta}}</text>
+        </view>
+      </view>
+
+      <view class="cta-row">
+        <view wx:if="{{detailName}}" class="cta" bindtap="goDetail"><text>查看完整详情 →</text></view>
+        <view wx:if="{{familyPath}}" class="cta-sec" bindtap="goFamily"><text>查看系列页</text></view>
+        <view class="cta-sec" bindtap="goHome"><text>看完整排行</text></view>
+      </view>
+
+      <view class="source">
+        <text>排名：LMArena · 数据截至 {{updated}}</text>
+        <text wx:if="{{sourceNote}}">{{sourceNote}}</text>
+      </view>
+    </view>
+  </view>
+</template>

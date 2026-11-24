@@ -138,6 +138,7 @@
       <view wx:if="{{familyVariants.length}}" class="card">
         <text class="card-title">{{familyName}}</text>
         <text wx:if="{{familyDescription}}" class="card-note">{{familyDescription}}</text>
+        <view wx:if="{{familyPath}}" class="link-row" bindtap="goFamilyPage"><text>查看系列页 →</text></view>
         <view wx:for="{{familyVariants}}" wx:key="id" class="link-row model-link" data-name="{{item.name}}" bindtap="onFamilyVariantTap">
           <text class="link-main">{{item.displayName}}</text>
           <text class="link-meta">{{item.releaseDate}}<text wx:if="{{item.rankText}}"> · {{item.rankText}}</text></text>

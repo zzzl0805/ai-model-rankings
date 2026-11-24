@@ -8,7 +8,6 @@
     <text class="header-sub" style="padding-right:{{menuRight}}px;">数据截至 {{lastUpdated}} · LMArena</text>
   </view>
 
-
   <!-- 大类（纯文字 + 下划线） -->
   <view class="tab-wrap">
   <scroll-view scroll-x class="tab-bar" enhanced show-scrollbar="{{false}}">
@@ -129,4 +128,20 @@
     <view class="foot-line"><text>计分：各榜独立计分，Elo 不可跨榜比较；筛选后名次按当前榜单重排</text></view>
   </view>
 
+
+  <!-- 热门模型/系列（固定路径，便于搜索收录） -->
+  <view class="landing-links">
+    <text class="landing-title">热门模型</text>
+    <view class="landing-chips">
+      <text wx:for="{{hotLinks}}" wx:key="label" class="landing-chip" data-path="{{item.path}}" bindtap="onLandingTap">{{item.label}}</text>
+    </view>
+    <text class="landing-title">场景</text>
+    <view class="landing-chips">
+      <text class="landing-chip" data-path="/pages/budget/budget" bindtap="onLandingTap">100元预算选模型</text>
+    </view>
+    <text class="landing-title">模型系列</text>
+    <view class="landing-chips">
+      <text wx:for="{{familyLinks}}" wx:key="label" class="landing-chip" data-path="{{item.path}}" bindtap="onLandingTap">{{item.label}}</text>
+    </view>
+  </view>
 </view>

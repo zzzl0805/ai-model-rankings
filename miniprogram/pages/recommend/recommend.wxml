@@ -5,6 +5,8 @@
     <text class="header-sub">选场景，秒出最佳模型</text>
   </view>
 
+  <view class="budget-entry" bindtap="goBudget"><text>按预算选模型 →</text></view>
+
   <!-- 场景选择 -->
   <view wx:if="{{!selectedScene}}" class="scene-section">
     <text class="section-title">你主要用 AI 做什么？</text>

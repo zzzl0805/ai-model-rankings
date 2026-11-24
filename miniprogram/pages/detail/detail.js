@@ -5,6 +5,7 @@ var meta = require('../../utils/model-meta.js');
 var store = require('../../utils/store.js');
 var presentImage = require('../../utils/share-image.js');
 var catalogUtil = require('../../utils/catalog.js');
+var landingData = require('../../utils/landing-data.js');
 
 var DIM_NAMES = { overall: '综合', coding: '编程', math: '数学', writing: '写作', hardprompts: '难题', instruction: '指令', expert: '专家', multiturn: '长对话' };
 var VISUAL_CATS = { 'text-to-image': 1, 'image-edit': 1, 'text-to-video': 1, 'image-to-video': 1, 'video-edit': 1 };
@@ -57,6 +58,7 @@ Page({
     companyWebsite: '',
     familyName: '',
     familyDescription: '',
+    familyPath: '',
     releaseDateText: '',
     statusText: '',
     licenseText: '',
@@ -440,6 +442,7 @@ Page({
       companyWebsite: company ? company.website : '',
       familyName: family ? (family.nameZh || family.name) : '',
       familyDescription: family ? family.description : '',
+      familyPath: family ? (landingData.FAMILY_PAGE[family.id] || '') : '',
       categoryRanks: categoryRanks,
       dimensions: dimensions,
       familyVariants: familyVariants,
@@ -661,6 +664,10 @@ Page({
       return;
     }
     wx.setClipboardData({ data: list.join('\n') });
+  },
+
+  goFamilyPage: function () {
+    if (this.data.familyPath) wx.navigateTo({ url: '/' + this.data.familyPath });
   },
 
   goCompare: function () {

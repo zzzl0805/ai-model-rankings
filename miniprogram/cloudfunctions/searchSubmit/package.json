@@ -1,0 +1,9 @@
+{
+  "name": "searchSubmit",
+  "version": "1.0.0",
+  "description": "提交模型详情页/榜单页到微信搜一搜",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

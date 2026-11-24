@@ -1,0 +1,62 @@
+<!-- pages/budget/budget.wxml -->
+<view class="page">
+  <view class="hero">
+    <text class="hero-title">预算选型</text>
+    <text class="hero-sub">按场景与月预算，选出 3 个候选模型</text>
+    <text class="hero-desc">根据你的月用量估算 API 成本，只统计有公开价格的文本模型；图像/视频模型计价方式不同，不参与本页计算。</text>
+  </view>
+
+  <view class="card">
+    <text class="label">场景</text>
+    <view class="chips">
+      <view wx:for="{{scenes}}" wx:key="id" class="chip {{sceneId === item.id ? 'chip-on' : ''}}" data-id="{{item.id}}" bindtap="onSceneTap">{{item.name}}</view>
+    </view>
+    <text class="hint">{{usageText}}</text>
+
+    <text class="label">月预算（元）</text>
+    <view class="chips">
+      <view wx:for="{{budgets}}" wx:key="*this" class="chip {{budget === item ? 'chip-on' : ''}}" data-budget="{{item}}" bindtap="onBudgetTap">¥{{item}}</view>
+      <input class="budget-input" type="number" placeholder="自定义" value="{{customBudget}}" bindinput="onCustomBudget" />
+    </view>
+
+    <text class="label">偏好</text>
+    <view class="segment">
+      <view class="seg {{priority === 'capability' ? 'seg-on' : ''}}" data-priority="capability" bindtap="onPriorityTap">能力优先</view>
+      <view class="seg {{priority === 'value' ? 'seg-on' : ''}}" data-priority="value" bindtap="onPriorityTap">性价比优先</view>
+    </view>
+  </view>
+
+  <view wx:if="{{overBudget}}" class="notice">
+    <text>没有模型在 ¥{{budget}} 预算内。最低约 ¥{{minCost}}/月，下面是最接近的 3 个。</text>
+  </view>
+
+  <view wx:if="{{results.length}}" class="results">
+    <text class="section-title">推荐结果</text>
+    <view wx:for="{{results}}" wx:key="name" class="result" data-name="{{item.name}}" bindtap="onModelTap">
+      <view class="result-head">
+        <text class="result-name">{{item.displayName}}</text>
+        <text class="result-cost">{{item.costText}}/月</text>
+      </view>
+      <view class="result-meta">
+        <text>{{item.provider}}</text>
+        <text>· {{sceneName}}第 {{item.rank}}/{{item.total}}</text>
+        <text>· 前 {{item.pct}}%</text>
+      </view>
+      <view class="result-meta">
+        <text>上下文 {{item.context}}</text>
+        <text>· {{item.priceText}}</text>
+      </view>
+      <view wx:if="{{item.strengths.length}}" class="chips">
+        <text wx:for="{{item.strengths}}" wx:key="*this" class="tag">{{item}}</text>
+      </view>
+      <text class="reason">{{item.reason}}</text>
+    </view>
+  </view>
+
+  <view class="note">
+    <text>只统计有公开 API 价格的文本模型（{{modelCount}} 个），按每月 {{usageText}} 估算，未含缓存/批量折扣；实际价格以厂商为准。</text>
+    <text>数据截至 {{updated}}</text>
+  </view>
+
+  <view class="footer-link" bindtap="goRanking"><text>去看完整排行 →</text></view>
+</view>

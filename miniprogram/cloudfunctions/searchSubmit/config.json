@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "openapi": [
+      "search.submitPages"
+    ]
+  },
+  "timeout": 20
+}

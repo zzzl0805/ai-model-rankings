@@ -354,3 +354,9 @@ page {
 .more-links { margin-left: auto; display: flex; align-items: center; }
 .more-link { margin-left: 12rpx; padding: 10rpx 16rpx; background: #FFFFFF; border: 1rpx solid #E2E8F0; border-radius: 10rpx; font-size: 22rpx; color: #2563EB; }
 .more-link:active { background: #F1F5F9; }
+
+/* 热门模型/系列入口 */
+.landing-links { margin: 12rpx 24rpx 48rpx; }
+.landing-title { display: block; margin: 18rpx 0 10rpx; font-size: 22rpx; color: var(--text-2); font-weight: 600; }
+.landing-chips { display: flex; flex-wrap: wrap; }
+.landing-chip { margin: 0 12rpx 12rpx 0; padding: 10rpx 18rpx; font-size: 22rpx; color: #2563EB; background: #FFFFFF; border: 1rpx solid #E2E8F0; border-radius: 10rpx; }

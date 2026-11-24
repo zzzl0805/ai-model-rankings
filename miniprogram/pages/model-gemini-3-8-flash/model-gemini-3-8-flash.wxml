@@ -1,0 +1,2 @@
+<import src="../../templates/model-landing.wxml"/>
+<template is="model-landing" data="{{...landing}}"/>
