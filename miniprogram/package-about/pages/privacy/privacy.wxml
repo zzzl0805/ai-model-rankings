@@ -3,17 +3,20 @@
 
     <view class="page-header">
       <text class="page-title">隐私政策</text>
-      <text class="page-date">更新日期：2026年7月</text>
+      <text class="page-date">更新日期：2026年11月24日</text>
     </view>
 
     <!-- 我们收集的信息 -->
     <view class="section">
       <text class="section-title">我们收集的信息</text>
       <text class="section-body">
-        本小程序不收集任何个人隐私数据。我们不要求用户注册、登录，也不会收集您的姓名、手机号、邮箱地址、地理位置等个人身份信息。
+        本小程序不要求注册或登录，不收集姓名、手机号、邮箱、地理位置、通讯录等个人身份信息。
       </text>
       <text class="section-body">
-        小程序仅在本设备上存储少量偏好设置（如您浏览过的类别），所有数据均保留在您的设备上，不上传至任何服务器。
+        为了提供收藏、对比组、计算记录等功能，小程序会在你的设备本地保存少量数据（收藏的模型、保存的对比组、最近计算记录）。这些数据只保存在本机，不会上传到我们的服务器。
+      </text>
+      <text class="section-body">
+        保存榜单/对比图片到相册时，小程序会申请「相册（仅写入）」权限；只写入你主动生成的图片，不读取相册中的其他内容。
       </text>
     </view>
 
@@ -21,7 +24,10 @@
     <view class="section">
       <text class="section-title">信息的使用</text>
       <text class="section-body">
-        我们可能会收集匿名的使用统计数据（如页面访问次数、功能使用频率），仅用于改善产品体验。这些数据无法关联到任何个人身份。
+        本地数据仅用于展示你的收藏变化、对比组和计算记录；删除小程序或清理微信缓存即可清除。
+      </text>
+      <text class="section-body">
+        微信平台可能提供匿名的页面访问统计（如访问次数），我们仅用于了解功能使用情况，无法关联到个人身份。
       </text>
     </view>
 
@@ -29,18 +35,27 @@
     <view class="section">
       <text class="section-title">信息的存储</text>
       <text class="section-body">
-        所有数据存储在您的设备本地（通过微信小程序本地存储接口），我们不会将任何数据上传到第三方服务器。您可以通过删除小程序或清理微信缓存来清除所有本地数据。
+        收藏、对比组、计算记录存储在你的设备本地（微信小程序本地存储接口）。
+      </text>
+      <text class="section-body">
+        榜单数据存储在微信云开发（腾讯云）中，仅包含模型排名、价格等公开数据，不包含任何用户个人信息。
       </text>
     </view>
 
     <!-- 第三方服务 -->
     <view class="section">
-      <text class="section-title">第三方服务</text>
+      <text class="section-title">第三方服务与数据来源</text>
       <text class="section-body">
-        本小程序可能在未来版本中接入微信广告组件。微信广告可能根据其自身的隐私政策收集信息。建议您查看微信官方的隐私政策了解详情。
+        · 微信云开发：用于托管榜单数据与提供数据下载。
       </text>
       <text class="section-body">
-        模型数据来源于公开评测集（LMArena、SWE-bench、MMLU等），不涉及用户数据的第三方共享。
+        · LMArena：提供人类盲测 Elo 排名数据。
+      </text>
+      <text class="section-body">
+        · OpenRouter、各厂商官网：提供模型描述、上下文、许可证与 API 价格等公开信息。
+      </text>
+      <text class="section-body">
+        本小程序当前未接入第三方广告组件；如未来接入，会在本页面更新说明。
       </text>
     </view>
 
@@ -48,17 +63,14 @@
     <view class="section">
       <text class="section-title">联系方式</text>
       <text class="section-body">
-        如果您对隐私政策有任何疑问，请通过以下方式联系我们：
+        如果你对隐私政策或数据处理有疑问，欢迎在公众号「在新世界里安身」留言。
       </text>
-      <view class="contact-card">
-        <text class="contact-line">📧 feedback@aimodelrankings.cn</text>
-      </view>
     </view>
 
     <!-- 免责 -->
     <view class="section footer-section">
       <text class="section-body footnote">
-        本隐私政策可能不时更新。更新后的政策将在小程序内公布。继续使用本小程序即表示您同意更新后的隐私政策。
+        本隐私政策可能不时更新，更新后的版本将在小程序内公布。继续使用本小程序即表示你同意更新后的政策。
       </text>
     </view>
 
