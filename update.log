@@ -1,0 +1,148 @@
+==========================================
+  AI模型排行 - 数据更新
+  2026-11-24 18:06:22
+==========================================
+
+[1/4] 抓取 LMArena 排行榜...
+启动 Chrome...
+
+========== Agent ==========
+⚠️ 未找到 Sessions 列
+  overall: 0个模型
+
+========== Text ==========
+
+========== WebDev ==========
+
+========== Vision ==========
+
+========== Document ==========
+
+========== Search ==========
+
+========== Image-to-WebDev ==========
+
+========== Text to Image ==========
+
+========== Image Edit ==========
+
+========== Text to Video ==========
+
+========== Image to Video ==========
+
+========== Video Edit ==========
+
+✅ 保存到 /home/runner/work/ai-model-rankings/ai-model-rankings/pipeline/rankings.json
+总计: 12个大类 × 8个维度 = 0条数据
+
+✅ 完成
+  本次爬取条目: 0
+
+⚠️  网页爬取失败（通常是被 Cloudflare 拦截）
+[1b/4] 改用 LMArena 官方 HuggingFace 数据集...
+============================================================
+从 HuggingFace 官方数据集抓取 LMArena 排行
+============================================================
+  未配置代理，直连
+  找到 26 个 config
+  已加载 text_style_control: 11320 行（2026-11-22）
+  已加载 webdev: 631 行（2026-11-23）
+  已加载 vision: 1130 行（2026-11-19）
+  已加载 document: 46 行（2026-11-09）
+  已加载 search: 45 行（2026-11-19）
+  已加载 agent: 69 行（2026-11-22）
+  已加载 text_to_image: 728 行（2026-11-20）
+  已加载 image_edit: 156 行（2026-11-17）
+  已加载 text_to_video: 50 行（2026-11-09）
+  已加载 image_to_video: 50 行（2026-11-09）
+  已加载 video_edit: 12 行（2026-11-10）
+  ⚠️ image-to-webdev: 数据源无对应 config，留空
+  已加载 agent_task_outcome_explicit: 69 行（2026-11-22）
+  已加载 agent_praise_complaint: 69 行（2026-11-22）
+  已加载 agent_steerability: 69 行（2026-11-22）
+  已加载 agent_bash_recovery_steps: 52 行（2026-10-08）
+  已加载 agent_tool_hallucination: 69 行（2026-11-22）
+  ↺ image-to-webdev 用上次数据兜底（64 条，可能偏旧）
+
+✅ 已写入 /home/runner/work/ai-model-rankings/ai-model-rankings/pipeline/rankings.json
+   最新发布日期: 2026-11-23 | 总条目: 4262
+   text: overall(427), coding(422), math(410), writing(425), hardprompts(427), instruction(427), expert(376), multiturn(425)
+   webdev: overall(162)
+   vision: overall(168), writing(106)
+   document: overall(46)
+   search: overall(45)
+   agent: overall(69)
+   text-to-image: overall(87)
+   image-edit: overall(64)
+   text-to-video: overall(50)
+   image-to-video: overall(50)
+   video-edit: overall(12)
+   image-to-webdev: overall(64), coding(0), math(0), writing(0), hardprompts(0), instruction(0), expert(0), multiturn(0)
+
+[2/4] Agent 排行已由 HF 数据集提供，跳过
+
+[3/4] 抓取国产模型定价...
+=== 国产模型定价抓取 ===
+
+📊 抓取 智谱AI...
+  提取到 2 个模型定价
+    glm-5.3: ¥8/¥28
+    glm-5.3-flash: ¥0.8/¥2.8
+
+📊 抓取 Kimi(月之暗面)...
+  提取到 2 个表格
+  解析出 0 个模型定价
+
+📊 抓取 阿里通义...
+  提取到 277 个表格
+  解析出 531 个模型定价
+    qwen4-max: ¥10/¥30
+    qwen3.8-max: ¥12/¥36
+    qwen3.8-max-0902: ¥12/¥36
+    qwen3.7-max: ¥12/¥36
+    qwen3.7-max-2026-06-08: ¥12/¥36
+
+✅ 保存到 /home/runner/work/ai-model-rankings/ai-model-rankings/pipeline/cn_prices.json
+   共 167 个模型定价
+   智谱官网: 2个
+   阿里云官网: 165个
+
+[4/4] 构建 rankings.js...
+  已加载 167 个自动抓取的国产定价
+============================================================
+构建小程序排行数据
+============================================================
+
+📊 加载 rankings.json...
+  大类: ['text', 'webdev', 'vision', 'document', 'search', 'agent', 'text-to-image', 'image-edit', 'text-to-video', 'image-to-video', 'video-edit', 'image-to-webdev']
+
+📡 获取 OpenRouter 定价...
+  获取到 473 个模型
+
+💱 获取汇率...
+  1 USD = 6.6793 CNY
+
+🔧 处理数据...
+📈 排名变化：已对比 2026-11-23 快照，2630 个模型有变动
+
+💾 保存到 /home/runner/work/ai-model-rankings/ai-model-rankings/miniprogram/data/rankings.js...
+   rankings.js: 957 KB
+   rankings_cloud.json: 955 KB
+
+============================================================
+✅ 完成!
+   大类: 12
+   维度: 8
+   总数据: 4262 条
+============================================================
+
+==========================================
+  ✅ 数据更新完成
+
+  下一步（让云端生效，用户无需重新发布小程序）:
+    1. 在 app.json 临时加 pages/admin/admin
+    2. 开发者工具编译 → admin 页点「一键上传」
+    3. 去掉 app.json 的 admin 页面
+
+  说明: 数据会上传到云存储，小程序启动时自动拉取最新，无需重新发布。
+==========================================
