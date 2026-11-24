@@ -100,7 +100,7 @@ Page({
 
     var baseTitle = function (n) { return String(n || '').replace(/\s*\([^)]*\)\s*$/, ''); };
     that.setData({
-      hotLinks: (landingConfig.models || []).slice(0, 10).map(function (m) {
+      hotLinks: (landingConfig.models || []).map(function (m) {
         return { label: baseTitle(m.name), path: '/pages/model-' + m.slug + '/model-' + m.slug };
       }),
       familyLinks: (landingConfig.families || []).slice(0, 8).map(function (f) {

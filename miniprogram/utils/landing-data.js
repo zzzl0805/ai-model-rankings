@@ -1,6 +1,7 @@
 // utils/landing-data.js — 固定路径模型/系列落地页的数据组装
 var local = require('../data/rankings.js');
 var catalog = require('./catalog.js');
+var meta = require('./model-meta.js');
 var cfg = require('./landing-config.js');
 
 function getRankings() {
@@ -68,8 +69,8 @@ function modelData(name) {
   var cm = catalog.findModel(name);
   var company = catalog.companyOf(cm);
   var family = catalog.familyOf(cm);
-  var displayName = cm ? cm.displayName : baseName(name);
-  var provider = company ? (company.nameZh || company.name) : (row && row.provider) || '未知厂商';
+  var displayName = cm ? cm.displayName : meta.getDisplayName(name);
+  var provider = company ? (company.nameZh || company.name) : meta.getProviderDisplay((row && row.provider) || '', name);
 
   var catNames = {};
   (rankings.categories || []).forEach(function (c) { catNames[c.id] = c.name; });
@@ -95,7 +96,7 @@ function modelData(name) {
   ranks.forEach(function (r) { if (!primary && r.name === '文本') primary = r; });
   primary = primary || ranks[0] || null;
 
-  var context = (cm && cm.contextTokens) ? catalog.formatTokens(cm.contextTokens) : '';
+  var context = (cm && cm.contextTokens) ? catalog.formatTokens(cm.contextTokens) : (row && row.context ? (catalog.formatTokens(catalog.parseContext(row.context)) || row.context) : '');
   var price = row ? priceText(row) : (cm && cm.price ? '$' + fmt(cm.price.input) + ' / $' + fmt(cm.price.output) + ' 每百万 tokens' : '暂无公开 API 价格');
   var score = row ? (row.elo ? Math.round(row.elo * 10) / 10 : '-') : '-';
 

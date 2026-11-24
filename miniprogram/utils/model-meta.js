@@ -3,6 +3,10 @@
 
 // 模型名 → 友好显示名
 var NAME_MAP = {
+  'Hy4 preview': '混元4 Preview', 'Hy4': '混元4',
+  'Hy3 preview': '混元3 Preview', 'Hy3': '混元3',
+  'HunyuanImage 3.0 Instruct': '混元图像 3.0 Instruct', 'HunyuanImage 3.0': '混元图像 3.0',
+  'HunyuanVideo 1.5': '混元视频 1.5',
   'claude-fable-5': 'Claude Fable 5', 'claude-opus-4-8': 'Claude Opus 4.8',
   'claude-opus-4-7': 'Claude Opus 4.7', 'claude-opus-4-6': 'Claude Opus 4.6',
   'claude-sonnet-5': 'Claude Sonnet 5', 'claude-haiku-4': 'Claude Haiku 4.5',
@@ -39,6 +43,7 @@ function getDisplayName(name) {
 
 function getProviderCN(name) {
   var n = (name || '').toLowerCase();
+  if (/^hy[0-9]|^hunyuan|混元/.test(n)) return '腾讯';
   // 必须先匹配 kling（避免 kling-o1 被下面的 o\d 误判，且不能匹配 inkling）
   if (/^kling/.test(n)) return '快手';
   if (/seedance|dreamina|dola-seed|seed-\d/.test(n)) return '字节跳动';

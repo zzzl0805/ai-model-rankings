@@ -5,7 +5,7 @@
     <view class="hero">
       <view class="hero-icon">🤖</view>
       <text class="hero-name">AI模型排行</text>
-      <text class="hero-version">v1.5.1</text>
+      <text class="hero-version">v1.5.2</text>
     </view>
 
     <!-- Description -->

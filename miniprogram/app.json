@@ -38,7 +38,8 @@
     "pages/family-glm/family-glm",
     "pages/family-deepseek/family-deepseek",
     "pages/family-muse/family-muse",
-    "pages/budget/budget"
+    "pages/budget/budget",
+    "pages/model-hunyuan-4/model-hunyuan-4"
   ],
   "subpackages": [
     {
