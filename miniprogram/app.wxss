@@ -18,7 +18,7 @@ page {
   --color-divider: #E4E8EE;
 
   font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'HarmonyOS Sans', 'Segoe UI', sans-serif;
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.6;
   color: var(--color-text-primary);
   background-color: var(--color-bg);
@@ -91,7 +91,7 @@ page {
   align-items: center;
   padding: 8rpx 22rpx;
   border-radius: 12rpx;
-  font-size: 13px;
+  font-size: 12px;
   background: var(--color-card);
   color: var(--color-text-secondary);
   border: 1rpx solid var(--color-divider);

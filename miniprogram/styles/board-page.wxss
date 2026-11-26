@@ -1,9 +1,9 @@
 /* styles/board-page.wxss — v1.6 */
 page { background: #F6F7F9; }
 .hero { padding: 32rpx 32rpx 30rpx; background: #0F172A; color: #FFFFFF; border-bottom: 2rpx solid #0F5EF0; }
-.hero-title { display: block; font-size: 30px; line-height: 1.25; font-weight: 700; }
-.hero-sub { display: block; margin-top: 10rpx; font-size: 13px; color: rgba(255,255,255,0.68); }
-.hero-desc { display: block; margin-top: 14rpx; font-size: 13px; line-height: 1.7; color: rgba(255,255,255,0.78); }
-.more-link { margin: 24rpx 24rpx 0; padding: 22rpx 0; text-align: center; font-size: 14px; color: #0F5EF0; font-weight: 600; background: #FFFFFF; border: 1rpx solid #E4E8EE; border-radius: 12rpx; }
+.hero-title { display: block; font-size: 26px; line-height: 1.25; font-weight: 700; }
+.hero-sub { display: block; margin-top: 10rpx; font-size: 12px; color: rgba(255,255,255,0.68); }
+.hero-desc { display: block; margin-top: 14rpx; font-size: 12px; line-height: 1.7; color: rgba(255,255,255,0.78); }
+.more-link { margin: 24rpx 24rpx 0; padding: 22rpx 0; text-align: center; font-size: 13px; color: #0F5EF0; font-weight: 600; background: #FFFFFF; border: 1rpx solid #E4E8EE; border-radius: 12rpx; }
 .more-link:active { background: #F6F7F9; }
 .page-foot { margin: 24rpx 32rpx 48rpx; text-align: center; font-size: 12px; color: #5B6675; line-height: 1.7; }

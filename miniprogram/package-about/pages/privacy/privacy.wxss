@@ -72,13 +72,13 @@
 }
 
 /* ================= v1.6 ================= */
-page { background: #F6F7F9; font-size: 15px; }
+page { background: #F6F7F9; font-size: 14px; }
 .privacy-page { background: #F6F7F9; }
 .container { padding: 32rpx 28rpx 64rpx; }
-.page-title { font-size: 24px; font-weight: 600; color: #0F172A; }
+.page-title { font-size: 20px; font-weight: 600; color: #0F172A; }
 .page-date { font-size: 12px; color: #5B6675; }
-.section-title { font-size: 17px; color: #0F172A; }
-.section-body { font-size: 15px; line-height: 1.75; color: #334155; }
+.section-title { font-size: 16px; color: #0F172A; }
+.section-body { font-size: 14px; line-height: 1.75; color: #334155; }
 .contact-card { background: #FFFFFF; border: 1rpx solid #E4E8EE; border-radius: 12rpx; padding: 20rpx; }
-.contact-line { font-size: 14px; color: #334155; }
-.footnote { font-size: 13px; color: #5B6675; }
+.contact-line { font-size: 13px; color: #334155; }
+.footnote { font-size: 12px; color: #5B6675; }

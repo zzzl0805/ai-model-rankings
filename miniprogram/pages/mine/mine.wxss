@@ -73,26 +73,26 @@ page {
 .footer-link { font-size: 22rpx; color: var(--primary); }
 
 /* ================= v1.6 ================= */
-page { --bg: #F6F7F9; --text: #0F172A; --text-2: #5B6675; --text-3: #66707C; --line: #EDF0F4; --border: #E4E8EE; font-size: 15px; }
+page { --bg: #F6F7F9; --text: #0F172A; --text-2: #5B6675; --text-3: #66707C; --line: #EDF0F4; --border: #E4E8EE; font-size: 14px; }
 .header { background: #0F172A; padding: 16rpx 24rpx 18rpx; border-bottom: 2rpx solid #0F5EF0; }
-.header-title { font-size: 22px; line-height: 1.3; }
+.header-title { font-size: 20px; line-height: 1.3; }
 .header-sub { font-size: 12px; color: rgba(255,255,255,0.55); }
-.section-title { font-size: 17px; }
+.section-title { font-size: 16px; }
 .section-hint { font-size: 12px; color: var(--text-2); }
 .empty { border: 1rpx solid var(--border); border-radius: 16rpx; }
-.empty-text { font-size: 13px; line-height: 1.7; color: var(--text-2); }
+.empty-text { font-size: 12px; line-height: 1.7; color: var(--text-2); }
 .list { border: 1rpx solid var(--border); border-radius: 16rpx; }
 .row { padding: 20rpx; }
-.model-name { font-size: 15px; }
-.meta-line { font-size: 13px; color: var(--text-2); margin-top: 4rpx; }
+.model-name { font-size: 14px; }
+.meta-line { font-size: 12px; color: var(--text-2); margin-top: 4rpx; }
 .meta-provider { color: var(--text-2); }
 .meta-price { font-size: 12px; color: #334155; }
-.score { font-size: 15px; font-weight: 600; color: var(--text); }
+.score { font-size: 14px; font-weight: 600; color: var(--text); }
 .score-sub { font-size: 12px; color: var(--text-2); }
-.meta-cat { font-size: 11px; color: #5B6675; background: #F1F3F6; }
-.meta-proxy { font-size: 11px; color: #5B6675; background: #F1F3F6; }
+.meta-cat { font-size: 12px; color: #5B6675; background: #F1F3F6; }
+.meta-proxy { font-size: 12px; color: #5B6675; background: #F1F3F6; }
 .delta { font-size: 12px; }
 .row-del { font-size: 12px; color: var(--text-2); }
-.link-title { font-size: 14px; color: var(--text); }
-.link-arrow { font-size: 16px; color: var(--text-2); }
-.footer-link { font-size: 14px; color: #0F5EF0; }
+.link-title { font-size: 13px; color: var(--text); }
+.link-arrow { font-size: 15px; color: var(--text-2); }
+.footer-link { font-size: 13px; color: #0F5EF0; }

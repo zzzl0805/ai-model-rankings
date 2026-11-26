@@ -1,19 +1,19 @@
 /* components/board/board.wxss — v1.6 */
 .board { background: #FFFFFF; border: 1rpx solid #E4E8EE; border-radius: 16rpx; margin: 0 24rpx; overflow: hidden; }
 .board-meta { padding: 18rpx 26rpx; font-size: 12px; color: #5B6675; background: #FBFCFD; border-bottom: 1rpx solid #EDF0F4; }
-.board-empty { padding: 80rpx 0; text-align: center; font-size: 14px; color: #5B6675; }
+.board-empty { padding: 80rpx 0; text-align: center; font-size: 13px; color: #5B6675; }
 
 .board-row { display: flex; align-items: center; padding: 20rpx 26rpx; border-bottom: 1rpx solid #EDF0F4; }
 .board-row:last-child { border-bottom: none; }
 .board-row:active { background: #F6F7F9; }
 
-.col-rank { width: 54rpx; font-size: 15px; font-weight: 700; color: #0F172A; font-feature-settings: 'tnum'; }
+.col-rank { width: 54rpx; font-size: 14px; font-weight: 700; color: #0F172A; font-feature-settings: 'tnum'; }
 .rank-top { font-weight: 800; }
 .col-main { flex: 1; min-width: 0; }
-.row-name { display: block; font-size: 15px; font-weight: 600; color: #0F172A; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.row-name { display: block; font-size: 14px; font-weight: 600; color: #0F172A; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .row-sub { margin-top: 4rpx; display: flex; align-items: center; }
 .row-provider { font-size: 12px; color: #5B6675; }
-.row-proxy { margin-left: 8rpx; padding: 0 6rpx; font-size: 11px; color: #5B6675; background: #F1F3F6; border-radius: 4rpx; }
+.row-proxy { margin-left: 8rpx; padding: 0 6rpx; font-size: 12px; color: #5B6675; background: #F1F3F6; border-radius: 4rpx; }
 .row-price { margin-left: 12rpx; font-size: 12px; color: #334155; }
 .row-price-none { color: #5B6675; }
-.col-elo { margin-left: 16rpx; font-size: 16px; font-weight: 600; color: #0F172A; font-feature-settings: 'tnum'; }
+.col-elo { margin-left: 16rpx; font-size: 15px; font-weight: 600; color: #0F172A; font-feature-settings: 'tnum'; }

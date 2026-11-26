@@ -4,43 +4,43 @@ page { background: #F6F7F9; }
 
 .hero { background: #0F172A; padding: 32rpx 32rpx 28rpx; color: #FFFFFF; border-bottom: 2rpx solid #0F5EF0; }
 .hero-kicker { display: block; font-size: 12px; color: rgba(255,255,255,0.55); letter-spacing: 1rpx; }
-.hero-title { display: block; margin-top: 10rpx; font-size: 30px; line-height: 1.25; font-weight: 700; }
-.hero-sub { display: block; margin-top: 10rpx; font-size: 13px; color: rgba(255,255,255,0.72); }
+.hero-title { display: block; margin-top: 10rpx; font-size: 26px; line-height: 1.25; font-weight: 700; }
+.hero-sub { display: block; margin-top: 10rpx; font-size: 12px; color: rgba(255,255,255,0.72); }
 
 .body { padding-top: 4rpx; }
 .card { background: #FFFFFF; margin: 20rpx 24rpx; border: 1rpx solid #E4E8EE; border-radius: 16rpx; padding: 28rpx; }
-.card-title { display: block; font-size: 17px; line-height: 1.4; font-weight: 600; color: #0F172A; margin-bottom: 14rpx; }
-.card-note { display: block; font-size: 13px; color: #5B6675; margin: -6rpx 0 12rpx; line-height: 1.6; }
-.text { display: block; font-size: 15px; line-height: 1.7; color: #334155; }
+.card-title { display: block; font-size: 16px; line-height: 1.4; font-weight: 600; color: #0F172A; margin-bottom: 14rpx; }
+.card-note { display: block; font-size: 12px; color: #5B6675; margin: -6rpx 0 12rpx; line-height: 1.6; }
+.text { display: block; font-size: 14px; line-height: 1.7; color: #334155; }
 .intro-card { padding: 24rpx 28rpx; }
 
 .stat-grid { display: flex; flex-wrap: wrap; }
 .stat { width: 50%; box-sizing: border-box; padding: 8rpx 12rpx 8rpx 0; }
 .stat-label { display: block; font-size: 12px; color: #5B6675; }
-.stat-value { display: block; margin-top: 2rpx; font-size: 16px; font-weight: 600; color: #0F172A; word-break: break-all; }
+.stat-value { display: block; margin-top: 2rpx; font-size: 15px; font-weight: 600; color: #0F172A; word-break: break-all; }
 
 .chips { display: flex; flex-wrap: wrap; margin-top: 12rpx; }
 .chip { margin: 0 10rpx 10rpx 0; padding: 5rpx 14rpx; font-size: 12px; color: #0F5EF0; background: #EEF3FF; border-radius: 8rpx; }
 
 .rank-row { display: flex; align-items: center; padding: 10rpx 0; }
-.rank-name { width: 150rpx; font-size: 13px; color: #334155; }
+.rank-name { width: 150rpx; font-size: 12px; color: #334155; }
 .rank-bar-bg { flex: 1; height: 6rpx; margin: 0 16rpx; background: #ECEFF4; border-radius: 3rpx; overflow: hidden; }
 .rank-bar-fill { height: 100%; background: #0F5EF0; border-radius: 3rpx; }
-.rank-value { width: 110rpx; text-align: right; font-size: 14px; font-weight: 600; color: #0F172A; font-feature-settings: 'tnum'; }
-.rank-total { font-size: 11px; font-weight: 400; color: #5B6675; }
+.rank-value { width: 110rpx; text-align: right; font-size: 13px; font-weight: 600; color: #0F172A; font-feature-settings: 'tnum'; }
+.rank-total { font-size: 12px; font-weight: 400; color: #5B6675; }
 
 .spec-grid { display: flex; flex-wrap: wrap; }
 .spec { width: 50%; box-sizing: border-box; padding: 8rpx 12rpx 8rpx 0; }
 .spec-label { display: block; font-size: 12px; color: #5B6675; }
-.spec-value { display: block; margin-top: 2rpx; font-size: 14px; color: #0F172A; word-break: break-all; }
+.spec-value { display: block; margin-top: 2rpx; font-size: 13px; color: #0F172A; word-break: break-all; }
 
 .link-row { display: flex; align-items: center; justify-content: space-between; padding: 14rpx 0; border-top: 1rpx solid #EDF0F4; }
-.link-main { flex: 1; font-size: 14px; color: #0F172A; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.link-main { flex: 1; font-size: 13px; color: #0F172A; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .link-meta { margin-left: 16rpx; font-size: 12px; color: #5B6675; flex-shrink: 0; }
 
 .cta-row { display: flex; flex-wrap: wrap; margin: 24rpx 24rpx 0; }
-.cta { flex: 1; min-width: 300rpx; padding: 22rpx 0; text-align: center; background: #0F5EF0; color: #FFFFFF; border-radius: 12rpx; font-size: 15px; font-weight: 600; }
-.cta-sec { margin-left: 14rpx; padding: 22rpx 26rpx; text-align: center; background: #FFFFFF; color: #0F172A; border: 1rpx solid #E4E8EE; border-radius: 12rpx; font-size: 14px; }
+.cta { flex: 1; min-width: 300rpx; padding: 22rpx 0; text-align: center; background: #0F5EF0; color: #FFFFFF; border-radius: 12rpx; font-size: 14px; font-weight: 600; }
+.cta-sec { margin-left: 14rpx; padding: 22rpx 26rpx; text-align: center; background: #FFFFFF; color: #0F172A; border: 1rpx solid #E4E8EE; border-radius: 12rpx; font-size: 13px; }
 
 .source { margin: 26rpx 32rpx 0; text-align: center; font-size: 12px; color: #5B6675; line-height: 1.7; }
 .source text { display: block; }
