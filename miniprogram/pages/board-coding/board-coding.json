@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "AI编程模型排行",
+  "navigationBarTitleText": "编程榜",
   "usingComponents": {
     "board": "/components/board/board"
   }

@@ -29,7 +29,7 @@
 
 .hero-version {
   font-size: 26rpx;
-  color: #94A3B8;
+  color: #66707C;
   background-color: #F1F5F9;
   padding: 4rpx 20rpx;
   border-radius: 20rpx;
@@ -44,14 +44,14 @@
   display: block;
   font-size: 30rpx;
   font-weight: 700;
-  color: #1E293B;
+  color: #0F172A;
   margin-bottom: 16rpx;
 }
 
 .section-body {
   display: block;
   font-size: 28rpx;
-  color: #475569;
+  color: #334155;
   line-height: 1.8;
 }
 
@@ -67,7 +67,7 @@
   flex-direction: row;
   align-items: flex-start;
   padding: 20rpx;
-  background-color: #F8FAFC;
+  background-color: #F6F7F9;
   border-radius: 12rpx;
 }
 
@@ -86,19 +86,19 @@
 .feature-name {
   font-size: 28rpx;
   font-weight: 600;
-  color: #1E293B;
+  color: #0F172A;
   margin-bottom: 6rpx;
 }
 
 .feature-desc {
   font-size: 24rpx;
-  color: #64748B;
+  color: #5B6675;
   line-height: 1.5;
 }
 
 /* -- Links -- */
 .link-list {
-  background-color: #F8FAFC;
+  background-color: #F6F7F9;
   border-radius: 12rpx;
   overflow: hidden;
 }
@@ -109,7 +109,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 28rpx 24rpx;
-  border-bottom: 1rpx solid #E2E8F0;
+  border-bottom: 1rpx solid #E4E8EE;
 }
 
 .link-item:last-child {
@@ -118,25 +118,25 @@
 
 .link-text {
   font-size: 28rpx;
-  color: #1E293B;
+  color: #0F172A;
 }
 
 .link-arrow {
   font-size: 32rpx;
-  color: #94A3B8;
+  color: #66707C;
 }
 
 /* -- Contact -- */
 .contact-card {
   padding: 24rpx;
-  background-color: #F8FAFC;
+  background-color: #F6F7F9;
   border-radius: 12rpx;
 }
 
 .contact-line {
   display: block;
   font-size: 26rpx;
-  color: #475569;
+  color: #334155;
   line-height: 2;
 }
 
@@ -148,7 +148,7 @@
 .copyright {
   margin-top: 48rpx;
   padding-top: 32rpx;
-  border-top: 1rpx solid #E2E8F0;
+  border-top: 1rpx solid #E4E8EE;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -157,5 +157,28 @@
 
 .copyright-text {
   font-size: 22rpx;
-  color: #94A3B8;
+  color: #66707C;
 }
+
+/* ================= v1.6 ================= */
+page { background: #F6F7F9; font-size: 15px; }
+.about-page { background: #F6F7F9; }
+.container { padding: 32rpx 28rpx 64rpx; }
+.hero { padding: 36rpx 0 28rpx; }
+.hero-mark { width: 72rpx; height: 72rpx; line-height: 72rpx; text-align: center; border-radius: 18rpx; background: #0F172A; color: #FFFFFF; font-size: 22px; font-weight: 700; margin-bottom: 18rpx; }
+.hero-name { font-size: 24px; font-weight: 600; color: #0F172A; }
+.hero-version { font-size: 12px; color: #5B6675; background: #F1F3F6; padding: 3rpx 14rpx; border-radius: 8rpx; }
+.section { margin-bottom: 32rpx; }
+.section-title { font-size: 17px; line-height: 1.4; font-weight: 600; color: #0F172A; margin-bottom: 14rpx; }
+.section-body { font-size: 15px; line-height: 1.75; color: #334155; }
+.feature-list { gap: 12rpx; }
+.feature-item { background: #FFFFFF; border: 1rpx solid #E4E8EE; border-radius: 12rpx; padding: 20rpx; }
+.feature-index { flex-shrink: 0; width: 40rpx; font-size: 12px; font-weight: 700; color: #0F5EF0; margin-right: 16rpx; }
+.feature-name { font-size: 15px; font-weight: 600; color: #0F172A; }
+.feature-desc { font-size: 13px; line-height: 1.65; color: #5B6675; }
+.link-item { border-top: 1rpx solid #E4E8EE; padding: 18rpx 0; }
+.link-text { font-size: 14px; color: #0F172A; }
+.link-arrow { color: #5B6675; }
+.contact-card { background: #FFFFFF; border: 1rpx solid #E4E8EE; border-radius: 12rpx; padding: 20rpx; }
+.contact-line { font-size: 14px; color: #334155; line-height: 1.7; }
+.copyright-text { font-size: 12px; color: #5B6675; }

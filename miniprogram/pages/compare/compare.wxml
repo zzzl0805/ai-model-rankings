@@ -5,6 +5,11 @@
   </view>
 
   <view wx:else>
+    <view class="masthead">
+      <text class="masthead-title">模型对比</text>
+      <text class="masthead-sub">最多 3 个模型，按维度横向比较</text>
+    </view>
+
     <!-- 模型槽位 -->
     <view class="card">
       <text class="card-title">选择对比模型</text>
@@ -42,7 +47,6 @@
 
     <!-- 空状态 -->
     <view wx:if="{{models.length===0}}" class="center-box">
-      <text class="empty-icon">📊</text>
       <text class="center-text">点击上方 "+" 添加模型开始对比</text>
     </view>
 

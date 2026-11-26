@@ -623,8 +623,8 @@ Page({
       displayModels: sorted,
       priceUnit: region === 'cn' ? '¥' : '$',
       priceHeader: isVisual
-        ? '价格（口径见详情）'
-        : ('价格 入/出 ' + (region === 'cn' ? '¥' : '$') + '/百万 tokens'),
+        ? '价格'
+        : ('价格 ' + (region === 'cn' ? '¥' : '$') + '/M'),
       allProxy: aProxy,
       ctxNote: this.buildCtxNote(region, renumber, aProxy),
       conclusion: this.buildConclusion(sorted, region),

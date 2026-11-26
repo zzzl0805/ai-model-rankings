@@ -3,9 +3,9 @@
 
     <!-- App icon & name -->
     <view class="hero">
-      <view class="hero-icon">🤖</view>
+      <view class="hero-mark">AI</view>
       <text class="hero-name">AI模型排行</text>
-      <text class="hero-version">v1.5.2</text>
+      <text class="hero-version">v1.6.0</text>
     </view>
 
     <!-- Description -->
@@ -20,42 +20,42 @@
       <text class="section-title">核心功能</text>
       <view class="feature-list">
         <view class="feature-item">
-          <text class="feature-icon">🏆</text>
+          <text class="feature-index">01</text>
           <view class="feature-text">
             <text class="feature-name">多类目排行榜</text>
             <text class="feature-desc">12 个类目；文本含综合、编程、数学、写作、难题、指令、专家、长对话 8 个维度，其他类目以综合为主</text>
           </view>
         </view>
         <view class="feature-item">
-          <text class="feature-icon">📇</text>
+          <text class="feature-index">02</text>
           <view class="feature-text">
             <text class="feature-name">模型档案</text>
             <text class="feature-desc">公司、系列、发布、上下文、模态、许可证、价格与来源；头部模型带优缺点和适用场景</text>
           </view>
         </view>
         <view class="feature-item">
-          <text class="feature-icon">⚖️</text>
+          <text class="feature-index">03</text>
           <view class="feature-text">
             <text class="feature-name">对比与收藏</text>
             <text class="feature-desc">最多对比 3 个模型；保存对比组；收藏后查看排名和价格变化</text>
           </view>
         </view>
         <view class="feature-item">
-          <text class="feature-icon">🧮</text>
+          <text class="feature-index">04</text>
           <view class="feature-text">
             <text class="feature-name">成本计算器</text>
             <text class="feature-desc">按每月万 token 用量估算各模型月费</text>
           </view>
         </view>
         <view class="feature-item">
-          <text class="feature-icon">🎯</text>
+          <text class="feature-index">05</text>
           <view class="feature-text">
             <text class="feature-name">预算选型</text>
             <text class="feature-desc">按场景与月预算筛出 3 个候选模型，只统计有公开价格的文本模型</text>
           </view>
         </view>
         <view class="feature-item">
-          <text class="feature-icon">🖼</text>
+          <text class="feature-index">06</text>
           <view class="feature-text">
             <text class="feature-name">分享海报</text>
             <text class="feature-desc">榜单、模型详情、对比结果可生成图片保存或分享</text>

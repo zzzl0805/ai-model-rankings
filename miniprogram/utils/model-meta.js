@@ -131,10 +131,10 @@ function isDomestic(rawProvider, modelName) {
 
 // 数据可靠性：根据投票数/会话数
 function getConfidence(votes) {
-  if (votes >= 5000) return { level: 'high', label: '样本充足', color: '#10B981' };
-  if (votes >= 1000) return { level: 'medium', label: '样本一般', color: '#F59E0B' };
-  if (votes > 0) return { level: 'low', label: '样本偏少', color: '#EF4444' };
-  return { level: 'none', label: '无数据', color: '#94A3B8' };
+  if (votes >= 5000) return { level: 'high', label: '样本充足', color: '#047857' };
+  if (votes >= 1000) return { level: 'medium', label: '样本一般', color: '#B45309' };
+  if (votes > 0) return { level: 'low', label: '样本偏少', color: '#B42318' };
+  return { level: 'none', label: '无数据', color: '#66707C' };
 }
 
 // 简单点评（基于 Elo 和定价）

@@ -36,11 +36,11 @@ function getAllPricedModels() {
 var ALL_MODELS = getAllPricedModels();
 
 var SCENES = [
-  { id: 'chat', name: '💬 日常聊天', input: 50, output: 50 },
-  { id: 'coding', name: '💻 编程助手', input: 200, output: 200 },
-  { id: 'writing', name: '✍ 写作', input: 100, output: 300 },
-  { id: 'data', name: '📊 数据处理', input: 1000, output: 100 },
-  { id: 'enterprise', name: '🏢 企业API', input: 5000, output: 5000 },
+  { id: 'chat', name: '日常聊天', input: 50, output: 50 },
+  { id: 'coding', name: '编程助手', input: 200, output: 200 },
+  { id: 'writing', name: '写作', input: 100, output: 300 },
+  { id: 'data', name: '数据处理', input: 1000, output: 100 },
+  { id: 'enterprise', name: '企业API', input: 5000, output: 5000 },
 ];
 
 Page({

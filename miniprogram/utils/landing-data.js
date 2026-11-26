@@ -134,6 +134,7 @@ function modelData(name) {
   return {
     kind: 'model',
     title: displayName + ' 排名与价格',
+    heroTitle: displayName,
     subtitle: provider + (family ? ' · ' + (family.nameZh || family.name) : ''),
     description: description,
     summary: summary,
@@ -186,6 +187,7 @@ function familyData(familyId) {
   return {
     kind: 'family',
     title: (fam.nameZh || fam.name) + ' 模型排行',
+    heroTitle: (fam.nameZh || fam.name),
     subtitle: company ? (company.nameZh || company.name) + ' · ' + members.length + ' 个版本' : members.length + ' 个版本',
     description: fam.description || ((fam.nameZh || fam.name) + ' 系列模型的排名、价格与版本对比。'),
     summary: fam.description || '',

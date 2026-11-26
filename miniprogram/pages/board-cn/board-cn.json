@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "国产AI模型排行",
+  "navigationBarTitleText": "国产榜",
   "usingComponents": {
     "board": "/components/board/board"
   }

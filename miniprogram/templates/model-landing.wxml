@@ -2,13 +2,16 @@
 <template name="model-landing">
   <view class="page">
     <view class="hero">
-      <text class="hero-kicker">AI模型排行 · {{kind === 'family' ? '系列档案' : '模型档案'}}</text>
-      <text class="hero-title">{{title}}</text>
+      <text class="hero-kicker">AI模型排行</text>
+      <text class="hero-title">{{heroTitle}}</text>
       <text class="hero-sub">{{subtitle}}</text>
-      <text class="hero-desc">{{description}}</text>
     </view>
 
     <view class="body">
+      <view class="card intro-card">
+        <text class="text">{{description}}</text>
+      </view>
+
       <view class="card">
         <view class="stat-grid">
           <view wx:for="{{stats}}" wx:key="label" class="stat">

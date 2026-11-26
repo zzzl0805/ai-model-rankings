@@ -1,57 +1,86 @@
 /* pages/calculator/calculator.wxss */
-.page { background: #F8FAFC; min-height: 100vh; padding-bottom: 40rpx; }
+.page { background: #F6F7F9; min-height: 100vh; padding-bottom: 40rpx; }
 .center-header { text-align: center; padding: 40rpx 32rpx 24rpx; }
 .page-icon { font-size: 60rpx; display: block; }
-.page-title { font-size: 36rpx; font-weight: 700; color: #1E293B; display: block; margin-top: 8rpx; }
-.page-sub { font-size: 24rpx; color: #94A3B8; display: block; }
+.page-title { font-size: 36rpx; font-weight: 700; color: #0F172A; display: block; margin-top: 8rpx; }
+.page-sub { font-size: 24rpx; color: #66707C; display: block; }
 .center-box { display: flex; flex-direction: column; align-items: center; padding: 80rpx 0; }
-.center-text { font-size: 28rpx; color: #94A3B8; }
+.center-text { font-size: 28rpx; color: #66707C; }
 
 /* 场景选择 */
 .scene-bar { display: flex; flex-wrap: wrap; padding: 0 24rpx; gap: 12rpx; margin-bottom: 20rpx; }
-.scene-btn { padding: 12rpx 24rpx; border-radius: 32rpx; font-size: 24rpx; color: #64748B; background: #fff; border: 1rpx solid #E2E8F0; }
-.scene-unit { display: block; padding: 0 28rpx; margin: -8rpx 0 20rpx; font-size: 20rpx; color: #94A3B8; }
+.scene-btn { padding: 12rpx 24rpx; border-radius: 32rpx; font-size: 24rpx; color: #5B6675; background: #fff; border: 1rpx solid #E4E8EE; }
+.scene-unit { display: block; padding: 0 28rpx; margin: -8rpx 0 20rpx; font-size: 20rpx; color: #66707C; }
 .scene-active { background: #0F5EF0; color: #fff; border-color: #0F5EF0; }
 
 /* 自定义输入 */
 .custom-card { background: #fff; margin: 0 24rpx 20rpx; border-radius: 12rpx; padding: 20rpx 24rpx; box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04); }
-.custom-label { font-size: 24rpx; color: #64748B; display: block; margin-bottom: 12rpx; }
+.custom-label { font-size: 24rpx; color: #5B6675; display: block; margin-bottom: 12rpx; }
 .custom-row { display: flex; gap: 16rpx; }
 .custom-input-wrap { flex: 1; }
-.custom-input-label { font-size: 22rpx; color: #94A3B8; display: block; margin-bottom: 4rpx; }
-.custom-input { height: 64rpx; background: #F8FAFC; border-radius: 8rpx; padding: 0 16rpx; font-size: 28rpx; border: 1rpx solid #E2E8F0; }
+.custom-input-label { font-size: 22rpx; color: #66707C; display: block; margin-bottom: 4rpx; }
+.custom-input { height: 64rpx; background: #F6F7F9; border-radius: 8rpx; padding: 0 16rpx; font-size: 28rpx; border: 1rpx solid #E4E8EE; }
 
 /* 排序控制 */
 .sort-bar { display: flex; align-items: center; padding: 0 24rpx; margin-bottom: 16rpx; gap: 12rpx; }
-.sort-label { font-size: 24rpx; color: #64748B; }
-.sort-btn { padding: 8rpx 20rpx; border-radius: 8rpx; font-size: 24rpx; color: #64748B; background: #fff; border: 1rpx solid #E2E8F0; }
+.sort-label { font-size: 24rpx; color: #5B6675; }
+.sort-btn { padding: 8rpx 20rpx; border-radius: 8rpx; font-size: 24rpx; color: #5B6675; background: #fff; border: 1rpx solid #E4E8EE; }
 .sort-active { background: #0F5EF0; color: #fff; border-color: #0F5EF0; }
-.sort-order { padding: 8rpx 16rpx; font-size: 24rpx; color: #64748B; background: #F1F5F9; border-radius: 8rpx; }
+.sort-order { padding: 8rpx 16rpx; font-size: 24rpx; color: #5B6675; background: #F1F5F9; border-radius: 8rpx; }
 
 /* 计算器搜索 */
-.calc-search-bar { display: flex; align-items: center; margin: 0 24rpx 16rpx; background: #fff; border-radius: 36rpx; padding: 8rpx 20rpx; border: 1rpx solid #E2E8F0; }
+.calc-search-bar { display: flex; align-items: center; margin: 0 24rpx 16rpx; background: #fff; border-radius: 36rpx; padding: 8rpx 20rpx; border: 1rpx solid #E4E8EE; }
 .calc-search-icon { font-size: 24rpx; margin-right: 8rpx; }
 .calc-search-input { flex: 1; font-size: 26rpx; height: 48rpx; }
-.calc-search-clear { font-size: 24rpx; color: #94A3B8; padding: 8rpx; }
+.calc-search-clear { font-size: 24rpx; color: #66707C; padding: 8rpx; }
 
 /* 厂商筛选 */
 .calc-provider-bar { white-space: nowrap; padding: 0 24rpx; margin-bottom: 16rpx; }
-.calc-provider-chip { display: inline-block; padding: 8rpx 20rpx; margin-right: 10rpx; border-radius: 32rpx; font-size: 24rpx; color: #64748B; background: #fff; border: 1rpx solid #E2E8F0; }
+.calc-provider-chip { display: inline-block; padding: 8rpx 20rpx; margin-right: 10rpx; border-radius: 32rpx; font-size: 24rpx; color: #5B6675; background: #fff; border: 1rpx solid #E4E8EE; }
 .calc-provider-active { background: #0F5EF0; color: #fff; border-color: #0F5EF0; }
 
 /* 结果列表 */
 .result-wrap { padding: 0 24rpx; }
 .result-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16rpx; }
-.result-title { font-size: 28rpx; font-weight: 700; color: #1E293B; }
-.result-count { font-size: 22rpx; color: #94A3B8; }
+.result-title { font-size: 28rpx; font-weight: 700; color: #0F172A; }
+.result-count { font-size: 22rpx; color: #66707C; }
 
 .result-item { position: relative; background: #fff; border-radius: 12rpx; padding: 16rpx 20rpx; margin-bottom: 12rpx; box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04); overflow: hidden; }
 .result-bar { position: absolute; top: 0; left: 0; height: 100%; opacity: 0.1; border-radius: 12rpx; }
 .result-content { position: relative; z-index: 1; display: flex; align-items: center; }
 .result-info { flex: 1; min-width: 0; }
-.result-name { font-size: 26rpx; font-weight: 600; color: #1E293B; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.result-provider { font-size: 20rpx; color: #94A3B8; display: block; }
+.result-name { font-size: 26rpx; font-weight: 600; color: #0F172A; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.result-provider { font-size: 20rpx; color: #66707C; display: block; }
 .result-numbers { text-align: right; margin-left: 12rpx; }
-.result-cost { font-size: 28rpx; font-weight: 700; color: #EF4444; display: block; }
-.result-cny { font-size: 20rpx; color: #94A3B8; display: block; }
+.result-cost { font-size: 28rpx; font-weight: 700; color: #B42318; display: block; }
+.result-cny { font-size: 20rpx; color: #66707C; display: block; }
 .result-elo { font-size: 20rpx; color: #0F5EF0; display: block; }
+
+/* ================= v1.6 ================= */
+page { background: #F6F7F9; font-size: 15px; }
+.center-header { text-align: left; padding: 30rpx 32rpx 22rpx; background: #FFFFFF; border-bottom: 1rpx solid #E4E8EE; }
+.page-title { font-size: 22px; line-height: 1.3; font-weight: 600; color: #0F172A; }
+.page-sub { margin-top: 4rpx; font-size: 13px; color: #5B6675; }
+.scene-btn { border-radius: 10rpx; font-size: 13px; color: #5B6675; border-color: #E4E8EE; }
+.scene-active { background: #EEF3FF; color: #0F5EF0; border-color: #C7D7FE; font-weight: 600; }
+.scene-unit { font-size: 12px; color: #5B6675; }
+.custom-card { border: 1rpx solid #E4E8EE; border-radius: 16rpx; box-shadow: none; }
+.custom-label { font-size: 13px; color: #5B6675; }
+.custom-input-label { font-size: 12px; color: #5B6675; }
+.custom-input { font-size: 15px; background: #F6F7F9; border-color: #E4E8EE; }
+.sort-label, .sort-btn, .sort-order { font-size: 13px; color: #5B6675; }
+.sort-btn { border-color: #E4E8EE; }
+.sort-active { background: #EEF3FF; color: #0F5EF0; border-color: #C7D7FE; }
+.sort-order { background: #F1F3F6; }
+.calc-search-bar { background: #FFFFFF; border-color: #E4E8EE; border-radius: 12rpx; }
+.calc-search-input { font-size: 14px; }
+.calc-provider-chip { font-size: 13px; border-color: #E4E8EE; border-radius: 10rpx; }
+.calc-provider-active { background: #EEF3FF; color: #0F5EF0; border-color: #C7D7FE; }
+.result-title { font-size: 17px; color: #0F172A; }
+.result-count { font-size: 12px; color: #5B6675; }
+.result-item { border: 1rpx solid #E4E8EE; border-radius: 14rpx; box-shadow: none; }
+.result-name { font-size: 15px; color: #0F172A; }
+.result-provider { font-size: 12px; color: #5B6675; }
+.result-cost { font-size: 16px; color: #0F172A; }
+.result-cny, .result-elo { font-size: 12px; color: #5B6675; }
+.result-bar { opacity: 0.06; }

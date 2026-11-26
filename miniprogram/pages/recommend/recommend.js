@@ -4,14 +4,14 @@ var rankings = localRankings;
 var meta = require('../../utils/model-meta.js');
 
 var SCENES = [
-  { id: 'chat', name: '日常对话', icon: '💬', category: 'text', dimension: 'overall', desc: '通用聊天问答', reason: '综合文本能力最强' },
-  { id: 'code', name: '写代码', icon: '💻', category: 'webdev', dimension: 'overall', desc: '编程、调试、建站', reason: 'Web开发能力最强' },
-  { id: 'reasoning', name: '数学推理', icon: '🧮', category: 'text', dimension: 'math', desc: '数学、逻辑、科学', reason: '数学推理最强' },
-  { id: 'writing', name: '写作创作', icon: '✍', category: 'text', dimension: 'writing', desc: '文案、故事、创意', reason: '创意写作最强' },
-  { id: 'hard', name: '复杂难题', icon: '🌶', category: 'text', dimension: 'hardprompts', desc: '高难度任务', reason: '处理复杂任务最强' },
-  { id: 'agent', name: 'Agent工具', icon: '🤖', category: 'agent', dimension: 'overall', desc: '工具调用、自动化', reason: 'Agent能力最强', isAgent: true },
-  { id: 'vision', name: '图片理解', icon: '👁', category: 'vision', dimension: 'overall', desc: '看图、OCR、视觉', reason: '视觉理解最强' },
-  { id: 'doc', name: '文档处理', icon: '📄', category: 'document', dimension: 'overall', desc: '读文档、总结', reason: '文档理解最强' },
+  { id: 'chat', name: '日常对话', category: 'text', dimension: 'overall', desc: '通用聊天问答', reason: '综合文本能力最强' },
+  { id: 'code', name: '写代码', category: 'webdev', dimension: 'overall', desc: '编程、调试、建站', reason: 'Web开发能力最强' },
+  { id: 'reasoning', name: '数学推理', category: 'text', dimension: 'math', desc: '数学、逻辑、科学', reason: '数学推理最强' },
+  { id: 'writing', name: '写作创作', category: 'text', dimension: 'writing', desc: '文案、故事、创意', reason: '创意写作最强' },
+  { id: 'hard', name: '复杂难题', category: 'text', dimension: 'hardprompts', desc: '高难度任务', reason: '处理复杂任务最强' },
+  { id: 'agent', name: 'Agent工具', category: 'agent', dimension: 'overall', desc: '工具调用、自动化', reason: 'Agent能力最强', isAgent: true },
+  { id: 'vision', name: '图片理解', category: 'vision', dimension: 'overall', desc: '看图、OCR、视觉', reason: '视觉理解最强' },
+  { id: 'doc', name: '文档处理', category: 'document', dimension: 'overall', desc: '读文档、总结', reason: '文档理解最强' },
 ];
 
 Page({
@@ -28,7 +28,7 @@ Page({
     recommendedModels: [],
     maxCount: 5,
     loading: false,
-    medals: ['🥇', '🥈', '🥉'],
+    medals: ['01', '02', '03'],
   },
 
   onSceneTap: function (e) {
@@ -96,7 +96,7 @@ Page({
   goToCompare: function () {
     var names = this.data.recommendedModels.slice(0, 3).map(function (m) { return m.name; });
     try { wx.setStorageSync('compareList', names); } catch (e) {}
-    wx.showToast({ title: '已加入对比', icon: 'success', duration: 1200 });
+    wx.showToast({ title: '已加入对比', duration: 1200 });
     setTimeout(function () { wx.switchTab({ url: '/pages/compare/compare' }); }, 800);
   },
 });

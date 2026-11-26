@@ -1,7 +1,7 @@
 <!-- pages/recommend/recommend.wxml -->
 <view class="page">
   <view class="header">
-    <text class="header-title">🎯 智能推荐</text>
+    <text class="header-title">智能推荐</text>
     <text class="header-sub">选场景，秒出最佳模型</text>
   </view>
 
@@ -13,7 +13,6 @@
     <view class="scene-grid">
       <view wx:for="{{scenes}}" wx:key="id" class="scene-card"
         data-id="{{item.id}}" bindtap="onSceneTap">
-        <view class="scene-icon-wrap"><text class="scene-icon">{{item.icon}}</text></view>
         <view class="scene-text">
           <text class="scene-name">{{item.name}}</text>
           <text class="scene-desc">{{item.desc}}</text>
@@ -27,10 +26,9 @@
     <!-- 场景标题 + 推荐理由 -->
     <view class="result-header">
       <view class="result-header-left">
-        <text class="result-icon">{{selectedScene.icon}}</text>
         <view>
           <text class="result-title">{{selectedScene.name}}</text>
-          <text class="result-reason">💡 {{selectedScene.reason}}</text>
+          <text class="result-reason">{{selectedScene.reason}}</text>
         </view>
       </view>
       <view class="back-btn" bindtap="onBackToScenes"><text>换场景</text></view>
@@ -85,7 +83,7 @@
       <!-- 操作按钮 -->
       <view class="action-bar">
         <view class="action-btn compare-action" bindtap="goToCompare">
-          <text>📊 前3名加入对比</text>
+          <text>前 3 名加入对比</text>
         </view>
       </view>
     </view>

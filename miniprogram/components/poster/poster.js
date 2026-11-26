@@ -16,12 +16,12 @@ var MAX_ROWS = 10;
 
 var COLOR = {
   ink: '#0F172A',
-  sub: '#64748B',
-  faint: '#94A3B8',
-  line: '#F1F5F9',
+  sub: '#5B6675',
+  faint: '#66707C',
+  line: '#E4E8EE',
   blue: '#0F5EF0',
-  blueDark: '#1E3A8A',
-  blueBg: '#EFF6FF',
+  blueDark: '#0F172A',
+  blueBg: '#EEF3FF',
 };
 
 function roundRect(ctx, x, y, w, h, r) {
@@ -179,13 +179,11 @@ Component({
       ctx.fillStyle = '#FFFFFF';
       ctx.fillRect(0, 0, W, H);
 
-      // 头部渐变
-      var grad = ctx.createLinearGradient(0, 0, W, HEADER_H);
-      grad.addColorStop(0, '#1A1A2E');
-      grad.addColorStop(0.6, '#16213E');
-      grad.addColorStop(1, '#0F5EF0');
-      ctx.fillStyle = grad;
+      // 头部：纯墨 + 蓝色分隔线
+      ctx.fillStyle = '#0F172A';
       ctx.fillRect(0, 0, W, HEADER_H);
+      ctx.fillStyle = '#0F5EF0';
+      ctx.fillRect(0, HEADER_H - 4, W, 4);
 
       // 标题
       ctx.fillStyle = '#FFFFFF';
@@ -216,8 +214,8 @@ Component({
         }
 
         // 名次
-        ctx.fillStyle = i < 3 ? COLOR.blue : COLOR.faint;
-        ctx.font = 'italic bold 40px "PingFang SC", sans-serif';
+        ctx.fillStyle = COLOR.ink;
+        ctx.font = (i < 3 ? 'bold 40px' : '36px') + ' "PingFang SC", sans-serif';
         ctx.fillText(String(r.rank || i + 1), PAD, rowY + 50);
 
         // 模型名
@@ -233,7 +231,7 @@ Component({
         ctx.fillText(fitText(ctx, meta, nameMax), PAD + 76, rowY + 68);
 
         // Elo（右对齐）
-        ctx.fillStyle = COLOR.blue;
+        ctx.fillStyle = COLOR.ink;
         ctx.font = 'bold 38px "PingFang SC", sans-serif';
         ctx.textAlign = 'right';
         ctx.fillText(String(r.elo || ''), W - PAD, rowY + 46);
@@ -348,12 +346,10 @@ Component({
       ctx.fillStyle = '#FFFFFF';
       ctx.fillRect(0, 0, W, H);
 
-      var grad = ctx.createLinearGradient(0, 0, W, 360);
-      grad.addColorStop(0, '#1A1A2E');
-      grad.addColorStop(0.6, '#16213E');
-      grad.addColorStop(1, '#0F5EF0');
-      ctx.fillStyle = grad;
+      ctx.fillStyle = '#0F172A';
       ctx.fillRect(0, 0, W, 360);
+      ctx.fillStyle = '#0F5EF0';
+      ctx.fillRect(0, 356, W, 4);
 
       ctx.textAlign = 'left';
       ctx.fillStyle = 'rgba(255,255,255,0.6)';
@@ -473,12 +469,10 @@ Component({
       ctx.fillStyle = '#FFFFFF';
       ctx.fillRect(0, 0, W, H);
 
-      var grad = ctx.createLinearGradient(0, 0, W, 280);
-      grad.addColorStop(0, '#1A1A2E');
-      grad.addColorStop(0.6, '#16213E');
-      grad.addColorStop(1, '#0F5EF0');
-      ctx.fillStyle = grad;
+      ctx.fillStyle = '#0F172A';
       ctx.fillRect(0, 0, W, 280);
+      ctx.fillStyle = '#0F5EF0';
+      ctx.fillRect(0, 276, W, 4);
 
       ctx.textAlign = 'left';
       ctx.fillStyle = '#FFFFFF';

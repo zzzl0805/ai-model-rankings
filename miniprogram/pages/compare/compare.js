@@ -426,7 +426,7 @@ Page({
         }
       });
       if (groupRows.length > 0) {
-        groups.push({ id: catId, name: catInfo ? (catInfo.icon + ' ' + catInfo.name) : catId, rows: groupRows, expanded: catId === 'text' });
+        groups.push({ id: catId, name: catInfo ? catInfo.name : catId, rows: groupRows, expanded: catId === 'text' });
       }
     });
 
@@ -456,7 +456,7 @@ Page({
       if (hasData) priceGroupRows.push({ key: pr.key, label: pr.label, cells: cells });
     });
     if (priceGroupRows.length > 0) {
-      groups.push({ id: 'price', name: '💰 费用对比', rows: priceGroupRows, expanded: true });
+      groups.push({ id: 'price', name: '费用对比', rows: priceGroupRows, expanded: true });
     }
 
     var slots = models.map(function (m) {

@@ -1,23 +1,25 @@
 /* app.wxss - Global styles */
 page {
-  --color-primary: #1A1A2E;
-  --color-secondary: #16213E;
+  --color-primary: #0F172A;
+  --color-secondary: #0F172A;
   --color-accent: #0F5EF0;
-  --color-accent-purple: #7C3AED;
-  --color-gold: #F59E0B;
-  --color-silver: #94A3B8;
-  --color-bronze: #D97706;
-  --color-success: #10B981;
-  --color-warning: #F59E0B;
-  --color-danger: #EF4444;
-  --color-bg: #F8FAFC;
+  --color-accent-purple: #0F5EF0;
+  --color-gold: #0F172A;
+  --color-silver: #66707C;
+  --color-bronze: #0F172A;
+  --color-success: #047857;
+  --color-warning: #B45309;
+  --color-danger: #B42318;
+  --color-bg: #F6F7F9;
   --color-card: #FFFFFF;
-  --color-text-primary: #1E293B;
-  --color-text-secondary: #64748B;
-  --color-divider: #E2E8F0;
+  --color-text-primary: #0F172A;
+  --color-text-secondary: #5B6675;
+  --color-text-tertiary: #66707C;
+  --color-divider: #E4E8EE;
 
   font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'HarmonyOS Sans', 'Segoe UI', sans-serif;
-  font-size: 28rpx;
+  font-size: 15px;
+  line-height: 1.6;
   color: var(--color-text-primary);
   background-color: var(--color-bg);
   box-sizing: border-box;
@@ -29,10 +31,11 @@ page {
 
 .card {
   background: var(--color-card);
-  border-radius: 12rpx;
-  padding: 24rpx;
+  border: 1rpx solid var(--color-divider);
+  border-radius: 16rpx;
+  padding: 28rpx;
   margin-bottom: 20rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.06);
+  box-shadow: none;
 }
 
 .flex-row {
@@ -86,20 +89,20 @@ page {
 .chip {
   display: inline-flex;
   align-items: center;
-  padding: 8rpx 24rpx;
-  border-radius: 40rpx;
-  font-size: 26rpx;
+  padding: 8rpx 22rpx;
+  border-radius: 12rpx;
+  font-size: 13px;
   background: var(--color-card);
   color: var(--color-text-secondary);
-  border: 2rpx solid var(--color-divider);
+  border: 1rpx solid var(--color-divider);
   margin-right: 16rpx;
   transition: all 0.2s;
 }
 
 .chip.active {
-  background: var(--color-accent);
-  color: #FFFFFF;
-  border-color: var(--color-accent);
+  background: #EEF3FF;
+  color: var(--color-accent);
+  border-color: #C7D7FE;
 }
 
 /* Loading skeleton */

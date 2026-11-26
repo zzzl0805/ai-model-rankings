@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #F8FAFC;
+  background-color: #F6F7F9;
 }
 
 .stub-content {
@@ -21,13 +21,13 @@
 .stub-title {
   font-size: 36rpx;
   font-weight: 700;
-  color: #1E293B;
+  color: #0F172A;
   margin-bottom: 12rpx;
 }
 
 .stub-desc {
   font-size: 28rpx;
-  color: #94A3B8;
+  color: #66707C;
   margin-bottom: 48rpx;
 }
 
@@ -41,3 +41,11 @@
   font-size: 30rpx;
   color: #FFFFFF;
 }
+
+/* ================= v1.6 ================= */
+page { background: #F6F7F9; }
+.export-page { background: #F6F7F9; }
+.stub-title { font-size: 22px; font-weight: 600; color: #0F172A; }
+.stub-desc { font-size: 14px; color: #5B6675; }
+.stub-btn { border-radius: 10rpx; background: #0F5EF0; }
+.stub-btn-text { font-size: 15px; }
