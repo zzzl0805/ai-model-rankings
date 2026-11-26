@@ -86,7 +86,7 @@ function modelData(name) {
           name: (catNames[catId] || catId),
           rank: rank,
           total: total,
-          pct: total ? Math.round((1 - (rank - 1) / total) * 100) : 0,
+          topPct: total ? Math.round(rank / total * 1000) / 10 : 0,
         });
         break;
       }

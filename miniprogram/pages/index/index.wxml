@@ -1,147 +1,116 @@
-<!-- pages/index/index.wxml -->
+<!-- pages/index/index.wxml — v1.7 编辑型数据终端 -->
 <view class="page">
-  <!-- 头部：两行，避开胶囊 -->
-  <view class="header" style="padding-top:{{statusBarHeight}}px;">
-    <view class="header-row" style="padding-right:{{menuRight}}px;">
-      <text class="header-title">AI 模型排行</text>
+  <!-- 纸白 masthead -->
+  <view class="masthead" style="padding-top:{{statusBarHeight}}px;">
+    <view class="masthead-row" style="padding-right:{{menuRight}}px;">
+      <text class="wordmark">AI 模型排行</text>
+      <text class="masthead-date">{{lastUpdated}}</text>
     </view>
-    <text class="header-sub" style="padding-right:{{menuRight}}px;">数据截至 {{lastUpdated}} · LMArena</text>
+    <text class="masthead-sub">LMArena 人类盲测 · 每日更新</text>
   </view>
 
-  <!-- 大类（纯文字 + 下划线） -->
-  <view class="tab-wrap">
-  <scroll-view scroll-x class="tab-bar" enhanced show-scrollbar="{{false}}">
-    <view wx:for="{{categories}}" wx:key="id"
-      class="tab {{activeCategory===item.id?'tab-active':''}}"
-      data-id="{{item.id}}" bindtap="onCategoryChange">
-      <text>{{item.name}}</text>
+  <!-- 一行筛选：榜单 / 搜索 / 视角 -->
+  <view class="filter-bar">
+    <view class="filter-btn" bindtap="openFilter">
+      <text>{{activeCategoryName}} · {{activeDimensionName}}</text>
+      <view class="caret"></view>
     </view>
-  </scroll-view>
-  <view class="tab-fade"></view>
-  </view>
-
-  <!-- 维度 -->
-  <view class="tab-wrap" wx:if="{{dimensions.length > 1}}">
-  <scroll-view scroll-x class="subtab-bar" enhanced show-scrollbar="{{false}}">
-    <view wx:for="{{dimensions}}" wx:key="id"
-      class="subtab {{activeDimension===item.id?'subtab-active':''}}"
-      data-id="{{item.id}}" bindtap="onDimensionChange">
-      <text>{{item.name}}</text>
-    </view>
-  </scroll-view>
-  <view class="tab-fade"></view>
-  </view>
-
-  <!-- 搜索 + 视角 -->
-  <view class="toolbar">
     <view class="search-box">
-      <icon class="search-icon" type="search" size="14" color="#677489" />
-      <input class="search-input" placeholder="模型或公司" value="{{searchText}}" bindinput="onSearchInput" />
+      <icon class="search-icon" type="search" size="14" color="#6E6A60" />
+      <input class="search-input" placeholder="搜索模型或厂商" value="{{searchText}}" bindinput="onSearchInput" />
       <text wx:if="{{searchText}}" class="search-clear" bindtap="onSearchClear">✕</text>
     </view>
-    <view class="segment">
-      <view class="seg {{region==='all'?'seg-active':''}}" data-region="all" bindtap="onRegionChange">全部</view>
-      <view class="seg {{region==='cn'?'seg-active':''}}" data-region="cn" bindtap="onRegionChange">国产</view>
-      <view class="seg {{region==='intl'?'seg-active':''}}" data-region="intl" bindtap="onRegionChange">海外</view>
-    </view>
-  </view>
-
-  <!-- 快捷操作：海报 + 固定榜单（放列表上方，避免 400+ 行底部不可达） -->
-  <view class="quick-bar">
-    <view wx:if="{{displayModels.length}}" class="poster-btn" bindtap="onGeneratePoster">
-      <text>{{generatingPoster ? '生成中…' : '生成榜单图片'}}</text>
-    </view>
-    <view class="more-links">
-      <text class="more-link" data-url="/pages/board-coding/board-coding" bindtap="onMoreBoardTap">编程榜</text>
-      <text class="more-link" data-url="/pages/board-cn/board-cn" bindtap="onMoreBoardTap">国产榜</text>
-      <text class="more-link" data-url="/pages/board-image/board-image" bindtap="onMoreBoardTap">画图榜</text>
-    </view>
+    <picker range="{{['全部','国产','海外']}}" bindchange="onRegionPick">
+      <view class="region-btn"><text>{{regionLabel}}</text><view class="caret"></view></view>
+    </picker>
   </view>
 
   <!-- 列头 -->
   <view class="col-head">
-    <text class="ch-rank">名次</text>
-    <view class="ch-main"><text>模型</text><text class="ch-price">{{priceHeader}}</text></view>
-    <view class="ch-score"><text>{{isAgent ? '净提升率 %' : 'Elo'}}</text><text class="ch-info" bindtap="onRulesTap">ⓘ</text></view>
+    <text class="ch-rank">#</text>
+    <text class="ch-model">模型</text>
+    <text class="ch-elo">{{isAgent ? '净提升率' : 'Elo'}}</text>
+    <text class="ch-price">价格 /M</text>
   </view>
 
-  <!-- 加载中 -->
-  <view wx:if="{{loading}}" class="center-box">
-    <text class="center-text">加载中</text>
-  </view>
-
-  <!-- 空数据 -->
+  <view wx:if="{{loading}}" class="center-box"><text>加载中</text></view>
   <view wx:elif="{{displayModels.length===0}}" class="center-box">
-    <text class="center-text">{{searchText ? '没有匹配的模型' : '该维度暂无数据'}}</text>
+    <text>{{searchText ? '没有匹配的模型' : '该维度暂无数据'}}</text>
   </view>
 
-  <!-- 列表 -->
   <view wx:else class="list">
-    <view wx:for="{{displayModels}}" wx:key="rank" class="row"
-      data-name="{{item.name}}" bindtap="onModelTap">
-      <!-- 名次 -->
-      <view class="col-rank">
-        <text class="{{item.rank <= 3 ? 'rank-badge' : ''}}">{{item.rank}}</text>
-      </view>
-      <!-- 模型 + 价格 -->
-      <view class="col-main">
+    <view wx:for="{{displayModels}}" wx:key="rank" class="row" data-name="{{item.name}}" bindtap="onModelTap">
+      <text class="rank">{{item.rank}}</text>
+      <view class="row-main">
         <view class="name-line">
           <text class="model-name">{{item.baseName}}</text>
+          <text wx:if="{{item.variant}}" class="variant"> · {{item.variant}}</text>
           <text wx:if="{{item.delta > 0}}" class="delta delta-up">+{{item.delta}}</text>
           <text wx:elif="{{item.delta < 0}}" class="delta delta-down">{{item.delta}}</text>
           <text wx:elif="{{item.isNew}}" class="delta delta-new">新</text>
         </view>
-        <view class="meta-line">
-          <view class="meta-left">
-            <text wx:if="{{item.badgeRank}}" class="meta-global">{{item.badgeRank}}</text>
-            <text class="meta-provider">{{item.provider}}</text>
-            <text wx:if="{{item.variant}}" class="variant">{{item.variant}}</text>
-            <text wx:if="{{item.lowSample}}" class="sample-low">样本少</text>
-          </view>
-          <view class="price-cell">
-            <text class="meta-proxy {{(item.priceProxy && !allProxy) ? '' : 'is-hidden'}}">代理</text>
-            <text wx:if="{{item.price.input > 0}}" class="meta-price">{{item.priceText}}</text>
-          </view>
-        </view>
+        <text class="row-meta">{{item.provider}}</text>
       </view>
-      <!-- 分数 -->
-      <view class="col-score">
-        <text class="score">{{item.eloText}}{{isAgent ? '%' : ''}}</text>
-        <text class="score-sub">{{isAgent ? (item.votesText + ' 会话') : ('±' + item.margin + ' · ' + item.votesText + '票')}}</text>
+      <view class="row-right">
+        <text class="elo">{{item.eloText}}{{isAgent ? '%' : ''}}</text>
+        <text wx:if="{{item.price.input > 0}}" class="price">{{item.priceText}}</text>
+        <text wx:else class="price price-none">—</text>
       </view>
     </view>
   </view>
 
-  <!-- 本榜结论（也是分享标题；放在底部，不挤占首屏） -->
+  <!-- 本榜结论 -->
   <view wx:if="{{conclusion && displayModels.length && !searchText}}" class="insight">
     <text class="insight-label">本榜结论</text>
     <text class="insight-text">{{conclusion}}</text>
   </view>
 
-  <poster id="poster" />
-
-  <!-- 脚注：口径说明（跨榜不可比是这类产品最易被误读的点） -->
-  <view wx:if="{{displayModels.length}}" class="footnote">
-    <view class="foot-line foot-ctx"><text>{{ctxNote}}</text></view>
-    <view class="foot-line"><text>统计：± 为 95% 置信区间，名次按 Elo 点估计；CI 重叠不能认定差异显著，显著性需两两检验；样本 &lt;1000 标「样本少」</text></view>
-    <view class="foot-line"><text>价格：≈ 为外币按汇率折算，未标 ≈ 为官网原币价；「代理」为 OpenRouter 渠道价，不含缓存与批量折扣</text></view>
-    <view class="foot-line"><text>计分：各榜独立计分，Elo 不可跨榜比较；筛选后名次按当前榜单重排</text></view>
+  <!-- 更多入口（不再抢首屏） -->
+  <view class="actions">
+    <text wx:if="{{displayModels.length}}" class="action" bindtap="onGeneratePoster">{{generatingPoster ? '生成中…' : '生成榜单图片'}}</text>
+    <text class="action" data-url="/pages/board-coding/board-coding" bindtap="onMoreBoardTap">编程榜</text>
+    <text class="action" data-url="/pages/board-cn/board-cn" bindtap="onMoreBoardTap">国产榜</text>
+    <text class="action" data-url="/pages/board-image/board-image" bindtap="onMoreBoardTap">画图榜</text>
+    <text class="action" data-path="/pages/budget/budget" bindtap="onLandingTap">预算选型</text>
   </view>
 
+  <!-- 脚注 -->
+  <view wx:if="{{displayModels.length}}" class="footnote">
+    <text class="foot-line">{{ctxNote}}</text>
+    <text class="foot-line">统计：名次按 Elo 点估计，CI 重叠不代表差异显著；样本 &lt;1000 仅在详情标注。</text>
+    <text class="foot-line">价格：≈ 为汇率折算，「代理」为 OpenRouter 渠道价；以厂商官网为准。</text>
+    <text class="foot-line">计分：各榜独立计分，Elo 不可跨榜比较；筛选后名次按当前榜单重排。</text>
+  </view>
 
-  <!-- 热门模型/系列（固定路径，便于搜索收录） -->
+  <!-- 热门模型/系列（搜索内链） -->
   <view class="landing-links">
     <text class="landing-title">热门模型</text>
     <view class="landing-chips">
       <text wx:for="{{hotLinks}}" wx:key="label" class="landing-chip" data-path="{{item.path}}" bindtap="onLandingTap">{{item.label}}</text>
     </view>
-    <text class="landing-title">场景</text>
-    <view class="landing-chips">
-      <text class="landing-chip" data-path="/pages/budget/budget" bindtap="onLandingTap">100元预算选模型</text>
-    </view>
     <text class="landing-title">模型系列</text>
     <view class="landing-chips">
       <text wx:for="{{familyLinks}}" wx:key="label" class="landing-chip" data-path="{{item.path}}" bindtap="onLandingTap">{{item.label}}</text>
+    </view>
+  </view>
+
+  <poster id="poster" />
+
+  <!-- 榜单选择 sheet -->
+  <view wx:if="{{showFilter}}" class="sheet-mask" bindtap="closeFilter">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-head">
+        <text class="sheet-title">选择榜单</text>
+        <text class="sheet-done" bindtap="closeFilter">完成</text>
+      </view>
+      <text class="sheet-label">类目</text>
+      <view class="sheet-grid">
+        <view wx:for="{{categories}}" wx:key="id" class="sheet-item {{activeCategory===item.id ? 'sheet-on' : ''}}" data-id="{{item.id}}" bindtap="onCategoryChange">{{item.name}}</view>
+      </view>
+      <text class="sheet-label">维度</text>
+      <view class="sheet-grid">
+        <view wx:for="{{dimensions}}" wx:key="id" class="sheet-item {{activeDimension===item.id ? 'sheet-on' : ''}}" data-id="{{item.id}}" bindtap="onFilterDimension">{{item.name}}</view>
+      </view>
     </view>
   </view>
 </view>

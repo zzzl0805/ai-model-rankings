@@ -40,7 +40,7 @@
       <view class="result-meta">
         <text>{{item.provider}}</text>
         <text>· {{sceneName}}第 {{item.rank}}/{{item.total}}</text>
-        <text>· 前 {{item.pct}}%</text>
+        <text>· 前 {{item.topPct}}%</text>
       </view>
       <view class="result-meta">
         <text>上下文 {{item.context}}</text>

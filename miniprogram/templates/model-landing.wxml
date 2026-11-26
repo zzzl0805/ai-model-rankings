@@ -34,8 +34,8 @@
         <text class="card-note">类目内排名；不同类目的 Elo 尺度不可直接比较</text>
         <view wx:for="{{ranks}}" wx:key="name" class="rank-row">
           <text class="rank-name">{{item.name}}</text>
-          <view class="rank-bar-bg"><view class="rank-bar-fill" style="width:{{item.pct}}%;"></view></view>
           <text class="rank-value">#{{item.rank}}<text class="rank-total">/{{item.total}}</text></text>
+          <text class="rank-pct">前 {{item.topPct}}%</text>
         </view>
       </view>
 

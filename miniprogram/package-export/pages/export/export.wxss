@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #F6F7F9;
+  background-color: #F5F7FA;
 }
 
 .stub-content {
@@ -43,8 +43,8 @@
 }
 
 /* ================= v1.6 ================= */
-page { background: #F6F7F9; }
-.export-page { background: #F6F7F9; }
+page { background: #F5F7FA; }
+.export-page { background: #F5F7FA; }
 .stub-title { font-size: 20px; font-weight: 600; color: #0F172A; }
 .stub-desc { font-size: 13px; color: #5B6675; }
 .stub-btn { border-radius: 10rpx; background: #0F5EF0; }

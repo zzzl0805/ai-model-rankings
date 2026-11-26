@@ -419,7 +419,8 @@ Page({
             cells.push({ value: 0, display: '-' });
           }
         });
-        if (hasData) {
+        var filled = cells.filter(function (c) { return c.value > 0; }).length;
+        if (filled >= 2) {
           var maxVal = Math.max.apply(null, cells.map(function (c) { return c.value; }));
           cells.forEach(function (c) { c.isBest = c.value === maxVal && c.value > 0; });
           groupRows.push({ key: catId + '-' + dimId, label: dimNames[dimId], cells: cells });
@@ -453,7 +454,7 @@ Page({
         var bestVal = pr.lowerIsBetter ? Math.min.apply(null, values) : Math.max.apply(null, values);
         cells.forEach(function (c) { if (c.value === bestVal && c.value > 0) c.isBest = true; });
       }
-      if (hasData) priceGroupRows.push({ key: pr.key, label: pr.label, cells: cells });
+      if (values.length >= 2) priceGroupRows.push({ key: pr.key, label: pr.label, cells: cells });
     });
     if (priceGroupRows.length > 0) {
       groups.push({ id: 'price', name: '费用对比', rows: priceGroupRows, expanded: true });

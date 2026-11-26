@@ -65,6 +65,10 @@ Page({
     exchangeRateDate: '',
     exchangeRateFallback: false,
     generatingPoster: false,
+    activeCategoryName: '',
+    activeDimensionName: '',
+    regionLabel: '全部',
+    showFilter: false,
     hotLinks: [],
     familyLinks: [],
   },
@@ -408,7 +412,14 @@ Page({
       var overallRank = {};
       (catData.overall || []).forEach(function (x) { overallRank[x.name] = x.rank; });
 
+      var catName = 'AI模型';
+      (that.data.categories || []).forEach(function (c) { if (c.id === categoryId) catName = c.name; });
+      var dimName = '综合';
+      availableDimensions.forEach(function (d) { if (d.id === dimensionId) dimName = d.name; });
+
       that.setData({
+        activeCategoryName: catName,
+        activeDimensionName: dimName,
         models: models,
         allDisplayModels: models.map(function(m) {
           // 把名称末尾的变体（如 "(High)"、"(Max)"）拆出来单独展示，
@@ -452,6 +463,23 @@ Page({
       console.error('[Index] loadRankings error:', e);
       that.setData({ loading: false, models: [], displayModels: [] });
     }
+  },
+
+  openFilter: function () { this.setData({ showFilter: true }); },
+
+  closeFilter: function () { this.setData({ showFilter: false }); },
+
+  onFilterDimension: function (e) {
+    this.onDimensionChange(e);
+    this.setData({ showFilter: false });
+  },
+
+  onRegionPick: function (e) {
+    var vals = ['all', 'cn', 'intl'];
+    var labels = ['全部', '国产', '海外'];
+    var i = Number(e.detail.value) || 0;
+    this.setData({ region: vals[i] || 'all', regionLabel: labels[i] || '全部' });
+    this.applyFilter();
   },
 
   onCategoryChange: function (e) {
@@ -635,6 +663,8 @@ Page({
   onRulesTap: function () {
     wx.navigateTo({ url: '/pages/methodology/methodology' });
   },
+
+  noop: function () {},
 
   onModelTap: function (e) {
     var name = e.currentTarget.dataset.name;

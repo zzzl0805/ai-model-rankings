@@ -5,11 +5,6 @@
   </view>
 
   <view wx:else>
-    <view class="masthead">
-      <text class="masthead-title">模型对比</text>
-      <text class="masthead-sub">最多 3 个模型，按维度横向比较</text>
-    </view>
-
     <!-- 模型槽位 -->
     <view class="card">
       <text class="card-title">选择对比模型</text>

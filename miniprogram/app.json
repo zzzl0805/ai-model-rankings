@@ -57,10 +57,10 @@
     }
   ],
   "window": {
-    "navigationBarBackgroundColor": "#0F172A",
+    "navigationBarBackgroundColor": "#0F5EF0",
     "navigationBarTitleText": "AI模型排行",
     "navigationBarTextStyle": "white",
-    "backgroundColor": "#F6F7F9"
+    "backgroundColor": "#F5F7FA"
   },
   "tabBar": {
     "color": "#5B6675",

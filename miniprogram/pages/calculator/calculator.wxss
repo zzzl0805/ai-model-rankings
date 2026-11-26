@@ -84,3 +84,10 @@ page { background: #F6F7F9; font-size: 14px; }
 .result-cost { font-size: 15px; color: #0F172A; }
 .result-cny, .result-elo { font-size: 12px; color: #5B6675; }
 .result-bar { opacity: 0.06; }
+
+/* v1.7 */
+.page { background: #F5F7FA; }
+.custom-card, .result-item { border: 1rpx solid #E5EAF2; border-radius: 12rpx; box-shadow: none; }
+
+/* v1.7 成本用墨色，不用危险红 */
+.result-cost { color: #0F172A; }

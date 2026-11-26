@@ -96,3 +96,11 @@ page { --bg: #F6F7F9; --text: #0F172A; --text-2: #5B6675; --text-3: #66707C; --l
 .link-title { font-size: 13px; color: var(--text); }
 .link-arrow { font-size: 15px; color: var(--text-2); }
 .footer-link { font-size: 13px; color: #0F5EF0; }
+
+/* v1.7 brand blue */
+page { background: #F5F7FA; }
+.header { background: #0F5EF0; }
+.header-title { color: #FFFFFF; }
+.header-sub { color: rgba(255,255,255,0.75); }
+.list, .empty { border: 1rpx solid #E5EAF2; }
+.section-title { color: #0F172A; }

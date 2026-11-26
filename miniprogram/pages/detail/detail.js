@@ -50,6 +50,8 @@ Page({
     primaryCatLabel: '',
     variantLabel: '',
     generatingPoster: false,
+    primaryTotal: 0,
+    showMore: false,
     primaryIsAgent: false,
     scoreLabel: '综合 Elo',
     companyName: '',
@@ -171,7 +173,7 @@ Page({
             icon: info ? info.icon : '',
             rank: rank,
             total: total,
-            pct: total ? Math.round((1 - (rank - 1) / total) * 100) : 0,
+            topPct: total ? Math.round(rank / total * 1000) / 10 : 0,
           });
           if (catId === 'text') { rankInOverall = rank; overallElo = arr[i].elo || 0; }
           break;
@@ -457,6 +459,7 @@ Page({
       rankInOverall: rankInOverall,
       overallElo: overallElo,
       primaryRank: primaryRank,
+      primaryTotal: primaryTotal,
       primaryCatId: primaryCatId,
       primaryElo: round1(primaryElo),
       primaryIsAgent: primaryIsAgent,
@@ -471,7 +474,7 @@ Page({
     var shareTitle = displayName + (primaryRank ? ' ' + (primaryCatId === 'text' ? '综合' : primaryCatName) + '第' + primaryRank + '名' : '') + '｜AI模型排行';
     that.setData({ shareTitle: shareTitle });
     try {
-      wx.setNavigationBarTitle({ title: displayName + (primaryRank ? ' · 第' + primaryRank + '名' : '') });
+      wx.setNavigationBarTitle({ title: '模型详情' });
     } catch (e) {}
   },
 
@@ -665,6 +668,8 @@ Page({
     }
     wx.setClipboardData({ data: list.join('\n') });
   },
+
+  toggleMore: function () { this.setData({ showMore: !this.data.showMore }); },
 
   goFamilyPage: function () {
     if (this.data.familyPath) wx.navigateTo({ url: '/' + this.data.familyPath });

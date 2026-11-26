@@ -125,6 +125,7 @@ function recommend(scene, budget, priority) {
 
   return {
     items: picked.slice(0, 3).map(function (x) {
+      var left = Math.round(budget - x.cost);
       return {
         name: x.m.name,
         displayName: x.m.displayName,
@@ -133,11 +134,11 @@ function recommend(scene, budget, priority) {
         costText: '¥' + Math.round(x.cost * 100) / 100,
         rank: x.rank,
         total: x.total,
-        pct: Math.round(x.pct * 100),
+        topPct: Math.round(x.rank / x.total * 1000) / 10,
         context: x.m.context || '—',
         priceText: '$' + fmt(x.m.inputPrice) + ' / $' + fmt(x.m.outputPrice) + ' /M',
         strengths: (x.m.strengths || []).slice(0, 2),
-        reason: (scene.name + '场景第 ' + x.rank + ' / ' + x.total + '，月成本 ' + Math.round(x.cost) + ' 元'),
+        reason: overBudget ? ('超出预算 ¥' + Math.abs(left)) : ('预算剩余 ¥' + left),
       };
     }),
     overBudget: overBudget,
