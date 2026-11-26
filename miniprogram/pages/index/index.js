@@ -57,7 +57,8 @@ Page({
     lastUpdated: '',
     dataSource: '本地', // 云端 or 本地
     region: 'all',      // all | cn | intl
-    conclusion: '',     // 一句话结论卡
+    conclusion: '',     // 一句话结论
+    overview: null,     // 今日概览（榜首/上升最快/样本最多）
     cnCount: 0,         // 当前榜单里的国产模型数
     priceUnit: '$',     // 价格列币种（按视图统一）
     priceHeader: '价格 入/出 $/百万 tokens',
@@ -451,6 +452,7 @@ Page({
           };
         }),
         displayModels: [],
+        overview: null,
         loading: false,
         activeCategory: categoryId,
         activeDimension: dimensionId,
@@ -461,7 +463,7 @@ Page({
       that.applyFilter();
     } catch (e) {
       console.error('[Index] loadRankings error:', e);
-      that.setData({ loading: false, models: [], displayModels: [] });
+      that.setData({ loading: false, models: [], displayModels: [], overview: null });
     }
   },
 
@@ -517,6 +519,32 @@ Page({
     this.applyFilter();
   },
 
+
+  buildOverview: function (list) {
+    if (!list || !list.length) return null;
+    var top = list[0];
+    var up = list.filter(function (m) { return m.delta > 0; }).sort(function (a, b) { return b.delta - a.delta; })[0] || null;
+    var cn = list.filter(function (m) { return m.isCN; })[0] || null;
+    var votes = list.slice().sort(function (a, b) { return (b.votes || 0) - (a.votes || 0); })[0] || top;
+    var priced = list.filter(function (m) { return m.price && m.price.input > 0; }).sort(function (a, b) { return a.price.input - b.price.input; })[0] || null;
+    var second = up
+      ? { label: '上升最快', name: up.baseName, value: '+' + up.delta }
+      : (cn
+        ? { label: '国产最高', name: cn.baseName, value: '#' + cn.rank }
+        : { label: '最高票', name: votes.baseName, value: (votes.votesText || votes.votes || '') + '票' });
+    var third = priced
+      ? { label: '最低价', name: priced.baseName, value: ((priced.priceText || '').split(' / ')[0] || '—') }
+      : { label: '样本最多', name: votes.baseName, value: (votes.votesText || votes.votes || '') + '票' };
+    return {
+      top: {
+        name: top.baseName,
+        value: top.eloText,
+        delta: top.delta > 0 ? '+' + top.delta : (top.delta < 0 ? String(top.delta) : '')
+      },
+      up: second,
+      third: third
+    };
+  },
 
   // 生成一句话结论（同时也是分享标题），规则固定 + 永远有兜底
   buildConclusion: function (list, region) {
@@ -633,6 +661,7 @@ Page({
       copy.tie = false;
       copy.lowSample = (m.votes > 0 && m.votes < 1000);
       copy.rank = copy.origRank;
+      copy.rankDisplay = (i + 1) < 10 ? '0' + (i + 1) : String(i + 1);
       return copy;
     });
 
@@ -656,6 +685,7 @@ Page({
       allProxy: aProxy,
       ctxNote: this.buildCtxNote(region, renumber, aProxy),
       conclusion: this.buildConclusion(sorted, region),
+      overview: this.buildOverview(sorted),
       cnCount: allModels.filter(function (m) { return m.isCN; }).length,
     });
   },

@@ -6,12 +6,19 @@
       <text class="wordmark">AI 模型排行</text>
       <text class="masthead-date">{{lastUpdated}}</text>
     </view>
-    <text class="masthead-sub">LMArena 人类盲测 · 每日更新</text>
+    <view class="masthead-bottom" style="padding-right:{{menuRight}}px;">
+      <text class="masthead-sub">LMArena 人类盲测 · 每日更新</text>
+      <view class="poster-shortcut" bindtap="onGeneratePoster">
+        <image class="poster-shortcut-icon" src="/assets/icons/icon-share-white.png" mode="aspectFit"></image>
+        <text>{{generatingPoster ? '生成中…' : '海报'}}</text>
+      </view>
+    </view>
   </view>
 
   <!-- 一行筛选：榜单 / 搜索 / 视角 -->
   <view class="filter-bar">
     <view class="filter-btn" bindtap="openFilter">
+      <image class="filter-icon" src="/assets/icons/icon-filter-gray.png" mode="aspectFit"></image>
       <text>{{activeCategoryName}} · {{activeDimensionName}}</text>
       <view class="caret"></view>
     </view>
@@ -23,6 +30,35 @@
     <picker range="{{['全部','国产','海外']}}" bindchange="onRegionPick">
       <view class="region-btn"><text>{{regionLabel}}</text><view class="caret"></view></view>
     </picker>
+  </view>
+
+  <!-- 今日概览 -->
+  <view wx:if="{{overview && !searchText}}" class="overview">
+    <view class="ov-head">
+      <text class="ov-label">今日概览</text>
+      <text class="ov-sub">{{activeCategoryName}} · {{activeDimensionName}}</text>
+    </view>
+    <view class="ov-grid">
+      <view class="ov-main">
+        <text class="ov-label">榜首</text>
+        <view class="ov-name-line">
+          <image class="ov-crown" src="/assets/icons/icon-star-blue.png" mode="aspectFit"></image>
+          <text class="ov-name">{{overview.top.name}}</text>
+        </view>
+        <text class="ov-value">{{overview.top.value}}<text wx:if="{{overview.top.delta}}" class="ov-delta">{{overview.top.delta}}</text></text>
+      </view>
+      <view class="ov-item">
+        <text class="ov-label">{{overview.up.label}}</text>
+        <text class="ov-name">{{overview.up.name}}</text>
+        <text class="ov-value">{{overview.up.value}}</text>
+      </view>
+      <view class="ov-item">
+        <text class="ov-label">{{overview.third.label}}</text>
+        <text class="ov-name">{{overview.third.name}}</text>
+        <text class="ov-value">{{overview.third.value}}</text>
+      </view>
+    </view>
+    <text class="ov-note">{{conclusion}}</text>
   </view>
 
   <!-- 列头 -->
@@ -39,8 +75,8 @@
   </view>
 
   <view wx:else class="list">
-    <view wx:for="{{displayModels}}" wx:key="rank" class="row" data-name="{{item.name}}" bindtap="onModelTap">
-      <text class="rank">{{item.rank}}</text>
+    <view wx:for="{{displayModels}}" wx:key="rank" class="row {{item.rank <= 3 ? 'row-top' : ''}}" data-name="{{item.name}}" bindtap="onModelTap">
+      <text class="rank">{{item.rankDisplay}}</text>
       <view class="row-main">
         <view class="name-line">
           <text class="model-name">{{item.baseName}}</text>
@@ -57,12 +93,6 @@
         <text wx:else class="price price-none">—</text>
       </view>
     </view>
-  </view>
-
-  <!-- 本榜结论 -->
-  <view wx:if="{{conclusion && displayModels.length && !searchText}}" class="insight">
-    <text class="insight-label">本榜结论</text>
-    <text class="insight-text">{{conclusion}}</text>
   </view>
 
   <!-- 更多入口（不再抢首屏） -->

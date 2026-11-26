@@ -153,9 +153,18 @@
     </view>
 
     <view class="action-bar">
-      <view class="action-fav {{isFav ? 'action-on' : ''}}" bindtap="toggleFavorite">{{isFav ? '已收藏' : '收藏'}}</view>
-      <view class="action-compare {{inCompare ? 'action-on' : ''}}" bindtap="toggleCompare">{{inCompare ? '已在对比' : '加入对比'}}</view>
-      <view class="action-primary" bindtap="onGeneratePoster">{{generatingPoster ? '生成中…' : '生成图片'}}</view>
+      <view class="action-fav {{isFav ? 'action-on' : ''}}" bindtap="toggleFavorite">
+        <image class="action-icon" src="{{isFav ? '/assets/icons/icon-bookmark-blue.png' : '/assets/icons/icon-bookmark-gray.png'}}" mode="aspectFit"></image>
+        <text>{{isFav ? '已收藏' : '收藏'}}</text>
+      </view>
+      <view class="action-compare {{inCompare ? 'action-on' : ''}}" bindtap="toggleCompare">
+        <image class="action-icon" src="{{inCompare ? '/assets/icons/icon-compare-blue.png' : '/assets/icons/icon-compare-gray.png'}}" mode="aspectFit"></image>
+        <text>{{inCompare ? '已在对比' : '加入对比'}}</text>
+      </view>
+      <view class="action-primary" bindtap="onGeneratePoster">
+        <image class="action-icon" src="/assets/icons/icon-image-white.png" mode="aspectFit"></image>
+        <text>{{generatingPoster ? '生成中…' : '生成图片'}}</text>
+      </view>
     </view>
   </block>
 

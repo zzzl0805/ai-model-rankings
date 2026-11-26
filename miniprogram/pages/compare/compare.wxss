@@ -58,7 +58,8 @@
 
 /* 保存对比组 */
 .save-row { margin: 0 24rpx 20rpx; display: flex; align-items: center; flex-wrap: wrap; }
-.save-btn { flex: 1; min-width: 0; text-align: center; padding: 16rpx 12rpx; background: #FFFFFF; border: 1rpx solid #E4E8EE; border-radius: 10rpx; font-size: 12px; color: #0F172A; font-weight: 500; white-space: nowrap; }
+.save-btn { flex: 1; min-width: 0; display: flex; align-items: center; justify-content: center; padding: 16rpx 12rpx; background: #FFFFFF; border: 1rpx solid #E4E8EE; border-radius: 10rpx; font-size: 12px; color: #0F172A; font-weight: 500; white-space: nowrap; }
+.save-icon { width: 15px; height: 15px; margin-right: 5rpx; }
 .save-btn:active { background: #F6F7F9; }
 .poster-btn { margin-left: 16rpx; background: #0F172A; border-color: #0F172A; color: #FFFFFF; }
 .poster-btn:active { background: #0B4BC4; }

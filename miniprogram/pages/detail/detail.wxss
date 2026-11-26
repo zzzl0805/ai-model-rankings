@@ -74,7 +74,8 @@
 
 /* 底部操作 */
 .action-bar { position: fixed; left: 0; right: 0; bottom: 0; display: flex; padding: 16rpx 24rpx; padding-bottom: calc(16rpx + env(safe-area-inset-bottom)); background: #FFFFFF; border-top: 1rpx solid #E5EAF2; z-index: 100; }
-.action-fav, .action-compare, .action-primary { flex: 1; text-align: center; padding: 18rpx 0; border-radius: 10rpx; font-size: 14px; font-weight: 500; }
+.action-fav, .action-compare, .action-primary { flex: 1; display: flex; align-items: center; justify-content: center; padding: 18rpx 0; border-radius: 10rpx; font-size: 14px; font-weight: 500; }
+.action-icon { width: 17px; height: 17px; margin-right: 6rpx; }
 .action-fav, .action-compare { margin-right: 14rpx; border: 1rpx solid #E5EAF2; color: #0F172A; }
 .action-compare { color: #0F5EF0; border-color: #BFD0F7; }
 .action-primary { background: #0F172A; color: #FFFFFF; font-weight: 600; }

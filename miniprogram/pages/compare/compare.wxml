@@ -30,9 +30,11 @@
     <!-- 保存这组对比 -->
     <view wx:if="{{models.length > 0}}" class="save-row">
       <view class="save-btn" bindtap="saveCurrentGroup">
+        <image class="save-icon" src="/assets/icons/icon-save-gray.png" mode="aspectFit"></image>
         <text>保存这组对比</text>
       </view>
       <view class="save-btn poster-btn" bindtap="onGeneratePoster">
+        <image class="save-icon" src="/assets/icons/icon-image-white.png" mode="aspectFit"></image>
         <text>{{generatingPoster ? '生成中…' : '生成对比图片'}}</text>
       </view>
       <text class="save-hint">保存后可在「我的」里随时切回</text>
