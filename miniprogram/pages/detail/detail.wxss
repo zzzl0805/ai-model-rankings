@@ -1,10 +1,10 @@
 /* pages/detail/detail.wxss — v1.7 品牌蓝专业版 */
 .page { background: #F5F7FA; min-height: 100vh; padding-bottom: 160rpx; }
 .center-box { display: flex; flex-direction: column; align-items: center; padding: 200rpx 0; color: #5B6675; font-size: 14px; }
-.back-btn { margin-top: 24rpx; padding: 12rpx 40rpx; background: #0F5EF0; color: #fff; border-radius: 8rpx; font-size: 14px; }
+.back-btn { margin-top: 24rpx; padding: 12rpx 40rpx; background: #0F172A; color: #fff; border-radius: 8rpx; font-size: 14px; }
 
 /* Hero */
-.hero { background: #0F5EF0; padding: 30rpx 32rpx 34rpx; color: #FFFFFF; }
+.hero { background: #0F172A; padding: 30rpx 32rpx 34rpx; color: #FFFFFF; }
 .hero-kicker { display: block; font-size: 12px; color: rgba(255,255,255,0.75); }
 .hero-title { display: block; margin-top: 8rpx; font-size: 26px; line-height: 1.25; font-weight: 700; }
 .hero-meta { display: block; margin-top: 10rpx; font-size: 12px; color: rgba(255,255,255,0.72); }
@@ -77,5 +77,5 @@
 .action-fav, .action-compare, .action-primary { flex: 1; text-align: center; padding: 18rpx 0; border-radius: 10rpx; font-size: 14px; font-weight: 500; }
 .action-fav, .action-compare { margin-right: 14rpx; border: 1rpx solid #E5EAF2; color: #0F172A; }
 .action-compare { color: #0F5EF0; border-color: #BFD0F7; }
-.action-primary { background: #0F5EF0; color: #FFFFFF; font-weight: 600; }
+.action-primary { background: #0F172A; color: #FFFFFF; font-weight: 600; }
 .action-on { background: #EEF3FF; border-color: #BFD0F7; color: #0F5EF0; }

@@ -10,6 +10,6 @@ page { background: #F6F7F9; }
 
 /* v1.7 brand blue */
 page { background: #F5F7FA; }
-.hero { background: #0F5EF0; border-bottom: none; }
+.hero { background: #0F172A; border-bottom: none; }
 .hero-sub, .hero-desc { color: rgba(255,255,255,0.78); }
 .more-link { border-color: #E5EAF2; }

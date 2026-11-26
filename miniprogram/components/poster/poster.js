@@ -180,7 +180,7 @@ Component({
       ctx.fillRect(0, 0, W, H);
 
       // 头部：品牌蓝 + 白色分隔线
-      ctx.fillStyle = '#0F5EF0';
+      ctx.fillStyle = '#0F172A';
       ctx.fillRect(0, 0, W, HEADER_H);
       ctx.fillStyle = 'rgba(255,255,255,0.22)';
       ctx.fillRect(0, HEADER_H - 4, W, 4);
@@ -346,7 +346,7 @@ Component({
       ctx.fillStyle = '#FFFFFF';
       ctx.fillRect(0, 0, W, H);
 
-      ctx.fillStyle = '#0F5EF0';
+      ctx.fillStyle = '#0F172A';
       ctx.fillRect(0, 0, W, 360);
       ctx.fillStyle = 'rgba(255,255,255,0.22)';
       ctx.fillRect(0, 356, W, 4);

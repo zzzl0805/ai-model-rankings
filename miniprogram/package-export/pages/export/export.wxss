@@ -33,7 +33,7 @@
 
 .stub-btn {
   padding: 20rpx 80rpx;
-  background-color: #0F5EF0;
+  background-color: #0F172A;
   border-radius: 12rpx;
 }
 
@@ -47,5 +47,5 @@ page { background: #F5F7FA; }
 .export-page { background: #F5F7FA; }
 .stub-title { font-size: 20px; font-weight: 600; color: #0F172A; }
 .stub-desc { font-size: 13px; color: #5B6675; }
-.stub-btn { border-radius: 10rpx; background: #0F5EF0; }
+.stub-btn { border-radius: 10rpx; background: #0F172A; }
 .stub-btn-text { font-size: 14px; }

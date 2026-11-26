@@ -14,7 +14,7 @@ page {
 .page { min-height: 100vh; padding-bottom: calc(80rpx + env(safe-area-inset-bottom)); }
 
 /* 品牌蓝 masthead */
-.masthead { padding: 18rpx 24rpx 18rpx; background: #0F5EF0; color: #FFFFFF; }
+.masthead { padding: 18rpx 24rpx 18rpx; background: #0F172A; color: #FFFFFF; }
 .masthead-row { display: flex; align-items: baseline; justify-content: space-between; }
 .wordmark { font-size: 22px; line-height: 1.25; font-weight: 600; letter-spacing: 0.5rpx; }
 .masthead-date { font-size: 12px; color: rgba(255,255,255,0.72); font-feature-settings: 'tnum'; }

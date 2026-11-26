@@ -36,6 +36,6 @@ page { background: #F6F7F9; }
 
 /* v1.7 brand blue */
 page { background: #F5F7FA; }
-.hero { background: #0F5EF0; border-bottom: none; }
+.hero { background: #0F172A; border-bottom: none; }
 .card, .result { border-color: #E5EAF2; border-radius: 12rpx; padding: 24rpx; }
 .result-cost { font-size: 20px; }
