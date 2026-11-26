@@ -66,13 +66,24 @@ function wrapText(ctx, text, maxWidth, maxLines) {
     }
   }
   if (line && lines.length < maxLines) lines.push(line);
-  if (lines.length === maxLines) {
-    var last = lines[maxLines - 1];
-    if (ctx.measureText(last).width > maxWidth) {
-      lines[maxLines - 1] = fitText(ctx, last, maxWidth);
-    }
+  if (lines.length === maxLines && line && lines[maxLines - 1] !== line) {
+    lines[maxLines - 1] = fitText(ctx, lines[maxLines - 1] + '…', maxWidth);
   }
   return lines;
+}
+
+function drawStar(ctx, cx, cy, r, color) {
+  ctx.beginPath();
+  for (var i = 0; i < 10; i++) {
+    var ang = -Math.PI / 2 + i * Math.PI / 5;
+    var rad = i % 2 === 0 ? r : r * 0.42;
+    var x = cx + Math.cos(ang) * rad;
+    var y = cy + Math.sin(ang) * rad;
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  ctx.closePath();
+  ctx.fillStyle = color;
+  ctx.fill();
 }
 
 Component({
@@ -84,6 +95,12 @@ Component({
     generate: function (opts, cb) {
       var that = this;
       if (this.data.generating) return;
+      opts = opts || {};
+      var key = this.posterKey(opts);
+      if (this._lastPoster && this._lastPoster.key === key && Date.now() - this._lastPoster.at < 5 * 60 * 1000) {
+        cb && cb(null, this._lastPoster.path);
+        return;
+      }
       this.setData({ generating: true });
 
       this.createSelectorQuery()
@@ -96,11 +113,61 @@ Component({
             cb && cb('canvas 初始化失败');
             return;
           }
-          that.draw(canvas, opts || {}, function (err, path) {
+          that.draw(canvas, opts, function (err, path) {
             that.setData({ generating: false });
+            if (!err && path) that._lastPoster = { key: key, path: path, at: Date.now() };
             cb && cb(err, path);
           });
         });
+    },
+
+    posterKey: function (opts) {
+      return JSON.stringify({
+        layout: opts.layout || 'ranking',
+        title: opts.title || '',
+        subtitle: opts.subtitle || '',
+        updated: opts.updated || '',
+        rows: opts.rows || [],
+        models: opts.models || [],
+        elo: opts.elo || '',
+        note: opts.note || '',
+        review: opts.review || '',
+        dimensions: opts.dimensions || [],
+        scoreLabel: opts.scoreLabel || '',
+        rankText: opts.rankText || '',
+        priceIn: opts.priceIn || '',
+        priceOut: opts.priceOut || '',
+        hasPrice: !!opts.hasPrice,
+        priceProxy: !!opts.priceProxy,
+        contextText: opts.contextText || '',
+        votesText: opts.votesText || '',
+        confidenceText: opts.confidenceText || '',
+      });
+    },
+
+    // 静态二维码：不打云函数、不下载，直接读包内资源
+    loadQr: function (canvas, cb) {
+      var that = this;
+      if (this._qrImage) return cb(this._qrImage);
+      var settled = false;
+      var done = function (img) {
+        if (settled) return;
+        settled = true;
+        if (img) that._qrImage = img;
+        cb(img || null);
+      };
+      var load = function (path) {
+        var img = canvas.createImage();
+        img.onload = function () { done(img); };
+        img.onerror = function () { done(null); };
+        img.src = path;
+      };
+      wx.getImageInfo({
+        src: '/assets/poster/qr-home.png',
+        success: function (res) { load(res.path.indexOf('/') === 0 ? res.path : '/' + res.path); },
+        fail: function () { load('/assets/poster/qr-home.png'); },
+      });
+      setTimeout(function () { done(null); }, 800);
     },
 
     // 尝试拿小程序码（失败/超时返回 null，不影响出图）
@@ -153,146 +220,144 @@ Component({
       var paint = opts.layout === 'detail' ? this.paintDetail
         : (opts.layout === 'compare' ? this.paintCompare : this.paint);
 
-      this.fetchQrCode(opts, function (qrPath) {
-        if (!qrPath) return paint.call(that, canvas, ctx, opts, null, cb);
-
-        // drawImage 需要图片对象，不能直接用文件路径
-        var img = canvas.createImage();
-        var settled = false;
-        var done = function (image) {
-          if (settled) return;
-          settled = true;
-          paint.call(that, canvas, ctx, opts, image, cb);
-        };
-        img.onload = function () { done(img); };
-        img.onerror = function () { done(null); };
-        setTimeout(function () { done(null); }, 3000);
-        img.src = qrPath;
+      this.loadQr(canvas, function (qrImage) {
+        paint.call(that, canvas, ctx, opts, qrImage, cb);
       });
     },
 
-    paint: function (canvas, ctx, opts, qrPath, cb) {
+    paint: function (canvas, ctx, opts, qrImage, cb) {
       var rows = (opts.rows || []).slice(0, MAX_ROWS);
       var updated = opts.updated || '';
 
-      // 背景
       ctx.fillStyle = '#FFFFFF';
       ctx.fillRect(0, 0, W, H);
 
-      // 头部：品牌蓝 + 白色分隔线
-      ctx.fillStyle = '#0F172A';
+      // Header：品牌 + 榜单名 + 日期
+      ctx.fillStyle = COLOR.ink;
       ctx.fillRect(0, 0, W, HEADER_H);
-      ctx.fillStyle = 'rgba(255,255,255,0.22)';
-      ctx.fillRect(0, HEADER_H - 4, W, 4);
+      ctx.fillStyle = 'rgba(255,255,255,0.68)';
+      ctx.font = '22px "PingFang SC", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('AI 模型排行', PAD, 50);
+      ctx.textAlign = 'right';
+      ctx.fillText(updated, W - PAD, 50);
+      ctx.textAlign = 'left';
 
-      // 标题
       ctx.fillStyle = '#FFFFFF';
       ctx.font = 'bold 60px "PingFang SC", sans-serif';
-      ctx.textBaseline = 'alphabetic';
-      ctx.fillText(fitText(ctx, opts.title || 'AI模型排行', W - PAD * 2), PAD, 150);
+      ctx.fillText(fitText(ctx, opts.title || 'AI模型排行', W - PAD * 2), PAD, 146);
 
-      // 副标题
-      ctx.fillStyle = 'rgba(255,255,255,0.78)';
-      ctx.font = '30px "PingFang SC", sans-serif';
-      ctx.fillText(fitText(ctx, opts.subtitle || '', W - PAD * 2), PAD, 212);
+      ctx.fillStyle = 'rgba(255,255,255,0.76)';
+      ctx.font = '27px "PingFang SC", sans-serif';
+      ctx.fillText(fitText(ctx, opts.subtitle || '', W - PAD * 2), PAD, 204);
 
-      // 数据日期
-      ctx.fillStyle = 'rgba(255,255,255,0.55)';
-      ctx.font = '26px "PingFang SC", sans-serif';
-      ctx.fillText('LMArena 人类盲测 · 数据截至 ' + updated, PAD, 260);
+      ctx.fillStyle = 'rgba(255,255,255,0.22)';
+      ctx.fillRect(PAD, HEADER_H - 3, W - PAD * 2, 3);
 
-      // 榜单
-      var y = BODY_TOP;
-      rows.forEach(function (r, i) {
-        var rowY = y + i * ROW_H;
-
-        // 前三名底色
-        if (i < 3) {
-          ctx.fillStyle = 'rgba(15,94,240,0.05)';
-          roundRect(ctx, PAD - 16, rowY - 10, W - (PAD - 16) * 2, ROW_H - 8, 14);
-          ctx.fill();
-        }
-
-        // 名次
+      // 今日结论：先给读者一个“为什么看”
+      if (opts.conclusion) {
+        var boxY = 324;
+        ctx.fillStyle = COLOR.blueBg;
+        roundRect(ctx, PAD, boxY, W - PAD * 2, 92, 14);
+        ctx.fill();
+        ctx.fillStyle = COLOR.blue;
+        ctx.font = 'bold 19px "PingFang SC", sans-serif';
+        ctx.fillText('今日结论', PAD + 22, boxY + 30);
         ctx.fillStyle = COLOR.ink;
-        ctx.font = (i < 3 ? 'bold 40px' : '36px') + ' "PingFang SC", sans-serif';
-        ctx.fillText(String(r.rank || i + 1), PAD, rowY + 50);
+        ctx.font = '25px "PingFang SC", sans-serif';
+        var cl = wrapText(ctx, opts.conclusion, W - PAD * 2 - 44, 2);
+        if (cl[0]) ctx.fillText(cl[0], PAD + 22, boxY + 62);
+        if (cl[1]) ctx.fillText(cl[1], PAD + 22, boxY + 88);
+      }
 
-        // 模型名
-        var nameMax = W - PAD - 360;
+      // 冠军块
+      var top = rows[0];
+      if (top) {
+        var cy = 442;
+        ctx.fillStyle = '#F4F7FF';
+        roundRect(ctx, PAD, cy, W - PAD * 2, 150, 18);
+        ctx.fill();
+        ctx.fillStyle = COLOR.ink;
+        ctx.font = 'bold 42px "PingFang SC", sans-serif';
+        ctx.fillText('01', PAD + 24, cy + 76);
+        drawStar(ctx, PAD + 106, cy + 62, 16, COLOR.blue);
+        ctx.fillStyle = COLOR.ink;
+        ctx.font = 'bold 44px "PingFang SC", sans-serif';
+        ctx.fillText(fitText(ctx, top.name || '', W - PAD * 2 - 400), PAD + 136, cy + 72);
+        ctx.fillStyle = COLOR.sub;
+        ctx.font = '23px "PingFang SC", sans-serif';
+        var topMeta = (top.provider || '') + (top.priceText ? '   ' + top.priceText : '');
+        ctx.fillText(fitText(ctx, topMeta, W - PAD * 2 - 400), PAD + 136, cy + 112);
+        ctx.textAlign = 'right';
+        ctx.fillStyle = COLOR.ink;
+        ctx.font = 'bold 52px "PingFang SC", sans-serif';
+        ctx.fillText(String(top.elo || ''), W - PAD - 24, cy + 82);
+        if (top.delta) {
+          ctx.fillStyle = COLOR.blue;
+          ctx.font = 'bold 20px "PingFang SC", sans-serif';
+          ctx.fillText(top.delta, W - PAD - 24, cy + 112);
+        }
+        var second = rows[1];
+        var gap = second ? (parseFloat(top.elo) - parseFloat(second.elo)) : 0;
+        if (gap > 0) {
+          ctx.fillStyle = COLOR.sub;
+          ctx.font = '19px "PingFang SC", sans-serif';
+          ctx.fillText('领先第 2 名 ' + gap.toFixed(1), W - PAD - 24, cy + 140);
+        }
+        ctx.textAlign = 'left';
+      }
+
+      // 2–3 名
+      rows.slice(1, 3).forEach(function (r, i) {
+        var ry = 620 + i * 72;
+        ctx.fillStyle = COLOR.ink;
+        ctx.font = 'bold 32px "PingFang SC", sans-serif';
+        ctx.fillText('0' + (i + 2), PAD, ry + 36);
+        ctx.fillStyle = COLOR.ink;
+        ctx.font = 'bold 32px "PingFang SC", sans-serif';
+        ctx.fillText(fitText(ctx, r.name || '', W - PAD * 2 - 300), PAD + 72, ry + 34);
+        ctx.fillStyle = COLOR.sub;
+        ctx.font = '21px "PingFang SC", sans-serif';
+        ctx.fillText(fitText(ctx, (r.provider || '') + (r.priceText ? '   ' + r.priceText : ''), W - PAD * 2 - 300), PAD + 72, ry + 62);
+        ctx.textAlign = 'right';
         ctx.fillStyle = COLOR.ink;
         ctx.font = 'bold 34px "PingFang SC", sans-serif';
-        ctx.fillText(fitText(ctx, r.name, nameMax), PAD + 76, rowY + 38);
-
-        // 厂商 + 价格
-        ctx.fillStyle = COLOR.sub;
-        ctx.font = '24px "PingFang SC", sans-serif';
-        var meta = (r.provider || '') + (r.priceText ? '   ' + r.priceText : '');
-        ctx.fillText(fitText(ctx, meta, nameMax), PAD + 76, rowY + 68);
-
-        // Elo（右对齐）
-        ctx.fillStyle = COLOR.ink;
-        ctx.font = 'bold 38px "PingFang SC", sans-serif';
-        ctx.textAlign = 'right';
-        ctx.fillText(String(r.elo || ''), W - PAD, rowY + 46);
+        ctx.fillText(String(r.elo || ''), W - PAD, ry + 38);
         ctx.textAlign = 'left';
-
-        // 分隔线
-        if (i < rows.length - 1) {
-          ctx.strokeStyle = COLOR.line;
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(PAD, rowY + ROW_H - 4);
-          ctx.lineTo(W - PAD, rowY + ROW_H - 4);
-          ctx.stroke();
-        }
+        ctx.strokeStyle = COLOR.line;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(PAD, ry + 70);
+        ctx.lineTo(W - PAD, ry + 70);
+        ctx.stroke();
       });
 
-      var listBottom = y + rows.length * ROW_H;
-
-      // 结论卡（高度固定，给底部二维码留出空间）
-      if (opts.conclusion) {
-        var boxY = listBottom + 12;
-        var boxH = 96;
-        ctx.fillStyle = COLOR.blueBg;
-        roundRect(ctx, PAD, boxY, W - PAD * 2, boxH, 16);
-        ctx.fill();
-        ctx.fillStyle = COLOR.blueDark;
-        ctx.font = 'bold 26px "PingFang SC", sans-serif';
-        var lines = wrapText(ctx, opts.conclusion, W - PAD * 2 - 48, 2);
-        ctx.fillText(lines[0] || '', PAD + 24, boxY + (lines.length > 1 ? 42 : 60));
-        if (lines[1]) ctx.fillText(lines[1], PAD + 24, boxY + 78);
-      }
-
-      // 页脚：二维码 or 文字引导
-      var qrDrawn = false;
-      if (qrPath) {
-        try {
-          var qrSize = 120;
-          ctx.drawImage(qrPath, W - PAD - qrSize, H - 48 - qrSize, qrSize, qrSize);
-          qrDrawn = true;
-        } catch (e) {}
-      }
-
-      if (qrDrawn) {
-        ctx.fillStyle = COLOR.ink;
-        ctx.font = 'bold 28px "PingFang SC", sans-serif';
-        ctx.fillText('微信扫码看完整榜单', PAD, H - 120);
+      // 4–10 名：紧凑行
+      rows.slice(3, 10).forEach(function (r, i) {
+        var ry = 786 + i * 58;
         ctx.fillStyle = COLOR.sub;
         ctx.font = '24px "PingFang SC", sans-serif';
-        ctx.fillText('AI模型排行 · 每日自动更新', PAD, H - 76);
-      } else {
-        ctx.textAlign = 'center';
-        ctx.fillStyle = COLOR.blue;
-        ctx.font = 'bold 30px "PingFang SC", sans-serif';
-        ctx.fillText('微信搜一搜「AI模型排行」', W / 2, H - 100);
-        ctx.fillStyle = COLOR.faint;
-        ctx.font = '22px "PingFang SC", sans-serif';
-        ctx.fillText('LMArena 人类盲测 · 每日自动更新', W / 2, H - 60);
+        ctx.fillText(String(r.rank || i + 4), PAD, ry + 30);
+        ctx.fillStyle = COLOR.ink;
+        ctx.font = '26px "PingFang SC", sans-serif';
+        ctx.fillText(fitText(ctx, r.name || '', W - PAD * 2 - 270), PAD + 64, ry + 30);
+        ctx.fillStyle = COLOR.sub;
+        ctx.font = '20px "PingFang SC", sans-serif';
+        ctx.fillText(fitText(ctx, (r.provider || '') + (r.priceText ? '   ' + r.priceText : ''), W - PAD * 2 - 270), PAD + 64, ry + 54);
+        ctx.textAlign = 'right';
+        ctx.fillStyle = COLOR.ink;
+        ctx.font = 'bold 28px "PingFang SC", sans-serif';
+        ctx.fillText(String(r.elo || ''), W - PAD, ry + 32);
         ctx.textAlign = 'left';
-      }
+        ctx.strokeStyle = COLOR.line;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(PAD, ry + 58);
+        ctx.lineTo(W - PAD, ry + 58);
+        ctx.stroke();
+      });
 
-      // 导出
+      this.drawFooter(ctx, qrImage);
       this.exportCanvas(canvas, cb);
     },
 
@@ -305,7 +370,8 @@ Component({
         height: H,
         destWidth: W,
         destHeight: H,
-        fileType: 'png',
+        fileType: 'jpg',
+        quality: 0.92,
         success: function (res) { cb && cb(null, res.tempFilePath); },
         fail: function (err) { cb && cb(err.errMsg || '导出图片失败'); },
       }, this);
@@ -313,31 +379,43 @@ Component({
 
     // 页脚：二维码 or 文字引导（三种版式共用）
     drawFooter: function (ctx, qrImage) {
+      var top = H - 220;
+      ctx.fillStyle = COLOR.ink;
+      ctx.fillRect(0, top, W, 220);
+      ctx.fillStyle = 'rgba(255,255,255,0.18)';
+      ctx.fillRect(PAD, top, W - PAD * 2, 2);
+
       var qrDrawn = false;
       if (qrImage) {
         try {
-          var qrSize = 120;
-          ctx.drawImage(qrImage, W - PAD - qrSize, H - 48 - qrSize, qrSize, qrSize);
+          var tile = 156;
+          var qrSize = 132;
+          var tx = W - PAD - tile;
+          var ty = H - 54 - tile;
+          ctx.fillStyle = '#FFFFFF';
+          roundRect(ctx, tx, ty, tile, tile, 14);
+          ctx.fill();
+          ctx.drawImage(qrImage, tx + (tile - qrSize) / 2, ty + (tile - qrSize) / 2, qrSize, qrSize);
           qrDrawn = true;
         } catch (e) {}
       }
+
+      ctx.textAlign = 'left';
       if (qrDrawn) {
-        ctx.textAlign = 'left';
-        ctx.fillStyle = COLOR.ink;
-        ctx.font = 'bold 28px "PingFang SC", sans-serif';
-        ctx.fillText('微信扫码查看详情', PAD, H - 120);
-        ctx.fillStyle = COLOR.sub;
-        ctx.font = '24px "PingFang SC", sans-serif';
-        ctx.fillText('AI模型排行 · 每日自动更新', PAD, H - 76);
-      } else {
-        ctx.textAlign = 'center';
-        ctx.fillStyle = COLOR.blue;
+        ctx.fillStyle = '#FFFFFF';
         ctx.font = 'bold 30px "PingFang SC", sans-serif';
-        ctx.fillText('微信搜一搜「AI模型排行」', W / 2, H - 100);
-        ctx.fillStyle = COLOR.faint;
+        ctx.fillText('扫码看完整榜单', PAD, H - 130);
+        ctx.fillStyle = 'rgba(255,255,255,0.66)';
         ctx.font = '22px "PingFang SC", sans-serif';
-        ctx.fillText('LMArena 人类盲测 · 每日自动更新', W / 2, H - 60);
-        ctx.textAlign = 'left';
+        ctx.fillText('AI模型排行 · 每日自动更新', PAD, H - 88);
+        ctx.fillText('数据来自 LMArena 人类盲测', PAD, H - 52);
+      } else {
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = 'bold 28px "PingFang SC", sans-serif';
+        ctx.fillText('微信搜一搜「AI模型排行」', PAD, H - 110);
+        ctx.fillStyle = 'rgba(255,255,255,0.66)';
+        ctx.font = '21px "PingFang SC", sans-serif';
+        ctx.fillText('LMArena 人类盲测 · 每日自动更新', PAD, H - 68);
       }
     },
 
@@ -346,117 +424,116 @@ Component({
       ctx.fillStyle = '#FFFFFF';
       ctx.fillRect(0, 0, W, H);
 
-      ctx.fillStyle = '#0F172A';
-      ctx.fillRect(0, 0, W, 360);
-      ctx.fillStyle = 'rgba(255,255,255,0.22)';
-      ctx.fillRect(0, 356, W, 4);
-
-      ctx.textAlign = 'left';
-      ctx.fillStyle = 'rgba(255,255,255,0.6)';
-      ctx.font = '24px "PingFang SC", sans-serif';
-      ctx.fillText('AI模型排行 · 模型详情', PAD, 72);
+      // Header
+      ctx.fillStyle = COLOR.ink;
+      ctx.fillRect(0, 0, W, 340);
+      ctx.fillStyle = 'rgba(255,255,255,0.68)';
+      ctx.font = '22px "PingFang SC", sans-serif';
+      ctx.fillText('AI 模型排行 · 模型详情', PAD, 56);
 
       if (opts.rankText) {
-        ctx.font = 'bold 26px "PingFang SC", sans-serif';
+        ctx.font = 'bold 24px "PingFang SC", sans-serif';
         var tw = ctx.measureText(opts.rankText).width;
         var pillW = tw + 40;
-        ctx.fillStyle = 'rgba(255,255,255,0.16)';
-        roundRect(ctx, W - PAD - pillW, 42, pillW, 52, 26);
+        ctx.fillStyle = 'rgba(255,255,255,0.14)';
+        roundRect(ctx, W - PAD - pillW, 34, pillW, 48, 24);
         ctx.fill();
-        ctx.fillStyle = '#FCD34D';
-        ctx.fillText(opts.rankText, W - PAD - pillW + 20, 76);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.textAlign = 'right';
+        ctx.fillText(opts.rankText, W - PAD - 20, 66);
+        ctx.textAlign = 'left';
       }
 
       ctx.fillStyle = '#FFFFFF';
-      ctx.font = 'bold 58px "PingFang SC", sans-serif';
+      ctx.font = 'bold 54px "PingFang SC", sans-serif';
       var nameLines = wrapText(ctx, opts.title || '', W - PAD * 2, 2);
-      ctx.fillText(nameLines[0] || '', PAD, 168);
-      if (nameLines[1]) ctx.fillText(nameLines[1], PAD, 234);
+      ctx.fillText(nameLines[0] || '', PAD, 154);
+      if (nameLines[1]) ctx.fillText(nameLines[1], PAD, 218);
 
-      ctx.fillStyle = 'rgba(255,255,255,0.78)';
-      ctx.font = '30px "PingFang SC", sans-serif';
-      ctx.fillText(fitText(ctx, opts.subtitle || '', W - PAD * 2), PAD, nameLines[1] ? 302 : 230);
+      ctx.fillStyle = 'rgba(255,255,255,0.76)';
+      ctx.font = '27px "PingFang SC", sans-serif';
+      ctx.fillText(fitText(ctx, opts.subtitle || '', W - PAD * 2), PAD, nameLines[1] ? 286 : 250);
 
-      // 大号 Elo
-      ctx.fillStyle = COLOR.faint;
-      ctx.font = '24px "PingFang SC", sans-serif';
-      ctx.fillText(opts.scoreLabel || '综合 Elo', PAD, 432);
+      // 分数
+      ctx.fillStyle = COLOR.sub;
+      ctx.font = '22px "PingFang SC", sans-serif';
+      ctx.fillText(opts.scoreLabel || '综合 Elo', PAD, 400);
+      ctx.fillStyle = COLOR.ink;
+      ctx.font = 'bold 104px "PingFang SC", sans-serif';
+      ctx.fillText(String(opts.elo || '—'), PAD, 512);
       ctx.fillStyle = COLOR.blue;
-      ctx.font = 'bold 108px "PingFang SC", sans-serif';
-      ctx.fillText(String(opts.elo || '—'), PAD, 542);
+      ctx.fillRect(PAD, 540, 260, 5);
 
       ctx.textAlign = 'right';
       ctx.fillStyle = COLOR.sub;
-      ctx.font = '24px "PingFang SC", sans-serif';
-      if (opts.votesText) ctx.fillText(opts.votesText, W - PAD, 470);
-      if (opts.contextText) ctx.fillText(opts.contextText, W - PAD, 510);
-      if (opts.confidenceText) ctx.fillText(opts.confidenceText, W - PAD, 550);
+      ctx.font = '22px "PingFang SC", sans-serif';
+      if (opts.votesText) ctx.fillText(opts.votesText, W - PAD, 404);
+      if (opts.contextText) ctx.fillText(opts.contextText, W - PAD, 444);
+      if (opts.confidenceText) ctx.fillText(opts.confidenceText, W - PAD, 484);
       ctx.textAlign = 'left';
 
       // 价格
-      var cardY = 596;
+      var cardY = 590;
       ctx.fillStyle = '#F8FAFC';
-      roundRect(ctx, PAD, cardY, W - PAD * 2, 156, 18);
+      roundRect(ctx, PAD, cardY, W - PAD * 2, 136, 16);
       ctx.fill();
       ctx.fillStyle = COLOR.sub;
-      ctx.font = '24px "PingFang SC", sans-serif';
-      ctx.fillText('API 价格（每百万 tokens）', PAD + 28, cardY + 42);
+      ctx.font = '21px "PingFang SC", sans-serif';
+      ctx.fillText('API 价格（每百万 tokens）', PAD + 24, cardY + 36);
       if (opts.hasPrice) {
         ctx.fillStyle = COLOR.ink;
-        ctx.font = 'bold 38px "PingFang SC", sans-serif';
-        ctx.fillText('输入 ' + (opts.priceIn || '—'), PAD + 28, cardY + 110);
-        ctx.fillText('输出 ' + (opts.priceOut || '—'), PAD + 430, cardY + 110);
+        ctx.font = 'bold 34px "PingFang SC", sans-serif';
+        ctx.fillText('输入 ' + (opts.priceIn || '—'), PAD + 24, cardY + 92);
+        ctx.fillText('输出 ' + (opts.priceOut || '—'), PAD + 470, cardY + 92);
         if (opts.priceProxy) {
-          ctx.fillStyle = '#92400E';
-          ctx.font = '22px "PingFang SC", sans-serif';
-          ctx.fillText('代理', PAD + 28, cardY + 142);
+          ctx.fillStyle = COLOR.sub;
+          ctx.font = '20px "PingFang SC", sans-serif';
+          ctx.fillText('代理价', PAD + 24, cardY + 120);
         }
       } else {
         ctx.fillStyle = COLOR.faint;
-        ctx.font = '30px "PingFang SC", sans-serif';
-        ctx.fillText('暂无公开 API 定价', PAD + 28, cardY + 104);
+        ctx.font = '28px "PingFang SC", sans-serif';
+        ctx.fillText('暂无公开 API 定价', PAD + 24, cardY + 92);
       }
 
-      // 一句话点评
-      var revY = 784;
+      // 点评（最多 2 行，超出省略）
+      var revY = 752;
       ctx.fillStyle = COLOR.blueBg;
-      roundRect(ctx, PAD, revY, W - PAD * 2, 170, 18);
+      roundRect(ctx, PAD, revY, W - PAD * 2, 158, 16);
       ctx.fill();
-      ctx.fillStyle = COLOR.blueDark;
-      ctx.font = 'bold 24px "PingFang SC", sans-serif';
-      ctx.fillText('一句话点评', PAD + 28, revY + 40);
-      ctx.font = '28px "PingFang SC", sans-serif';
-      var revLines = wrapText(ctx, opts.review || '', W - PAD * 2 - 56, 3);
+      ctx.fillStyle = COLOR.blue;
+      ctx.font = 'bold 20px "PingFang SC", sans-serif';
+      ctx.fillText('一句话点评', PAD + 24, revY + 32);
+      ctx.fillStyle = COLOR.ink;
+      ctx.font = '27px "PingFang SC", sans-serif';
+      var revLines = wrapText(ctx, opts.review || '', W - PAD * 2 - 48, 2);
       revLines.forEach(function (line, i) {
-        ctx.fillText(line, PAD + 28, revY + 82 + i * 38);
+        ctx.fillText(line, PAD + 24, revY + 72 + i * 36);
       });
 
-      // 分维度（最多 3 条）
+      // 分维度：文本，不画几乎一样长的满格条
       var dims = (opts.dimensions || []).slice(0, 3);
       if (dims.length) {
-        var dy = 1006;
+        var dy = 960;
         ctx.fillStyle = COLOR.sub;
-        ctx.font = 'bold 24px "PingFang SC", sans-serif';
+        ctx.font = 'bold 21px "PingFang SC", sans-serif';
         ctx.fillText('分维度 Elo', PAD, dy);
-        var maxElo = 0;
-        dims.forEach(function (d) { if (d.elo > maxElo) maxElo = d.elo; });
         dims.forEach(function (d, i) {
-          var ry = dy + 52 + i * 56;
+          var ry = dy + 38 + i * 46;
           ctx.fillStyle = COLOR.ink;
-          ctx.font = '26px "PingFang SC", sans-serif';
-          ctx.fillText(d.name, PAD, ry + 8);
-          ctx.fillStyle = '#E2E8F0';
-          roundRect(ctx, PAD + 120, ry - 8, 520, 16, 8);
-          ctx.fill();
-          var bw = maxElo ? Math.max(20, (d.elo / maxElo) * 520) : 0;
-          ctx.fillStyle = COLOR.blue;
-          roundRect(ctx, PAD + 120, ry - 8, bw, 16, 8);
-          ctx.fill();
+          ctx.font = '25px "PingFang SC", sans-serif';
+          ctx.fillText(fitText(ctx, d.name || '', W - PAD * 2 - 180), PAD, ry);
           ctx.textAlign = 'right';
           ctx.fillStyle = COLOR.ink;
           ctx.font = 'bold 26px "PingFang SC", sans-serif';
-          ctx.fillText(String(d.elo), W - PAD, ry + 8);
+          ctx.fillText(String(d.elo || ''), W - PAD, ry);
           ctx.textAlign = 'left';
+          ctx.strokeStyle = COLOR.line;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(PAD, ry + 16);
+          ctx.lineTo(W - PAD, ry + 16);
+          ctx.stroke();
         });
       }
 
@@ -464,70 +541,75 @@ Component({
       this.exportCanvas(canvas, cb);
     },
 
-    // 版式 C：多模型对比表
     paintCompare: function (canvas, ctx, opts, qrImage, cb) {
       ctx.fillStyle = '#FFFFFF';
       ctx.fillRect(0, 0, W, H);
 
-      ctx.fillStyle = '#0F172A';
-      ctx.fillRect(0, 0, W, 280);
-      ctx.fillStyle = '#0F5EF0';
-      ctx.fillRect(0, 276, W, 4);
+      ctx.fillStyle = COLOR.ink;
+      ctx.fillRect(0, 0, W, 250);
+      ctx.fillStyle = 'rgba(255,255,255,0.22)';
+      ctx.fillRect(PAD, 246, W - PAD * 2, 3);
 
       ctx.textAlign = 'left';
       ctx.fillStyle = '#FFFFFF';
-      ctx.font = 'bold 54px "PingFang SC", sans-serif';
-      ctx.fillText(fitText(ctx, opts.title || '模型对比', W - PAD * 2), PAD, 140);
-      ctx.fillStyle = 'rgba(255,255,255,0.75)';
-      ctx.font = '26px "PingFang SC", sans-serif';
-      ctx.fillText(fitText(ctx, opts.subtitle || '', W - PAD * 2), PAD, 210);
+      ctx.font = 'bold 50px "PingFang SC", sans-serif';
+      ctx.fillText(fitText(ctx, opts.title || '模型对比', W - PAD * 2), PAD, 116);
+      ctx.fillStyle = 'rgba(255,255,255,0.74)';
+      ctx.font = '24px "PingFang SC", sans-serif';
+      ctx.fillText(fitText(ctx, opts.subtitle || '', W - PAD * 2), PAD, 176);
 
       var models = opts.models || [];
       var n = Math.max(models.length, 1);
-      var labelW = 200;
+      var labelW = 190;
       var tableW = W - PAD * 2;
       var colW = (tableW - labelW) / n;
 
-      // 模型名表头（单行，放不下就缩字号/省略，避免切断英文单词）
+      // 模型名：卡片 + 最多两行，避免切断英文
       models.forEach(function (name, i) {
-        var cx = PAD + labelW + colW * i + colW / 2;
-        var size = 24;
-        var label = name;
-        while (size > 17) {
-          ctx.font = 'bold ' + size + 'px "PingFang SC", sans-serif';
-          if (ctx.measureText(label).width <= colW - 20) break;
-          size -= 1;
-        }
-        ctx.font = 'bold ' + size + 'px "PingFang SC", sans-serif';
+        var cardX = PAD + labelW + colW * i + 8;
+        var cardW = colW - 16;
+        ctx.fillStyle = '#F4F7FF';
+        roundRect(ctx, cardX, 274, cardW, 84, 12);
+        ctx.fill();
+        var cx = cardX + cardW / 2;
+        var lines = wrapText(ctx, name, cardW - 24, 2);
         ctx.fillStyle = COLOR.ink;
+        ctx.font = 'bold 22px "PingFang SC", sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText(fitText(ctx, label, colW - 20), cx, 386);
+        ctx.fillText(lines[0] || '', cx, 312);
+        if (lines[1]) ctx.fillText(lines[1], cx, 340);
       });
       ctx.textAlign = 'left';
 
-      var y0 = 440;
-      var rowH = 110;
-      var rows = opts.rows || [];
+      // 只保留至少两个模型有值的行
+      var rows = (opts.rows || []).filter(function (r) {
+        return (r.values || []).filter(function (v) { return v && v !== '-'; }).length >= 2;
+      });
+      var y0 = 382;
+      var noteH = 140;
+      var maxBottom = H - 270;
+      var rowH = Math.max(72, Math.min(120, Math.floor((maxBottom - y0 - noteH - 30) / Math.max(rows.length, 1))));
+
       rows.forEach(function (r, ri) {
         var ry = y0 + ri * rowH;
         if (ri % 2 === 0) {
-          ctx.fillStyle = '#F8FAFC';
+          ctx.fillStyle = '#FAFBFD';
           ctx.fillRect(PAD, ry, tableW, rowH);
         }
         ctx.fillStyle = COLOR.sub;
-        ctx.font = '24px "PingFang SC", sans-serif';
-        ctx.fillText(r.label || '', PAD + 16, ry + 62);
+        ctx.font = '22px "PingFang SC", sans-serif';
+        ctx.fillText(fitText(ctx, r.label || '', labelW - 16), PAD + 16, ry + rowH / 2 + 8);
         (r.values || []).forEach(function (v, ci) {
           var cx = PAD + labelW + colW * ci + colW / 2;
           ctx.textAlign = 'center';
           if (r.best === ci) {
-            ctx.fillStyle = COLOR.blue;
-            ctx.font = 'bold 34px "PingFang SC", sans-serif';
+            ctx.fillStyle = COLOR.ink;
+            ctx.font = 'bold 30px "PingFang SC", sans-serif';
           } else {
             ctx.fillStyle = COLOR.ink;
-            ctx.font = '30px "PingFang SC", sans-serif';
+            ctx.font = '27px "PingFang SC", sans-serif';
           }
-          ctx.fillText(fitText(ctx, String(v), colW - 20), cx, ry + 64);
+          ctx.fillText(fitText(ctx, String(v), colW - 22), cx, ry + rowH / 2 + 8);
         });
         ctx.textAlign = 'left';
         ctx.strokeStyle = COLOR.line;
@@ -538,25 +620,21 @@ Component({
         ctx.stroke();
       });
 
-      // 结论条
       var noteY = y0 + rows.length * rowH + 30;
+      if (noteY + noteH > H - 230) noteY = H - 230 - noteH;
       if (opts.note) {
         ctx.fillStyle = COLOR.blueBg;
-        roundRect(ctx, PAD, noteY, tableW, 110, 16);
+        roundRect(ctx, PAD, noteY, tableW, noteH, 14);
         ctx.fill();
-        ctx.fillStyle = COLOR.blueDark;
-        ctx.font = '26px "PingFang SC", sans-serif';
+        ctx.fillStyle = COLOR.blue;
+        ctx.font = 'bold 20px "PingFang SC", sans-serif';
+        ctx.fillText('对比结论', PAD + 24, noteY + 36);
+        ctx.fillStyle = COLOR.ink;
+        ctx.font = '25px "PingFang SC", sans-serif';
         var nl = wrapText(ctx, opts.note, tableW - 48, 2);
-        ctx.fillText(nl[0] || '', PAD + 24, noteY + 44);
-        if (nl[1]) ctx.fillText(nl[1], PAD + 24, noteY + 82);
+        ctx.fillText(nl[0] || '', PAD + 24, noteY + 76);
+        if (nl[1]) ctx.fillText(nl[1], PAD + 24, noteY + 112);
       }
-
-      ctx.fillStyle = COLOR.faint;
-      ctx.font = '22px "PingFang SC", sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('价格单位：美元 / 百万 tokens；≈ 为人民币价按汇率折算，不含缓存与批量折扣', W / 2, noteY + 172);
-      ctx.fillText('数据截至 ' + (opts.updated || '') + ' · LMArena 人类盲测', W / 2, H - 190);
-      ctx.textAlign = 'left';
 
       this.drawFooter(ctx, qrImage);
       this.exportCanvas(canvas, cb);
