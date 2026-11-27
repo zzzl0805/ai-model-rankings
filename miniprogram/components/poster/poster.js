@@ -20,6 +20,7 @@ var COLOR = {
   faint: '#66707C',
   line: '#E4E8EE',
   blue: '#0F5EF0',
+  gold: '#C8A24A',
   blueDark: '#0F172A',
   blueBg: '#EEF3FF',
 };
@@ -280,7 +281,7 @@ Component({
         ctx.fillStyle = COLOR.ink;
         ctx.font = 'bold 42px "PingFang SC", sans-serif';
         ctx.fillText('01', PAD + 24, cy + 76);
-        drawStar(ctx, PAD + 106, cy + 62, 16, COLOR.blue);
+        drawStar(ctx, PAD + 106, cy + 62, 16, COLOR.gold);
         ctx.fillStyle = COLOR.ink;
         ctx.font = 'bold 44px "PingFang SC", sans-serif';
         ctx.fillText(fitText(ctx, top.name || '', W - PAD * 2 - 400), PAD + 136, cy + 72);

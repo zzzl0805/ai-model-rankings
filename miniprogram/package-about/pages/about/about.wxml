@@ -5,7 +5,7 @@
     <view class="hero">
       <view class="hero-mark">AI</view>
       <text class="hero-name">AI模型排行</text>
-      <text class="hero-version">v1.9.0</text>
+      <text class="hero-version">v1.10.0</text>
     </view>
 
     <!-- Description -->

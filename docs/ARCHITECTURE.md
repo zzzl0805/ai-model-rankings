@@ -18,7 +18,7 @@
 ┌─────────────────────────────────────────────────────────────┐
 │  数据分发（微信云开发）                                        │
 │                                                             │
-│  syncRankings 云函数（每天 03:00）                            │
+│  syncRankings 云函数（每小时检查）                            │
 │    ├─ 按日期 tag 从 jsDelivr 拉取                             │
 │    ├─ 上传云存储 rankings/rankings-<日期>-<时间戳>.json        │
 │    └─ 更新数据库 rankings/_id=current 指针                    │

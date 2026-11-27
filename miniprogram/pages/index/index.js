@@ -51,6 +51,7 @@ Page({
     allDisplayModels: [],
     loading: false,
     searchText: '',
+    searchMode: false,
     sortOrder: 'desc',
     isAgent: false,
     showGuide: false,
@@ -388,6 +389,43 @@ Page({
     }
   },
 
+  buildSearchIndex: function () {
+    var out = [];
+    var seen = {};
+    var cats = rankings.categories || [];
+    cats.forEach(function (cat) {
+      var arr = (rankings.data[cat.id] && rankings.data[cat.id].overall) || [];
+      arr.forEach(function (m) {
+        if (seen[m.name]) return;
+        seen[m.name] = 1;
+        var full = meta.getDisplayName(m.name);
+        var vm = full.match(/^(.*?)\s*\(([^)]+)\)\s*$/);
+        out.push({
+          name: m.name,
+          displayName: full,
+          baseName: vm ? vm[1] : full,
+          variant: vm ? vm[2] : '',
+          provider: meta.getProviderDisplay(m.provider, m.name),
+          providerRaw: m.provider || '',
+          isCN: isDomestic(m.provider, m.name),
+          elo: m.elo,
+          eloText: (Math.round(m.elo * 10) / 10).toFixed(1),
+          votes: m.votes,
+          votesText: m.votes >= 1000 ? (m.votes / 1000).toFixed(1) + 'k' : String(m.votes || ''),
+          price: m.price,
+          context: m.context,
+          rank: m.rank,
+          delta: typeof m.delta === 'number' ? m.delta : 0,
+          isNew: !!m.isNew,
+          isAgent: cat.id === 'agent',
+          categoryId: cat.id,
+          categoryName: cat.name || cat.id
+        });
+      });
+    });
+    return out;
+  },
+
   loadRankings: function (categoryId, dimensionId) {
     var that = this;
     that.setData({ loading: true });
@@ -423,6 +461,7 @@ Page({
         activeCategoryName: catName,
         activeDimensionName: dimName,
         models: models,
+        searchIndex: this.buildSearchIndex(),
         allDisplayModels: models.map(function(m) {
           // 把名称末尾的变体（如 "(High)"、"(Max)"）拆出来单独展示，
           // 否则模型名过长会被截断成 "Gemini 4 Carbon (…"
@@ -460,6 +499,7 @@ Page({
         dimensions: availableDimensions,
         isAgent: isAgent,
         searchText: '',
+    searchMode: false,
       });
       that.applyFilter();
     } catch (e) {
@@ -605,11 +645,14 @@ Page({
 
   applyFilter: function () {
     var allModels = this.data.allDisplayModels || [];
-    var searchText = this.data.searchText;
+    var searchText = (this.data.searchText || '').toLowerCase();
     var sortOrder = this.data.sortOrder;
     var region = this.data.region;
+    var isAgent = !!this.data.isAgent;
+    var searchMode = !!searchText;
 
-    var filtered = allModels;
+    // 搜索跨全部类目：Hy4 这类只在 WebDev/Agent 出现的模型也能被找到
+    var filtered = searchMode ? (this.data.searchIndex || []) : allModels;
 
     // 国产 / 海外视角
     if (region === 'cn') {
@@ -627,13 +670,15 @@ Page({
     }
 
     var sorted = filtered.slice();
-    if (sortOrder === 'asc') {
+    if (searchMode) {
+      // 跨类目搜索按各自类目名次排序：混元4 (#26) 会排在混元3 (#77) 前面
+      sorted.sort(function (a, b) { return (a.rank || 9999) - (b.rank || 9999); });
+    } else if (sortOrder === 'asc') {
       sorted.reverse();
     }
 
-    // 筛选/搜索后重新编号：用户看的是"国产榜"，主排名应是 1..N，
-    // 全球排名保留在 meta 行（如"全球第 13"）
-    var renumber = (region !== 'all' || !!searchText);
+    // 筛选后重新编号；搜索跨类目，保留各类目自身名次
+    var renumber = (!searchMode && region !== 'all');
     var catNameForBadge = this.getCatName(this.data.activeCategory);
     sorted = sorted.map(function (m, i) {
       var copy = {};
@@ -662,7 +707,9 @@ Page({
       copy.tie = false;
       copy.lowSample = (m.votes > 0 && m.votes < 1000);
       copy.rank = copy.origRank;
-      copy.rankDisplay = (i + 1) < 10 ? '0' + (i + 1) : String(i + 1);
+      copy.rankDisplay = searchMode ? ('#' + m.rank) : ((i + 1) < 10 ? '0' + (i + 1) : String(i + 1));
+      copy.isAgent = searchMode ? !!m.isAgent : isAgent;
+      copy.categoryName = searchMode ? (m.categoryName || '') : '';
       return copy;
     });
 
@@ -679,6 +726,8 @@ Page({
     var isVisual = VISUAL_CATS.indexOf(this.data.activeCategory) >= 0;
     this.setData({
       displayModels: sorted,
+      searchMode: searchMode,
+      overview: searchMode ? null : this.buildOverview(sorted),
       priceUnit: region === 'cn' ? '¥' : '$',
       priceHeader: isVisual
         ? '价格'
@@ -686,7 +735,6 @@ Page({
       allProxy: aProxy,
       ctxNote: this.buildCtxNote(region, renumber, aProxy),
       conclusion: this.buildConclusion(sorted, region),
-      overview: this.buildOverview(sorted),
       cnCount: allModels.filter(function (m) { return m.isCN; }).length,
     });
   },

@@ -6,13 +6,7 @@
       <text class="wordmark">AI 模型排行</text>
       <text class="masthead-date">{{lastUpdated}}</text>
     </view>
-    <view class="masthead-bottom" style="padding-right:{{menuRight}}px;">
-      <text class="masthead-sub">LMArena 人类盲测 · 每日更新</text>
-      <view class="poster-shortcut" bindtap="onGeneratePoster">
-        <image class="poster-shortcut-icon" src="/assets/icons/icon-share-white.png" mode="aspectFit"></image>
-        <text>{{generatingPoster ? '生成中…' : '海报'}}</text>
-      </view>
-    </view>
+    <text class="masthead-sub" style="padding-right:{{menuRight}}px;">LMArena 人类盲测 · 每日更新</text>
   </view>
 
   <!-- 一行筛选：榜单 / 搜索 / 视角 -->
@@ -36,13 +30,19 @@
   <view wx:if="{{overview && !searchText}}" class="overview">
     <view class="ov-head">
       <text class="ov-label">今日概览</text>
-      <text class="ov-sub">{{activeCategoryName}} · {{activeDimensionName}}</text>
+      <view class="ov-head-right">
+        <text class="ov-sub">{{activeCategoryName}} · {{activeDimensionName}}</text>
+        <view class="ov-share" bindtap="onGeneratePoster">
+          <image class="ov-share-icon" src="/assets/icons/icon-image-gold.png" mode="aspectFit"></image>
+          <text>{{generatingPoster ? '生成中…' : '海报'}}</text>
+        </view>
+      </view>
     </view>
     <view class="ov-grid">
       <view class="ov-main">
         <text class="ov-label">榜首</text>
         <view class="ov-name-line">
-          <image class="ov-crown" src="/assets/icons/icon-star-blue.png" mode="aspectFit"></image>
+          <image class="ov-crown" src="/assets/icons/icon-star-gold.png" mode="aspectFit"></image>
           <text class="ov-name">{{overview.top.name}}</text>
         </view>
         <text class="ov-value">{{overview.top.value}}<text wx:if="{{overview.top.delta}}" class="ov-delta">{{overview.top.delta}}</text></text>
@@ -65,7 +65,7 @@
   <view class="col-head">
     <text class="ch-rank">#</text>
     <text class="ch-model">模型</text>
-    <text class="ch-elo">{{isAgent ? '净提升率' : 'Elo'}}</text>
+    <text class="ch-elo">{{searchMode ? '分数' : (isAgent ? '净提升率' : 'Elo')}}</text>
     <text class="ch-price">价格 /M</text>
   </view>
 
@@ -75,7 +75,7 @@
   </view>
 
   <view wx:else class="list">
-    <view wx:for="{{displayModels}}" wx:key="rank" class="row {{item.rank <= 3 ? 'row-top' : ''}}" data-name="{{item.name}}" bindtap="onModelTap">
+    <view wx:for="{{displayModels}}" wx:key="name" class="row {{!searchMode && item.rank <= 3 ? 'row-top' : ''}}" data-name="{{item.name}}" bindtap="onModelTap">
       <text class="rank">{{item.rankDisplay}}</text>
       <view class="row-main">
         <view class="name-line">
@@ -85,10 +85,10 @@
           <text wx:elif="{{item.delta < 0}}" class="delta delta-down">{{item.delta}}</text>
           <text wx:elif="{{item.isNew}}" class="delta delta-new">新</text>
         </view>
-        <text class="row-meta">{{item.provider}}</text>
+        <text class="row-meta">{{item.provider}}<text wx:if="{{searchMode}}" class="search-cat"> · {{item.categoryName}}</text></text>
       </view>
       <view class="row-right">
-        <text class="elo">{{item.eloText}}{{isAgent ? '%' : ''}}</text>
+        <text class="elo">{{item.eloText}}{{item.isAgent ? '%' : ''}}</text>
         <text wx:if="{{item.price.input > 0}}" class="price">{{item.priceText}}</text>
         <text wx:else class="price price-none">—</text>
       </view>
