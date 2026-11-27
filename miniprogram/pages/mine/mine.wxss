@@ -99,7 +99,7 @@ page { --bg: #F6F7F9; --text: #0F172A; --text-2: #5B6675; --text-3: #66707C; --l
 
 /* v1.7 brand blue */
 page { background: #F5F7FA; }
-.header { background: #0F172A; }
+.header { background: #0F172A; border-bottom: 2rpx solid #C8A24A; }
 .header-title { color: #FFFFFF; }
 .header-sub { color: rgba(255,255,255,0.75); }
 .list, .empty { border: 1rpx solid #E5EAF2; }

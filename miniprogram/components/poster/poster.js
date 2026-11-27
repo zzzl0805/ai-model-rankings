@@ -253,8 +253,8 @@ Component({
       ctx.font = '27px "PingFang SC", sans-serif';
       ctx.fillText(fitText(ctx, opts.subtitle || '', W - PAD * 2), PAD, 204);
 
-      ctx.fillStyle = 'rgba(255,255,255,0.22)';
-      ctx.fillRect(PAD, HEADER_H - 3, W - PAD * 2, 3);
+      ctx.fillStyle = COLOR.gold;
+      ctx.fillRect(PAD, HEADER_H - 4, W - PAD * 2, 4);
 
       // 今日结论：先给读者一个“为什么看”
       if (opts.conclusion) {
@@ -279,7 +279,7 @@ Component({
         ctx.fillStyle = '#F4F7FF';
         roundRect(ctx, PAD, cy, W - PAD * 2, 150, 18);
         ctx.fill();
-        ctx.fillStyle = COLOR.ink;
+        ctx.fillStyle = COLOR.gold;
         ctx.font = 'bold 42px "PingFang SC", sans-serif';
         ctx.fillText('01', PAD + 24, cy + 76);
         drawStar(ctx, PAD + 106, cy + 62, 16, COLOR.gold);
@@ -384,7 +384,7 @@ Component({
       var top = H - 220;
       ctx.fillStyle = COLOR.ink;
       ctx.fillRect(0, top, W, 220);
-      ctx.fillStyle = 'rgba(255,255,255,0.18)';
+      ctx.fillStyle = COLOR.gold;
       ctx.fillRect(PAD, top, W - PAD * 2, 2);
 
       var qrDrawn = false;
@@ -549,7 +549,7 @@ Component({
 
       ctx.fillStyle = COLOR.ink;
       ctx.fillRect(0, 0, W, 250);
-      ctx.fillStyle = 'rgba(255,255,255,0.22)';
+      ctx.fillStyle = COLOR.gold;
       ctx.fillRect(PAD, 246, W - PAD * 2, 3);
 
       ctx.textAlign = 'left';

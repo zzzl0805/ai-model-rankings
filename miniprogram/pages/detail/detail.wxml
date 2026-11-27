@@ -27,7 +27,7 @@
         <text class="metric-value">{{primaryElo}}</text>
       </view>
       <view class="metric">
-        <text class="metric-label">主榜</text>
+        <view class="metric-label"><image wx:if="{{primaryRank === 1}}" class="metric-star" src="/assets/icons/icon-star-gold.png" mode="aspectFit"></image><text>主榜</text></view>
         <text class="metric-value">#{{primaryRank}}<text class="metric-sub">/{{primaryTotal}}</text></text>
       </view>
       <view class="metric">

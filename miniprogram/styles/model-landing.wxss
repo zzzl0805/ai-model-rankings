@@ -48,7 +48,7 @@ page { background: #F6F7F9; }
 
 /* v1.7 brand blue */
 page { background: #F5F7FA; }
-.hero { background: #0F172A; border-bottom: none; }
+.hero { background: #0F172A; border-bottom: 2rpx solid #C8A24A; }
 .hero-kicker, .hero-sub { color: rgba(255,255,255,0.75); }
 .card { border-color: #E5EAF2; border-radius: 12rpx; padding: 24rpx; }
 .card-title { color: #0F172A; }

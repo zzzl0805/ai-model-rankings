@@ -4,7 +4,7 @@
 .back-btn { margin-top: 24rpx; padding: 12rpx 40rpx; background: #0F172A; color: #fff; border-radius: 8rpx; font-size: 14px; }
 
 /* Hero */
-.hero { background: #0F172A; padding: 30rpx 32rpx 34rpx; color: #FFFFFF; }
+.hero { background: #0F172A; padding: 30rpx 32rpx 34rpx; color: #FFFFFF; border-bottom: 2rpx solid #C8A24A; }
 .hero-kicker { display: block; font-size: 12px; color: rgba(255,255,255,0.75); }
 .hero-title { display: block; margin-top: 8rpx; font-size: 26px; line-height: 1.25; font-weight: 700; }
 .hero-meta { display: block; margin-top: 10rpx; font-size: 12px; color: rgba(255,255,255,0.72); }
@@ -21,7 +21,8 @@
 /* 核心数据 */
 .metrics-card { display: flex; flex-wrap: wrap; padding: 18rpx 24rpx; }
 .metric { width: 50%; box-sizing: border-box; padding: 10rpx 12rpx 10rpx 0; }
-.metric-label { display: block; font-size: 11px; color: #7A8494; }
+.metric-label { display: flex; align-items: center; font-size: 11px; color: #7A8494; }
+.metric-star { width: 12px; height: 12px; margin-right: 4rpx; }
 .metric-value { display: block; margin-top: 2rpx; font-size: 18px; font-weight: 600; color: #0F172A; font-feature-settings: 'tnum'; }
 .metric-sub { font-size: 12px; font-weight: 400; color: #7A8494; }
 .metric-none { color: #7A8494; }
