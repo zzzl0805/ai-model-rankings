@@ -227,7 +227,8 @@ Component({
     },
 
     paint: function (canvas, ctx, opts, qrImage, cb) {
-      var rows = (opts.rows || []).slice(0, MAX_ROWS);
+      // 分享海报只展示前 8 名，给行距留呼吸；完整榜单由二维码承接
+      var rows = (opts.rows || []).slice(0, 8);
       var updated = opts.updated || '';
 
       ctx.fillStyle = '#FFFFFF';
@@ -310,7 +311,7 @@ Component({
 
       // 2–3 名
       rows.slice(1, 3).forEach(function (r, i) {
-        var ry = 620 + i * 72;
+        var ry = 620 + i * 78;
         ctx.fillStyle = COLOR.ink;
         ctx.font = 'bold 32px "PingFang SC", sans-serif';
         ctx.fillText('0' + (i + 2), PAD, ry + 36);
@@ -328,33 +329,33 @@ Component({
         ctx.strokeStyle = COLOR.line;
         ctx.lineWidth = 1;
         ctx.beginPath();
-        ctx.moveTo(PAD, ry + 70);
-        ctx.lineTo(W - PAD, ry + 70);
+        ctx.moveTo(PAD, ry + 74);
+        ctx.lineTo(W - PAD, ry + 74);
         ctx.stroke();
       });
 
-      // 4–10 名：紧凑行
-      rows.slice(3, 10).forEach(function (r, i) {
-        var ry = 786 + i * 58;
+      // 4–8 名：留出行距
+      rows.slice(3, 8).forEach(function (r, i) {
+        var ry = 800 + i * 76;
         ctx.fillStyle = COLOR.sub;
         ctx.font = '24px "PingFang SC", sans-serif';
-        ctx.fillText(String(r.rank || i + 4), PAD, ry + 30);
+        ctx.fillText(String(r.rank || i + 4), PAD, ry + 34);
         ctx.fillStyle = COLOR.ink;
         ctx.font = '26px "PingFang SC", sans-serif';
-        ctx.fillText(fitText(ctx, r.name || '', W - PAD * 2 - 270), PAD + 64, ry + 30);
+        ctx.fillText(fitText(ctx, r.name || '', W - PAD * 2 - 270), PAD + 64, ry + 34);
         ctx.fillStyle = COLOR.sub;
         ctx.font = '20px "PingFang SC", sans-serif';
-        ctx.fillText(fitText(ctx, (r.provider || '') + (r.priceText ? '   ' + r.priceText : ''), W - PAD * 2 - 270), PAD + 64, ry + 54);
+        ctx.fillText(fitText(ctx, (r.provider || '') + (r.priceText ? '   ' + r.priceText : ''), W - PAD * 2 - 270), PAD + 64, ry + 60);
         ctx.textAlign = 'right';
         ctx.fillStyle = COLOR.ink;
         ctx.font = 'bold 28px "PingFang SC", sans-serif';
-        ctx.fillText(String(r.elo || ''), W - PAD, ry + 32);
+        ctx.fillText(String(r.elo || ''), W - PAD, ry + 36);
         ctx.textAlign = 'left';
         ctx.strokeStyle = COLOR.line;
         ctx.lineWidth = 1;
         ctx.beginPath();
-        ctx.moveTo(PAD, ry + 58);
-        ctx.lineTo(W - PAD, ry + 58);
+        ctx.moveTo(PAD, ry + 76);
+        ctx.lineTo(W - PAD, ry + 76);
         ctx.stroke();
       });
 
